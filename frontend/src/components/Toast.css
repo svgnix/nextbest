@@ -1,0 +1,15 @@
+.toast {
+  position: fixed;
+  bottom: var(--space-8);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-inv);
+  background: var(--ink-800);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-chip);
+  z-index: 1000;
+  pointer-events: none;
+}

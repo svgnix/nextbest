@@ -1,0 +1,122 @@
+[
+  {
+    "date": "2026-06-30",
+    "sector": "energy_sector",
+    "sentiment": "neutral",
+    "signal": "Energy prices stabilising; dividend yields in majors above 4%."
+  },
+  {
+    "date": "2026-06-29",
+    "sector": "emerging_markets",
+    "sentiment": "bearish",
+    "signal": "EM currencies under pressure from a strong dollar; selective opportunities in India."
+  },
+  {
+    "date": "2026-06-29",
+    "sector": "healthcare_equities",
+    "sentiment": "bearish",
+    "signal": "Healthcare lagging; defensive positioning ahead of policy changes."
+  },
+  {
+    "date": "2026-06-29",
+    "sector": "treasury_bonds",
+    "sentiment": "bullish",
+    "signal": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk."
+  },
+  {
+    "date": "2026-06-28",
+    "sector": "muni_bonds",
+    "sentiment": "bullish",
+    "signal": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW."
+  },
+  {
+    "date": "2026-06-28",
+    "sector": "real_estate_funds",
+    "sentiment": "bullish",
+    "signal": "Commercial REIT valuations at a discount to NAV; institutional money rotating in."
+  },
+  {
+    "date": "2026-06-28",
+    "sector": "commodities",
+    "sentiment": "neutral",
+    "signal": "Gold at all-time highs on central-bank buying; broad commodities mixed."
+  },
+  {
+    "date": "2026-06-27",
+    "sector": "esg_funds",
+    "sentiment": "bullish",
+    "signal": "ESG fund inflows rebounding after the 2025 pause; regulatory clarity improving."
+  },
+  {
+    "date": "2026-06-26",
+    "sector": "tech_equities",
+    "sentiment": "bullish",
+    "signal": "Tech sector up 12% YTD; AI-driven rally broadening to mid-caps."
+  },
+  {
+    "date": "2026-06-26",
+    "sector": "private_equity",
+    "sentiment": "neutral",
+    "signal": "PE exit activity recovering; 2021-22 vintage funds approaching distributions."
+  },
+  {
+    "date": "2026-06-21",
+    "sector": "healthcare_equities",
+    "sentiment": "bearish",
+    "signal": "Healthcare lagging; defensive positioning ahead of policy changes."
+  },
+  {
+    "date": "2026-06-20",
+    "sector": "treasury_bonds",
+    "sentiment": "bullish",
+    "signal": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk."
+  },
+  {
+    "date": "2026-06-19",
+    "sector": "muni_bonds",
+    "sentiment": "bullish",
+    "signal": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW."
+  },
+  {
+    "date": "2026-06-18",
+    "sector": "real_estate_funds",
+    "sentiment": "bullish",
+    "signal": "Commercial REIT valuations at a discount to NAV; institutional money rotating in."
+  },
+  {
+    "date": "2026-06-16",
+    "sector": "commodities",
+    "sentiment": "neutral",
+    "signal": "Gold at all-time highs on central-bank buying; broad commodities mixed."
+  },
+  {
+    "date": "2026-06-15",
+    "sector": "tech_equities",
+    "sentiment": "bullish",
+    "signal": "Tech sector up 12% YTD; AI-driven rally broadening to mid-caps."
+  },
+  {
+    "date": "2026-06-14",
+    "sector": "emerging_markets",
+    "sentiment": "bearish",
+    "signal": "EM currencies under pressure from a strong dollar; selective opportunities in India."
+  },
+  {
+    "date": "2026-06-13",
+    "sector": "energy_sector",
+    "sentiment": "neutral",
+    "signal": "Energy prices stabilising; dividend yields in majors above 4%."
+  },
+  {
+    "date": "2026-06-12",
+    "sector": "esg_funds",
+    "sentiment": "bullish",
+    "signal": "ESG fund inflows rebounding after the 2025 pause; regulatory clarity improving."
+  },
+  {
+    "date": "2026-06-07",
+    "sector": "private_equity",
+    "sentiment": "neutral",
+    "signal": "PE exit activity recovering; 2021-22 vintage funds approaching distributions."
+  }
+]

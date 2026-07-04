@@ -1,0 +1,49 @@
+.segments__intro {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-600);
+  max-width: 720px;
+}
+
+.segment-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.segment-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.segment-card__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.segment-card__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-900);
+}
+
+.segment-card__count {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-900);
+}
+
+.segment-card__aum {
+  font-size: 13px;
+  color: var(--text-600);
+}
+
+.segment-card__playbook p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-600);
+}

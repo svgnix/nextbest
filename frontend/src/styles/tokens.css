@@ -1,0 +1,71 @@
+:root {
+  /* Ink chrome — rail, top bar, expanded panels */
+  --ink-900: #0E1116;
+  --ink-800: #171B22;
+  --ink-700: #232833;
+
+  /* Paper — the reading surface / cards */
+  --paper-0: #F6F7F9;
+  --paper-50: #FFFFFF;
+  --line: #E4E7EC;
+
+  /* Text */
+  --text-900: #10141B;
+  --text-600: #545B67;
+  --text-400: #8A909B;
+  --text-inv: #EDEFF3;
+
+  /* Signal — WARM pole = attrition / urgent */
+  --warm-600: #C9522C;
+  --warm-500: #E8873A;
+  --warm-100: #FBE5D8;
+
+  /* Signal — COOL pole = upsell / opportunity */
+  --cool-600: #0E7C6B;
+  --cool-500: #12A594;
+  --cool-100: #D6F0EB;
+
+  /* Neutral signal = watchlist */
+  --slate-500: #64707E;
+  --slate-100: #E9ECF0;
+
+  /* Typography */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* Spacing (4px base) */
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-card: 14px;
+  --radius-chip: 8px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgba(16, 20, 27, 0.04), 0 8px 24px rgba(16, 20, 27, 0.06);
+
+  /* App shell */
+  --nav-width: 240px;
+  --nav-width-collapsed: 68px;
+  --topbar-height: 60px;
+
+  /* Sentiment (market feed) — mapped onto the warm↔cool axis */
+  --bullish: var(--cool-600);
+  --bullish-100: var(--cool-100);
+  --bearish: var(--warm-600);
+  --bearish-100: var(--warm-100);
+  --neutral: var(--slate-500);
+  --neutral-100: var(--slate-100);
+
+  /* Chart ink (hand-built SVG) */
+  --chart-grid: #EEF0F3;
+  --chart-line: var(--ink-800);
+  --chart-warm: var(--warm-500);
+  --chart-cool: var(--cool-500);
+}

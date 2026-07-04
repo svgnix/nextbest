@@ -1,0 +1,146 @@
+.profile__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.profile__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.profile__name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-900);
+}
+
+.profile__meta {
+  font-size: 12px;
+  color: var(--text-400);
+}
+
+.profile__value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.profile__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 940px) {
+  .profile__grid { grid-template-columns: 1fr; }
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline__item {
+  display: flex;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  position: relative;
+}
+
+.timeline__item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+  z-index: 1;
+}
+
+.timeline__dot--event { background: var(--cool-500); }
+.timeline__dot--call { background: var(--slate-500); }
+
+.timeline__date {
+  font-size: 11px;
+  color: var(--text-400);
+}
+
+.timeline__text {
+  font-size: 14px;
+  color: var(--text-600);
+  line-height: 1.5;
+}
+
+/* Recommendation */
+.profile__reco-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+}
+
+.profile__headline {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-900);
+  margin-bottom: 4px;
+}
+
+.profile__conf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.profile__draft {
+  background: var(--paper-0);
+  border-radius: var(--radius-chip);
+  padding: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.profile__draft-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-900);
+}
+
+/* Signals */
+.profile__signals {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.profile__signal {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile__signal-val {
+  font-size: 22px;
+  font-weight: 500;
+}

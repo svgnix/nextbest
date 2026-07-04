@@ -1,0 +1,96 @@
+.dispatch {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.dispatch__rail {
+  position: sticky;
+  top: 49px;
+  align-self: flex-start;
+  width: 72px;
+  min-height: calc(100vh - 49px);
+  background: var(--ink-900);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) 0;
+  gap: 0;
+  z-index: 10;
+}
+
+.dispatch__feed {
+  flex: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Rail notch */
+.rail__notch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px;
+  min-height: 48px;
+}
+
+.rail__rank {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-400);
+  font-variant-numeric: tabular-nums;
+  min-width: 18px;
+}
+
+.rail__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+
+.rail__tick {
+  height: 3px;
+  border-radius: 2px;
+  opacity: 0.7;
+}
+
+.rail__notch--skipped {
+  opacity: 0.3;
+}
+
+.rail__notch--skipped .rail__dot {
+  background: var(--slate-500) !important;
+}
+
+/* Responsive: collapse rail below 720px */
+@media (max-width: 720px) {
+  .dispatch__rail {
+    width: 36px;
+  }
+
+  .rail__rank {
+    font-size: 11px;
+  }
+
+  .rail__tick {
+    display: none;
+  }
+
+  .dispatch__feed {
+    padding: var(--space-4);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dispatch__rail,
+  .rail__notch {
+    animation: none !important;
+    transition: none !important;
+  }
+}

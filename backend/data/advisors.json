@@ -1,0 +1,17 @@
+[
+  {
+    "advisor_id": "A001",
+    "name": "Jordan Ellison",
+    "title": "Senior Relationship Manager"
+  },
+  {
+    "advisor_id": "A002",
+    "name": "Noah Rhodes",
+    "title": "Private Wealth Advisor"
+  },
+  {
+    "advisor_id": "A003",
+    "name": "Angie Henderson",
+    "title": "Relationship Manager"
+  }
+]

@@ -1,0 +1,33 @@
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-8);
+  flex: 1;
+}
+
+.error-state__text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-600);
+  text-align: center;
+  max-width: 400px;
+}
+
+.error-state__btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cool-600);
+  background: var(--cool-100);
+  padding: 8px 20px;
+  border-radius: var(--radius-chip);
+  transition: background 0.12s ease;
+}
+
+.error-state__btn:hover {
+  background: var(--cool-500);
+  color: white;
+}

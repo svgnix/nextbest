@@ -1,0 +1,52 @@
+.roster__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.roster__search {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--paper-50);
+  color: var(--text-900);
+}
+
+.roster__search:focus {
+  outline: none;
+  border-color: var(--cool-500);
+}
+
+.roster__filters {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.roster__filter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--paper-50);
+  border: 1px solid var(--line);
+  color: var(--text-600);
+  transition: all 0.12s ease;
+}
+
+.roster__filter:hover { border-color: var(--slate-500); }
+
+.roster__filter--active {
+  background: var(--ink-900);
+  color: var(--text-inv);
+  border-color: var(--ink-900);
+}
