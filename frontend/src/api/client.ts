@@ -2,6 +2,7 @@ import {
   Advisor,
   AgentActivityItem,
   BookAnalytics,
+  ChatResponse,
   ClientDetail,
   ClientSummary,
   MarketSignal,
@@ -47,4 +48,10 @@ export const api = {
     action: 'accept' | 'skip' | 'edit',
     extra?: { draft_text?: string; feedback?: string },
   ) => post<NextBestAction>(`/actions/${clientId}`, { action, ...extra }),
+  chat: (query: string, clientId?: string) =>
+    post<ChatResponse>('/chat', { query, client_id: clientId ?? null }),
+  chatSuggestions: (clientId?: string) => {
+    const params = clientId ? `?client_id=${clientId}` : ''
+    return get<string[]>(`/chat/suggestions${params}`)
+  },
 }

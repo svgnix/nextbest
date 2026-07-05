@@ -150,3 +150,26 @@ export interface AgentActivityItem {
   finding: string;
   ts_ms: number;
 }
+
+export interface ChatCitation {
+  client_id: string;
+  name: string;
+  doc_type: string;
+  date: string;
+  snippet: string;
+}
+
+export interface ChatResponse {
+  answer: string;
+  citations: ChatCitation[];
+  grounded: boolean;
+  mode: string;
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  citations?: ChatCitation[];
+  grounded?: boolean;
+  pending?: boolean;
+}

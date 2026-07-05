@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api/client'
+import AssistantChat from '../components/AssistantChat'
 import ConfidenceArc from '../components/ConfidenceArc'
 import ReasoningTrace from '../components/ReasoningTrace'
 import Sparkline from '../components/charts/Sparkline'
@@ -141,6 +142,14 @@ function Profile({ c }: { c: ClientDetail }) {
               <Signal label="Revenue impact" value={money(c.revenue_impact)} tone="cool" />
               <Signal label="90d withdrawals" value={money(c.withdrawals_last_90_days)} tone="warm" />
             </div>
+          </div>
+
+          <div className="panel">
+            <div className="panel__head">
+              <span className="panel__title">Ask about this client</span>
+              <span className="text-muted mono">grounded copilot</span>
+            </div>
+            <AssistantChat scopeClientId={c.client_id} scopeName={c.name.split(' ')[0]} compact />
           </div>
 
           <div className="panel">

@@ -8,6 +8,7 @@ import SegmentsPage from './pages/SegmentsPage'
 import MarketPage from './pages/MarketPage'
 import CampaignsPage from './pages/CampaignsPage'
 import AgentActivityPage from './pages/AgentActivityPage'
+import AssistantPage from './pages/AssistantPage'
 import './App.css'
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="segments" element={<SegmentsPage />} />
         <Route path="market" element={<MarketPage />} />
         <Route path="campaigns" element={<CampaignsPage />} />
+        <Route path="assistant" element={<AssistantPage />} />
         <Route path="agent" element={<AgentActivityPage />} />
       </Route>
     </Routes>

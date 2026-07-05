@@ -6,6 +6,7 @@ import {
   AgentIcon,
   BookIcon,
   CampaignsIcon,
+  ChatIcon,
   ClientsIcon,
   DispatchIcon,
   MarketIcon,
@@ -27,6 +28,7 @@ const NAV: NavItem[] = [
   { to: '/segments', label: 'Segments', icon: SegmentsIcon },
   { to: '/market', label: 'Market Signals', icon: MarketIcon },
   { to: '/campaigns', label: 'Campaigns', icon: CampaignsIcon },
+  { to: '/assistant', label: 'Book Assistant', icon: ChatIcon },
   { to: '/agent', label: 'Agent Activity', icon: AgentIcon },
 ]
 

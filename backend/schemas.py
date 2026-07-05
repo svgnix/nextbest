@@ -153,3 +153,27 @@ class AdvisorActionOut(BaseModel):
     draft_text: Optional[str] = None
     feedback: Optional[str] = None
     created_at: str
+
+
+# ---------------------------------------------------------------------------
+# RAG book copilot
+# ---------------------------------------------------------------------------
+
+class ChatRequest(BaseModel):
+    query: str
+    client_id: Optional[str] = None    # scope answers to one client when set
+
+
+class ChatCitation(BaseModel):
+    client_id: str
+    name: str
+    doc_type: str
+    date: str
+    snippet: str
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    citations: list[ChatCitation] = Field(default_factory=list)
+    grounded: bool
+    mode: str                          # "dense" or "hashing" — how retrieval ran

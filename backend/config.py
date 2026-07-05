@@ -32,3 +32,10 @@ TOP_N_DRAFT = 20
 # Time-series depth for synthetic history.
 N_TRANSACTION_MONTHS = 12
 N_BEHAVIOR_WEEKS = 12
+
+# RAG book copilot
+# Dense embeddings run through the OpenAI-compatible proxy; without a key the
+# API falls back to a deterministic HashingVectorizer over the same corpus.
+RAG_INDEX_PATH = DATA_DIR / "rag_index"   # writes rag_index.npz + rag_index.json
+RAG_TOP_K = 6
+RAG_EMBED_BATCH = 64

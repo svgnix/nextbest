@@ -1,0 +1,28 @@
+.assistant-page {
+  display: flex;
+  min-height: 0;
+  height: calc(100vh - var(--topbar-height));
+}
+
+.assistant-page__panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.assistant-page__note {
+  color: var(--text-600);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0 0 var(--space-6);
+  max-width: 68ch;
+}
+
+.assistant-page__chat {
+  flex: 1;
+  min-height: 0;
+}

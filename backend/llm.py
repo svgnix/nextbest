@@ -61,6 +61,28 @@ def _get_openai_client():
     return openai.OpenAI(api_key=key)
 
 
+def embeddings_available() -> bool:
+    """Dense embeddings require an OpenAI-compatible key + endpoint."""
+    return _PROVIDER == "openai" and _has_api_key()
+
+
+def embed(texts: list[str]) -> list[list[float]]:
+    """Embed a batch of texts via the OpenAI-compatible embeddings endpoint.
+
+    Raises RuntimeError when embeddings aren't available so callers can fall
+    back to the deterministic hashing retriever.
+    """
+    if not embeddings_available():
+        raise RuntimeError("Embeddings unavailable: set an OpenAI-compatible key (LLM_PROVIDER=openai).")
+
+    client = _get_openai_client()
+    model = os.environ.get("OPENAI_EMBED_MODEL", "azure.text-embedding-3-small")
+    response = client.embeddings.create(model=model, input=texts)
+    # Preserve request order (OpenAI returns .data with an .index field).
+    ordered = sorted(response.data, key=lambda d: d.index)
+    return [list(d.embedding) for d in ordered]
+
+
 def extract_json(text: str) -> dict | None:
     """Best-effort JSON parse of an LLM response.
 
@@ -137,8 +159,28 @@ def _chat_mock(messages: list[dict], system: str | None) -> dict[str, Any]:
         return _mock_draft(user_msg)
     elif "Score this draft" in user_msg:
         return _mock_critique(user_msg)
+    elif "Answer the advisor's question" in user_msg:
+        return _mock_rag(user_msg)
 
     return {"text": "", "tool_calls": []}
+
+
+def _mock_rag(user_msg: str) -> dict[str, Any]:
+    """Extractive fallback: summarise the retrieved context blocks with their
+    citation tags so the copilot stays grounded even without a live LLM."""
+    lines = [ln.strip() for ln in user_msg.splitlines() if ln.strip().startswith("[")]
+    if not lines:
+        return {"text": "I couldn't find that in your records.", "tool_calls": []}
+
+    bullets = []
+    for ln in lines[:4]:
+        tag, _, body = ln.partition("] ")
+        tag = tag + "]"
+        body = body.split(":", 1)[-1].strip() if ":" in body else body.strip()
+        bullets.append(f"- {tag} {body}")
+
+    text = "Here's what your records show:\n" + "\n".join(bullets)
+    return {"text": text, "tool_calls": []}
 
 
 def _mock_planner(user_msg: str) -> dict[str, Any]:

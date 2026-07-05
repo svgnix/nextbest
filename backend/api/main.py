@@ -26,10 +26,13 @@ from backend.db import (
     Client,
     MarketSignal,
     ScoredAction,
+    SessionLocal,
     get_session,
     init_db,
 )
-from backend.schemas import AdvisorActionIn
+from backend.rag import chat as rag_chat
+from backend.rag.store import VectorStore
+from backend.schemas import AdvisorActionIn, ChatRequest
 
 app = FastAPI(title="NextBest API", version="1.0.0")
 
@@ -41,9 +44,20 @@ app.add_middleware(
 )
 
 
+# Loaded once at startup: dense index if present, else the hashing fallback.
+_store: VectorStore | None = None
+
+
 @app.on_event("startup")
 def _startup() -> None:
     init_db()
+    global _store
+    session = SessionLocal()
+    try:
+        _store = VectorStore.load_or_build(session)
+        print(f"RAG copilot ready: {_store.mode} retrieval over {len(_store.docs)} documents.")
+    finally:
+        session.close()
 
 
 @app.get("/api/health")
@@ -291,6 +305,46 @@ def record_action(
     db.commit()
     db.refresh(action)
     return action_to_dict(action)
+
+
+# ---------------------------------------------------------------------------
+# RAG book copilot — grounded Q&A over the advisor's records
+# ---------------------------------------------------------------------------
+
+@app.post("/api/chat")
+def chat(payload: ChatRequest) -> dict:
+    if _store is None or not _store.docs:
+        return {
+            "answer": "The book index is empty — seed the database and run the pipeline first.",
+            "citations": [],
+            "grounded": False,
+            "mode": "empty",
+        }
+    result = rag_chat.answer(_store, payload.query, client_id=payload.client_id)
+    result["mode"] = _store.mode
+    return result
+
+
+@app.get("/api/chat/suggestions")
+def chat_suggestions(
+    client_id: str | None = None,
+    db: Session = Depends(get_session),
+) -> list[str]:
+    if client_id:
+        c = db.get(Client, client_id)
+        name = c.name.split()[0] if c else "this client"
+        return [
+            f"Why is {name} flagged right now?",
+            f"Summarise {name}'s recent activity and notes.",
+            f"What did we last discuss with {name}?",
+            f"What market signals are relevant to {name}?",
+        ]
+    return [
+        "Which clients mentioned competitors or moving their money?",
+        "Who is most at risk of leaving this week, and why?",
+        "Which clients had a recent life event?",
+        "Summarise the clients ready for an upsell conversation.",
+    ]
 
 
 @app.get("/api/actions/log")
