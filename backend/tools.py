@@ -7,6 +7,7 @@ decoupled from the persistence layer.
 
 from __future__ import annotations
 
+from backend.market_data import FALLBACK_SIGNAL_TEXT
 from backend.propensity import score_client
 
 # ---------------------------------------------------------------------------
@@ -116,27 +117,25 @@ def get_product_catalog(segment_label: str = "", life_events: list[str] | None =
 # Tool 5: get_market_context / get_market_sentiment
 # ---------------------------------------------------------------------------
 
-_MARKET_SIGNALS = {
-    "tech_equities": "Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-    "muni_bonds": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW.",
-    "emerging_markets": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
-    "real_estate_funds": "Commercial REIT valuations at a discount to NAV; institutional money rotating in.",
-    "healthcare_equities": "Healthcare lagging; defensive positioning ahead of policy changes.",
-    "energy_sector": "Energy prices stabilising; dividend yields in majors above 4%.",
-    "treasury_bonds": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk.",
-    "private_equity": "PE exit activity recovering; 2021-22 vintage funds approaching distributions.",
-    "commodities": "Gold at all-time highs on central-bank buying; broad commodities mixed.",
-    "esg_funds": "ESG fund inflows rebounding after the 2025 pause; regulatory clarity improving.",
-}
-
-
 def get_market_context(topics: list[str] | None = None) -> dict:
-    """Return 1-2 timely market notes relevant to the client's exposure."""
+    """Return 1-2 timely market notes relevant to the client's exposure.
+
+    Prefers the live/cached feed (loaded into _MARKET_FEED at pipeline start);
+    falls back to the curated static text if a sector isn't in the feed.
+    """
     topics = topics or []
+
+    live_by_sector: dict[str, str] = {}
+    for entry in _MARKET_FEED:  # sorted most-recent-first
+        sec = entry["sector"]
+        if sec not in live_by_sector:
+            live_by_sector[sec] = entry["signal"]
+
     notes = []
     for t in topics:
-        if t in _MARKET_SIGNALS:
-            notes.append({"topic": t, "signal": _MARKET_SIGNALS[t]})
+        signal = live_by_sector.get(t) or FALLBACK_SIGNAL_TEXT.get(t)
+        if signal:
+            notes.append({"topic": t, "signal": signal})
         if len(notes) >= 2:
             break
     return {"market_notes": notes}

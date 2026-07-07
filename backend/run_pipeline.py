@@ -12,7 +12,7 @@ import json
 
 from backend.agents import run_orchestrator_for_client
 from backend.config import DATA_DIR, TOP_N_DRAFT
-from backend.db import Client, MarketSignal, ScoredAction, SessionLocal, init_db
+from backend.db import AgentRun, Client, MarketSignal, ScoredAction, SessionLocal, init_db
 from backend.propensity import run_propensity
 from backend.schemas import NextBestAction, ReasoningStep
 from backend.segment import run_segmentation
@@ -172,6 +172,7 @@ def run_pipeline() -> list[dict]:
 
         print(f"[4/4] Running multi-agent orchestrator for top {TOP_N_DRAFT} clients...")
         results: list[dict] = []
+        agent_runs: list[dict] = []
         for i, client in enumerate(ranked):
             propensity_data = {
                 "attrition_risk": client["attrition_risk"],
@@ -195,6 +196,29 @@ def run_pipeline() -> list[dict]:
                     market_insight = st.get("market_insight") or None
                     portfolio_nudge = st.get("portfolio_nudge") or None
                     recommended_product = st.get("recommended_product") or None
+
+                    tel = st.get("telemetry", {})
+                    attempts = st.get("critique_attempts", 0)
+                    agent_runs.append({
+                        "client_id": client["client_id"],
+                        "name": client["name"],
+                        "advisor_id": client.get("advisor_id", "A001"),
+                        "priority_rank": client["priority_rank"],
+                        "framing": framing,
+                        "consulted": st.get("consulted", []),
+                        "total_ms": tel.get("total_ms", 0.0),
+                        "node_timings": tel.get("node_timings", {}),
+                        "llm_calls": tel.get("llm_calls", 0),
+                        "prompt_tokens": tel.get("prompt_tokens", 0),
+                        "completion_tokens": tel.get("completion_tokens", 0),
+                        "total_tokens": tel.get("total_tokens", 0),
+                        "mode": tel.get("mode", "mock"),
+                        "critique_attempts": attempts,
+                        "redrafts": max(0, attempts - 1),
+                        "draft_passed": draft_passed,
+                        "metric_leak_caught": tel.get("metric_leak_caught", False),
+                        "draft_word_count": len(draft_message.split()),
+                    })
                 except Exception as e:  # noqa: BLE001
                     print(f"    Agent error for {client['name']}: {e}")
 
@@ -234,6 +258,7 @@ def run_pipeline() -> list[dict]:
             row.lookalikes = client.get("lookalikes", [])
 
         _persist_actions(db, results)
+        _persist_agent_runs(db, agent_runs)
         db.commit()
 
         results.sort(key=lambda r: r["priority_rank"])
@@ -271,6 +296,12 @@ def _persist_actions(db, results: list[dict]) -> None:
             market_insight=r["market_insight"],
             action_status="pending",
         ))
+
+
+def _persist_agent_runs(db, runs: list[dict]) -> None:
+    db.query(AgentRun).delete()
+    for r in runs:
+        db.add(AgentRun(**r))
 
 
 if __name__ == "__main__":

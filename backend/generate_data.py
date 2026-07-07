@@ -22,6 +22,7 @@ from faker import Faker
 from backend.config import (
     ADVISORS_PATH,
     CLIENTS_PATH,
+    MARKET_HISTORY_PATH,
     MARKET_PATH,
     N_ADVISORS,
     N_BEHAVIOR_WEEKS,
@@ -30,6 +31,7 @@ from backend.config import (
     PRIMARY_ADVISOR_ID,
     SEED,
 )
+from backend.market_data import MARKET_SECTORS, build_market_detail, feed_from_detail
 
 fake = Faker()
 Faker.seed(SEED)
@@ -52,45 +54,9 @@ LIFE_EVENT_OPTIONS = [
     "relocation",
 ]
 
-MARKET_SECTORS = [
-    "tech_equities",
-    "muni_bonds",
-    "emerging_markets",
-    "real_estate_funds",
-    "healthcare_equities",
-    "energy_sector",
-    "treasury_bonds",
-    "private_equity",
-    "commodities",
-    "esg_funds",
-]
-
-# Base narrative per sector, reused for the dated sentiment feed.
-_MARKET_SIGNAL_TEXT = {
-    "tech_equities": "Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-    "muni_bonds": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW.",
-    "emerging_markets": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
-    "real_estate_funds": "Commercial REIT valuations at a discount to NAV; institutional money rotating in.",
-    "healthcare_equities": "Healthcare lagging; defensive positioning ahead of policy changes.",
-    "energy_sector": "Energy prices stabilising; dividend yields in majors above 4%.",
-    "treasury_bonds": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk.",
-    "private_equity": "PE exit activity recovering; 2021-22 vintage funds approaching distributions.",
-    "commodities": "Gold at all-time highs on central-bank buying; broad commodities mixed.",
-    "esg_funds": "ESG fund inflows rebounding after the 2025 pause; regulatory clarity improving.",
-}
-
-_MARKET_SENTIMENT = {
-    "tech_equities": "bullish",
-    "muni_bonds": "bullish",
-    "emerging_markets": "bearish",
-    "real_estate_funds": "bullish",
-    "healthcare_equities": "bearish",
-    "energy_sector": "neutral",
-    "treasury_bonds": "bullish",
-    "private_equity": "neutral",
-    "commodities": "neutral",
-    "esg_funds": "bullish",
-}
+# Market sectors + the curated fallback text/sentiment now live in
+# backend/market_data.py (single source of truth). MARKET_SECTORS is imported
+# above and reused here for call-log flavour and per-client exposures.
 
 CALL_NOTE_TEMPLATES_ENGAGED = [
     "Discussed portfolio rebalancing toward {sector}. Client enthusiastic.",
@@ -223,20 +189,17 @@ def _life_events_detail(events: list[str]) -> list[dict]:
 # Market sentiment feed (5th data source, dated)
 # ---------------------------------------------------------------------------
 
-def _generate_market_signals() -> list[dict]:
-    """A dated feed of market-sentiment notes, most recent first."""
-    feed = []
-    for sector in MARKET_SECTORS:
-        # Two dated notes per sector so a timeline reads as a live feed.
-        for offset in (random.randint(1, 6), random.randint(10, 25)):
-            feed.append({
-                "date": (CURRENT_DATE - timedelta(days=offset)).isoformat(),
-                "sector": sector,
-                "sentiment": _MARKET_SENTIMENT[sector],
-                "signal": _MARKET_SIGNAL_TEXT[sector],
-            })
-    feed.sort(key=lambda s: s["date"], reverse=True)
-    return feed
+def _generate_market_data() -> tuple[list[dict], list[dict]]:
+    """The market data (5th data source): a rich per-sector detail record with
+    price history plus the reduced sentiment feed the DB/agent consume.
+
+    Pulls live sector performance (real ETF proxies) when possible, falling back
+    to a curated static feed otherwise — see backend/market_data.py. Passes the
+    seeded ``random`` module so the fallback stays reproducible.
+    """
+    detail = build_market_detail(CURRENT_DATE, rng=random)
+    feed = feed_from_detail(detail)
+    return feed, detail
 
 
 # ---------------------------------------------------------------------------
@@ -513,16 +476,17 @@ def generate() -> tuple[list[dict], list[dict], list[dict]]:
             advisor_id = random.choice(other_advisors)
         _enrich(c, advisor_id)
 
-    market = _generate_market_signals()
-    return clients, advisors, market
+    market, market_detail = _generate_market_data()
+    return clients, advisors, market, market_detail
 
 
 def main() -> None:
-    clients, advisors, market = generate()
+    clients, advisors, market, market_detail = generate()
     CLIENTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     CLIENTS_PATH.write_text(json.dumps(clients, indent=2), encoding="utf-8")
     ADVISORS_PATH.write_text(json.dumps(advisors, indent=2), encoding="utf-8")
     MARKET_PATH.write_text(json.dumps(market, indent=2), encoding="utf-8")
+    MARKET_HISTORY_PATH.write_text(json.dumps(market_detail, indent=2), encoding="utf-8")
 
     print(f"Generated {len(clients)} clients, {len(advisors)} advisors, "
           f"{len(market)} market signals -> {CLIENTS_PATH.parent}")

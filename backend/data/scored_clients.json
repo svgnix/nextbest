@@ -9,7 +9,7 @@
     "revenue_impact": 26350000,
     "revenue_impact_score": 100,
     "priority_rank": 1,
-    "confidence": 100,
+    "confidence": 90,
     "segment": {
       "id": 0,
       "label": "New & exploring"
@@ -22,80 +22,80 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi Rahul, I hope you're doing well! I wanted to follow up on our last conversation about your recent inheritance; there are some interesting opportunities in commercial real estate right now that I think you might find appealing. Let me know if you'd like to chat about how we can make the most of this new chapter.",
-    "draft_passed_critique": true,
+    "draft_message": "Hi Rahul, I hope you\u2019re doing well! I wanted to follow up on our last conversation about your inheritance and explore some allocation options with you. Given the current market conditions, it might be a great time to consider a diversified approach, including opportunities like the Real Estate Diversification Fund. Let me know when you\u2019d like to chat!",
+    "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092200057
+        "ts_ms": 1783451494419
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092200058
+        "ts_ms": 1783451494421
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 85% \u2014 top driver: Portfolio up 18.5%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092200059
+        "ts_ms": 1783451494421
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Real Estate Funds looks bullish: Commercial REIT valuations at a discount to NAV; institutional money r",
-        "ts_ms": 1783092200060
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451494422
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092200062
+        "ts_ms": 1783451494423
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (43 words).",
-        "ts_ms": 1783092202067
+        "finding": "Drafted opportunity opener (40 words).",
+        "ts_ms": 1783451495632
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is too generic and could benefit from more specific details about the previous conversation or opportunities discussed..",
-        "ts_ms": 1783092204368
+        "finding": "Quality gate failed \u2014 The draft mentions 'allocation options' which could imply internal metrics; avoid such terms..",
+        "ts_ms": 1783451497578
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (56 words).",
-        "ts_ms": 1783092205537
+        "finding": "Drafted opportunity opener (50 words).",
+        "ts_ms": 1783451499807
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'allocation options' and 'diversified core allocation', which could be considered internal metrics or system terms..",
-        "ts_ms": 1783092206811
+        "finding": "Quality gate failed \u2014 The message is too generic; it needs to be more specific about the client's situation or previous conversations..",
+        "ts_ms": 1783451501194
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (57 words).",
-        "ts_ms": 1783092208118
+        "finding": "Drafted opportunity opener (58 words).",
+        "ts_ms": 1783451502737
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate passed.",
-        "ts_ms": 1783092209671
+        "finding": "Quality gate failed \u2014 The message mentions a specific fund, which could be considered an internal metric or system term..",
+        "ts_ms": 1783451505254
       }
     ],
     "framing": "opportunity",
     "portfolio_nudge": "New liquidity is a chance to build a diversified core allocation before deploying into higher-conviction sleeves.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Commercial REIT valuations at a discount to NAV; institutional money rotating in.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -121,68 +121,56 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi Kelly, I hope you\u2019re doing well! I remember you mentioned your interest in exploring emerging markets, and with the recent changes in your situation, it might be a great time to consider diversifying your portfolio further. I\u2019d love to discuss some options that could align with your goals when you have a moment.",
+    "draft_message": "Hi Kelly, I hope you're doing well! I remember you mentioning your interest in exploring options for emerging markets exposure, and with your recent inheritance, this could be a great time to consider a diversified core allocation. Let me know if you\u2019d like to discuss some potential strategies that align with your goals!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092211078
+        "ts_ms": 1783451506651
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092211079
+        "ts_ms": 1783451506652
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 85% \u2014 top driver: Portfolio up 15.8%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092211080
+        "ts_ms": 1783451506652
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Commodities looks neutral: Gold at all-time highs on central-bank buying; broad commodities mixed",
-        "ts_ms": 1783092211081
+        "finding": "Commodities looks bearish: Commodities (DBC) -7.2% over the past month; under pressure \u2014 a defens",
+        "ts_ms": 1783451506653
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092211081
+        "ts_ms": 1783451506653
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (53 words).",
-        "ts_ms": 1783092213282
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific investment fund, which may imply internal metrics or systems..",
-        "ts_ms": 1783092215178
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (54 words).",
-        "ts_ms": 1783092217166
+        "ts_ms": 1783451508534
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092218721
+        "ts_ms": 1783451510372
       }
     ],
     "framing": "opportunity",
     "portfolio_nudge": "New liquidity is a chance to build a diversified core allocation before deploying into higher-conviction sleeves.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Gold at all-time highs on central-bank buying; broad commodities mixed.",
+    "market_insight": "Commodities (DBC) -7.2% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -209,74 +197,74 @@
       "Loyal client 17.1y",
       "Life event: retirement"
     ],
-    "draft_message": "Hi David, I hope you\u2019re enjoying your retirement! I wanted to reconnect and see how things are going for you\u2014there are some interesting opportunities in the market that I think you might find appealing. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi David, I hope you're enjoying your retirement! I wanted to check in since our last call felt a bit rushed, and I\u2019d love to hear how you\u2019re settling into this new chapter. If you have a moment, let\u2019s reconnect and chat about anything on your mind.",
     "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092220510
+        "ts_ms": 1783451511768
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092220510
+        "ts_ms": 1783451511769
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 100%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092220512
+        "ts_ms": 1783451511770
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Muni Bonds looks bullish: Municipal bond yields at 3-year highs; tax-equivalent yield attractive",
-        "ts_ms": 1783092220513
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451511771
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted re-engagement opener (52 words).",
+        "ts_ms": 1783451513244
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message is too generic; it needs more specific details about David's investments or previous conversations to be truly personalized..",
+        "ts_ms": 1783451515294
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783092222041
+        "ts_ms": 1783451516432
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific market topic but could be improved by avoiding generic phrases like 'I wanted to touch base'..",
-        "ts_ms": 1783092223493
+        "finding": "Quality gate failed \u2014 The message is too generic and lacks specific details about the last conversation or David's plans..",
+        "ts_ms": 1783451517835
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (45 words).",
-        "ts_ms": 1783092224984
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451519353
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific metric ('municipal bond yields currently at 3-year highs'), which is a leak..",
-        "ts_ms": 1783092226213
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (42 words).",
-        "ts_ms": 1783092227885
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is too generic; it needs more specific details about the opportunities or past conversations to be truly personalized..",
-        "ts_ms": 1783092230466
+        "finding": "Quality gate failed \u2014 The message is too generic; it needs more specific details about the last call or relevant topics to improve personalization..",
+        "ts_ms": 1783451521469
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -301,68 +289,80 @@
       "Life event: property purchase",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Arjun, I hope you're doing well! Congratulations again on closing the commercial property last month\u2014it's exciting to see you diversifying into real estate. If you're open to it, I\u2019d love to discuss some opportunities in real estate funds that could complement your recent investment.",
+    "draft_message": "Hi Arjun, I hope you're enjoying your new commercial property! With the recent shifts in the tech market, it might be a good time to explore how your new real estate venture can complement your overall strategy. Let me know if you\u2019d like to chat about this further!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092232183
+        "ts_ms": 1783451523376
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092232184
+        "ts_ms": 1783451523377
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 65% \u2014 top driver: Portfolio up 22.0%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092232185
+        "ts_ms": 1783451523378
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Real Estate Funds looks bullish: Commercial REIT valuations at a discount to NAV; institutional money r",
-        "ts_ms": 1783092232186
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451523379
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Real estate funds momentum supports adding on any near-term pullback. Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092232187
+        "finding": "Nudge: Consider trimming tech equities and rotating toward real estate funds, which scr Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451523379
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (49 words).",
-        "ts_ms": 1783092233462
+        "finding": "Drafted opportunity opener (56 words).",
+        "ts_ms": 1783451525365
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'current market dynamics' which could be considered a generic market term; avoid such phrases..",
-        "ts_ms": 1783092234666
+        "finding": "Quality gate failed \u2014 The message mentions enhancing the portfolio in light of market shifts, which could be seen as referencing internal metrics or systems..",
+        "ts_ms": 1783451526864
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (45 words).",
-        "ts_ms": 1783092236206
+        "finding": "Drafted opportunity opener (46 words).",
+        "ts_ms": 1783451528707
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The draft mentions specific options in real estate funds, which could be seen as a sales pitch; consider softening the approach..",
+        "ts_ms": 1783451530551
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted opportunity opener (48 words).",
+        "ts_ms": 1783451532393
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092237260
+        "ts_ms": 1783451534749
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Real estate funds momentum supports adding on any near-term pullback.",
+    "portfolio_nudge": "Consider trimming tech equities and rotating toward real estate funds, which screens more favourably right now.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Commercial REIT valuations at a discount to NAV; institutional money rotating in.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -388,80 +388,80 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Christopher, I hope you\u2019re enjoying your new property! Given your recent satisfaction with your portfolio, I wanted to touch base and see if you\u2019d like to discuss any opportunities for further diversification as we navigate the current market landscape. Let me know if you\u2019d be open to a chat!",
+    "draft_message": "Hi Christopher, I hope you're enjoying your new property! Given your satisfaction with your portfolio's recent performance, I wanted to discuss the current market trends, especially in tech equities, and explore the potential benefits of diversifying into healthcare. Let me know a good time for us to chat!",
     "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092238592
+        "ts_ms": 1783451536188
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092238593
+        "ts_ms": 1783451536190
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 90% \u2014 top driver: Portfolio up 18.0%. Digital engagement rising, net flows trending outflows.",
-        "ts_ms": 1783092238593
+        "ts_ms": 1783451536190
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783092238593
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451536191
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Consider trimming healthcare equities and rotating toward treasury bonds, which  Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092238594
+        "finding": "Nudge: Consider trimming tech equities and rotating toward healthcare equities, which s Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451536192
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted opportunity opener (48 words).",
+        "ts_ms": 1783451537820
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message mentions a specific market topic but could be more personalized by referencing a past conversation or specific interests of the client..",
+        "ts_ms": 1783451539863
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783092240451
+        "ts_ms": 1783451541605
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'recent returns' which could imply an internal metric, so it needs to be revised to remove that reference..",
-        "ts_ms": 1783092243127
+        "finding": "Quality gate failed \u2014 The message is too generic and lacks specific details about the client's portfolio or past conversations..",
+        "ts_ms": 1783451548362
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (46 words).",
-        "ts_ms": 1783092244752
+        "finding": "Drafted opportunity opener (48 words).",
+        "ts_ms": 1783451550218
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions a specific market topic but suggests a financial adjustment, which could be seen as salesy..",
-        "ts_ms": 1783092246008
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783092247636
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'opportunities for further diversification' which could imply internal metrics or system terms, so it needs to be more specific and avoid jargon..",
-        "ts_ms": 1783092249382
+        "finding": "Quality gate failed \u2014 The draft mentions 'portfolio's recent performance', which is an internal metric that needs to be removed..",
+        "ts_ms": 1783451552394
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Consider trimming healthcare equities and rotating toward treasury bonds, which screens more favourably right now.",
+    "portfolio_nudge": "Consider trimming tech equities and rotating toward healthcare equities, which screens more favourably right now.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Healthcare lagging; defensive positioning ahead of policy changes.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -487,80 +487,68 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi John, I hope you\u2019re doing well! I remember you mentioned your recent property purchase, and I wanted to see if you\u2019d be interested in discussing some options for diversifying your portfolio further. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi John, I hope you're enjoying the new property! Given the recent shifts in the energy sector, I thought it might be a good time to chat about some strategies that could provide more stability in your investments. Let me know if you\u2019d like to discuss this further!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092251053
+        "ts_ms": 1783451554102
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092251054
+        "ts_ms": 1783451554103
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 90% \u2014 top driver: Portfolio up 21.0%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092251055
+        "ts_ms": 1783451554104
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Energy Sector looks neutral: Energy prices stabilising; dividend yields in majors above 4%.",
-        "ts_ms": 1783092251056
+        "finding": "Energy Sector looks bearish: Energy sector (XLE) -5.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451554104
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Allocation looks balanced; a periodic rebalance keeps risk aligned with the plan Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092251056
+        "finding": "Nudge: Energy sector exposure faces headwinds; a defensive tilt may be worth a conversa Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451554105
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted opportunity opener (53 words).",
+        "ts_ms": 1783451555745
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message mentions 'portfolio's performance', which is an internal metric that needs to be removed..",
+        "ts_ms": 1783451557010
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (48 words).",
-        "ts_ms": 1783092253686
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific fund, which could be considered an internal metric or system term..",
-        "ts_ms": 1783092254981
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783092256243
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions market conditions which could be seen as a metric; avoid specific terms like 'energy prices stabilizing' and 'yields looking promising'..",
-        "ts_ms": 1783092257918
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (41 words).",
-        "ts_ms": 1783092259988
+        "ts_ms": 1783451558645
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092261073
+        "ts_ms": 1783451560174
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Allocation looks balanced; a periodic rebalance keeps risk aligned with the plan.",
+    "portfolio_nudge": "Energy sector exposure faces headwinds; a defensive tilt may be worth a conversation.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Energy prices stabilising; dividend yields in majors above 4%.",
+    "market_insight": "Energy sector (XLE) -5.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -573,7 +561,7 @@
     "revenue_impact": 4434835,
     "revenue_impact_score": 17,
     "priority_rank": 7,
-    "confidence": 90,
+    "confidence": 100,
     "segment": {
       "id": 0,
       "label": "New & exploring"
@@ -586,80 +574,80 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi David, I hope you're doing well! I remember you mentioned your interest in private equity options during our last call, and with your recent inheritance, this could be a great time to explore building a diversified core allocation. Let me know if you'd like to discuss some tailored ideas that could align with your goals!",
-    "draft_passed_critique": false,
+    "draft_message": "Hi David, I hope you\u2019re doing well! I remember you mentioned your interest in private equity options, and with your recent inheritance, this could be a great time to explore how to diversify your investments. Let me know if you\u2019d like to chat about some ideas that could fit your strategy!",
+    "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092269968
+        "ts_ms": 1783451562431
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092269969
+        "ts_ms": 1783451562432
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 85% \u2014 top driver: Portfolio up 16.0%. Digital engagement rising, net flows trending outflows.",
-        "ts_ms": 1783092269970
+        "ts_ms": 1783451562432
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Energy Sector looks neutral: Energy prices stabilising; dividend yields in majors above 4%.",
-        "ts_ms": 1783092269971
+        "finding": "Healthcare Equities looks bullish: Healthcare equities (XLV) +8.0% over the past month; momentum firmly p",
+        "ts_ms": 1783451562433
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092269971
+        "ts_ms": 1783451562433
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (54 words).",
-        "ts_ms": 1783092271779
+        "finding": "Drafted opportunity opener (52 words).",
+        "ts_ms": 1783451564121
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific fund, which could be considered an internal metric or system term..",
-        "ts_ms": 1783092274212
+        "finding": "Quality gate failed \u2014 The draft mentions 'diversified core allocation', which is a system term that needs to be removed..",
+        "ts_ms": 1783451567542
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (61 words).",
-        "ts_ms": 1783092276269
+        "finding": "Drafted opportunity opener (51 words).",
+        "ts_ms": 1783451569252
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions specific market conditions which could be considered a system term; remove those references..",
-        "ts_ms": 1783092277446
+        "finding": "Quality gate failed \u2014 The message mentions a specific market topic, which could imply a metric or score, so it needs to be more general..",
+        "ts_ms": 1783451570795
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (56 words).",
-        "ts_ms": 1783092279088
+        "finding": "Drafted opportunity opener (51 words).",
+        "ts_ms": 1783451573353
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions a specific investment strategy which could be considered a system term; please avoid such references..",
-        "ts_ms": 1783092280288
+        "finding": "Quality gate passed.",
+        "ts_ms": 1783451574978
       }
     ],
     "framing": "opportunity",
     "portfolio_nudge": "New liquidity is a chance to build a diversified core allocation before deploying into higher-conviction sleeves.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Energy prices stabilising; dividend yields in majors above 4%.",
+    "market_insight": "Healthcare equities (XLV) +8.0% over the past month; momentum firmly positive \u2014 a timely opening to discuss adding on strength.",
     "action_status": "pending"
   },
   {
@@ -685,80 +673,80 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Shannon, I hope you're settling into your new property! With the recent shifts in the market, especially with emerging markets facing some challenges, I wanted to share some thoughts on real estate funds that might align well with your goals. Let me know if you\u2019d like to chat about this opportunity!",
+    "draft_message": "Hi Shannon, I hope you\u2019re enjoying your new property! Given the recent momentum in real estate funds, it might be a good time to consider adding to your investments in that area. Let me know if you\u2019d like to discuss this further!",
     "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092281947
+        "ts_ms": 1783451578886
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092281948
+        "ts_ms": 1783451578887
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 80% \u2014 top driver: Portfolio up 22.4%. Digital engagement rising, net flows trending outflows.",
-        "ts_ms": 1783092281948
+        "ts_ms": 1783451578888
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783092281948
+        "finding": "Emerging Markets looks neutral: Emerging markets (EEM) +0.2% over the past month; trading roughly flat",
+        "ts_ms": 1783451578888
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Consider trimming emerging markets and rotating toward real estate funds, which  Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092281949
+        "finding": "Nudge: Real estate funds momentum supports adding on any near-term pullback. Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451578889
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783092283729
+        "finding": "Drafted opportunity opener (51 words).",
+        "ts_ms": 1783451581949
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'current market pressures on emerging currencies', which is a specific market topic but could be seen as a system term; consider rephrasing to avoid potential jargon..",
-        "ts_ms": 1783092285500
+        "finding": "Quality gate failed \u2014 The message mentions a specific opportunity related to market conditions, which could imply internal metrics or risks..",
+        "ts_ms": 1783451584161
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783092287108
+        "finding": "Drafted opportunity opener (49 words).",
+        "ts_ms": 1783451585459
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'portfolio performance', which is an internal metric term that needs to be removed..",
-        "ts_ms": 1783092288496
+        "finding": "Quality gate failed \u2014 The message mentions 'recent satisfaction with your portfolio', which is too generic and could be seen as an internal metric..",
+        "ts_ms": 1783451587581
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (52 words).",
-        "ts_ms": 1783092289799
+        "finding": "Drafted opportunity opener (42 words).",
+        "ts_ms": 1783451589485
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'emerging markets facing some challenges', which is too generic and could be seen as an internal metric or system term..",
-        "ts_ms": 1783092296762
+        "finding": "Quality gate failed \u2014 The message mentions a specific market topic but could be improved by avoiding generic phrases and making it more personal..",
+        "ts_ms": 1783451590848
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Consider trimming emerging markets and rotating toward real estate funds, which screens more favourably right now.",
+    "portfolio_nudge": "Real estate funds momentum supports adding on any near-term pullback.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
+    "market_insight": "Emerging markets (EEM) +0.2% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -771,7 +759,7 @@
     "revenue_impact": 525062,
     "revenue_impact_score": 2,
     "priority_rank": 9,
-    "confidence": 100,
+    "confidence": 90,
     "segment": {
       "id": 1,
       "label": "Disengaging"
@@ -785,74 +773,74 @@
       "Loyal client 16.6y",
       "Life event: relocation"
     ],
-    "draft_message": "Hi Spencer, I hope you\u2019re settling into your new place! I remember you mentioning that you were considering other advisors, and I\u2019d love to catch up and discuss how we can support your goals in this new chapter. Let me know if you\u2019d like to chat!",
-    "draft_passed_critique": true,
+    "draft_message": "Hi Spencer, I hope your recent relocation is going smoothly! I wanted to check in and see how you\u2019re feeling about the current market developments, especially in tech, and if there\u2019s anything you\u2019d like to discuss. Let me know if you\u2019d like to chat!",
+    "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092298508
+        "ts_ms": 1783451594192
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092298508
+        "ts_ms": 1783451594193
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 85%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092298509
+        "ts_ms": 1783451594194
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Treasury Bonds looks bullish: Yield curve normalising; front-end rates offer 5%+ with minimal durati",
-        "ts_ms": 1783092298509
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451594195
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (51 words).",
-        "ts_ms": 1783092300359
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451596065
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is too generic; it lacks specific details about the client's situation or previous conversations..",
-        "ts_ms": 1783092301626
+        "finding": "Quality gate failed \u2014 The message includes a generic phrase 'I wanted to check in' that lacks specificity..",
+        "ts_ms": 1783451597375
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (53 words).",
-        "ts_ms": 1783092303743
+        "finding": "Drafted re-engagement opener (50 words).",
+        "ts_ms": 1783451599260
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'current market offering some attractive front-end rates', which could be considered a system term..",
-        "ts_ms": 1783092308041
+        "finding": "Quality gate failed \u2014 The draft mentions exploring other advisors, which could imply a metric or internal term; please rephrase to avoid this implication..",
+        "ts_ms": 1783451601098
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783092309283
+        "finding": "Drafted re-engagement opener (44 words).",
+        "ts_ms": 1783451602326
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate passed.",
-        "ts_ms": 1783092310423
+        "finding": "Quality gate failed \u2014 The message includes a generic phrase 'I wanted to check in' that lacks specificity..",
+        "ts_ms": 1783451604519
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -878,80 +866,80 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Zachary, I hope you're settling into your new property! I remember our recent discussion about tax-loss harvesting, and with the current shifts in the market, it might be a good time to consider diversifying your portfolio further. If you're open to it, I'd love to chat about some options that could complement your real estate investment.",
+    "draft_message": "Hi Zachary, I hope you're enjoying your new property! I wanted to touch base since we discussed your tax-loss harvesting strategy\u2014if you're considering diversifying further, I believe there are some interesting opportunities in healthcare equities that might align well with your goals. Let me know if you'd like to chat about this!",
     "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092311662
+        "ts_ms": 1783451605808
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092311663
+        "ts_ms": 1783451605809
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 80% \u2014 top driver: Portfolio up 19.1%. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092311663
+        "ts_ms": 1783451605810
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783092311664
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451605811
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Consider trimming healthcare equities and rotating toward muni bonds, which scre Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092311664
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (47 words).",
-        "ts_ms": 1783092313258
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'tax-loss harvesting', which is an internal metric or system term that needs to be removed..",
-        "ts_ms": 1783092314549
+        "finding": "Nudge: Consider trimming commodities and rotating toward healthcare equities, which scr Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451605811
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (49 words).",
-        "ts_ms": 1783092315987
+        "ts_ms": 1783451607037
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions specific investment opportunities but lacks a clear connection to Zachary's past conversations or specific interests..",
-        "ts_ms": 1783092318313
+        "finding": "Quality gate failed \u2014 The draft mentions a specific investment strategy which could be considered an internal metric or system term..",
+        "ts_ms": 1783451609494
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (57 words).",
-        "ts_ms": 1783092320492
+        "finding": "Drafted opportunity opener (46 words).",
+        "ts_ms": 1783451610641
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific internal term 'tax-loss harvesting', which needs to be removed..",
-        "ts_ms": 1783092322881
+        "finding": "Quality gate failed \u2014 The message mentions specific market trends, which could be seen as a reference to internal metrics or systems..",
+        "ts_ms": 1783451614825
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted opportunity opener (52 words).",
+        "ts_ms": 1783451617896
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The draft mentions a specific strategy, which could be considered an internal metric or system term..",
+        "ts_ms": 1783451619330
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Consider trimming healthcare equities and rotating toward muni bonds, which screens more favourably right now.",
+    "portfolio_nudge": "Consider trimming commodities and rotating toward healthcare equities, which screens more favourably right now.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Healthcare lagging; defensive positioning ahead of policy changes.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -964,7 +952,7 @@
     "revenue_impact": 6111106,
     "revenue_impact_score": 23,
     "priority_rank": 11,
-    "confidence": 100,
+    "confidence": 90,
     "segment": {
       "id": 0,
       "label": "New & exploring"
@@ -977,80 +965,80 @@
       "Loyal client 7.7y",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi Shelia, I hope you\u2019re doing well with your upcoming relocation! I remember you mentioning your recent inheritance, and I wanted to touch base to explore how your new financial landscape might align with some exciting investment opportunities. Let me know if you\u2019d like to chat about this when you have a moment!",
-    "draft_passed_critique": true,
+    "draft_message": "Hi Shelia, I hope your relocation is going smoothly! With your recent inheritance, this could be a great time to explore some new opportunities for diversifying your portfolio, especially with options like the Real Estate Diversification Fund. Let me know if you\u2019d like to chat about it!",
+    "draft_passed_critique": false,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092324121
+        "ts_ms": 1783451620883
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092324121
+        "ts_ms": 1783451620884
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 70% \u2014 top driver: Portfolio up 21.9%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092324122
+        "ts_ms": 1783451620885
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783092324123
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451620886
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092324124
+        "ts_ms": 1783451620886
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted opportunity opener (49 words).",
+        "ts_ms": 1783451622165
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message mentions exploring a diversified core allocation, which could imply internal metrics or systems; please rephrase to avoid this..",
+        "ts_ms": 1783451623631
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (47 words).",
-        "ts_ms": 1783092325359
+        "ts_ms": 1783451626305
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'current market conditions', which is a generic term that could be considered an internal metric..",
-        "ts_ms": 1783092332073
+        "finding": "Quality gate failed \u2014 The message mentions discussing options that could enhance the portfolio, which could imply internal metrics or scores..",
+        "ts_ms": 1783451628260
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (46 words).",
-        "ts_ms": 1783092336907
+        "finding": "Drafted opportunity opener (47 words).",
+        "ts_ms": 1783451630414
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific opportunity related to investments, which could imply internal metrics or assessments..",
-        "ts_ms": 1783092338663
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (53 words).",
-        "ts_ms": 1783092341035
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate passed.",
-        "ts_ms": 1783092343017
+        "finding": "Quality gate failed \u2014 The message mentions a specific investment option, which could be considered a system term..",
+        "ts_ms": 1783451632232
       }
     ],
     "framing": "opportunity",
     "portfolio_nudge": "New liquidity is a chance to build a diversified core allocation before deploying into higher-conviction sleeves.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Healthcare lagging; defensive positioning ahead of policy changes.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -1063,7 +1051,7 @@
     "revenue_impact": 850000,
     "revenue_impact_score": 3,
     "priority_rank": 12,
-    "confidence": 90,
+    "confidence": 100,
     "segment": {
       "id": 1,
       "label": "Disengaging"
@@ -1077,74 +1065,62 @@
       "Loyal client 12.0y",
       "Life event: child education"
     ],
-    "draft_message": "Hi Priya, I hope you and your daughter are doing well! I wanted to follow up on our conversation about the education fund transfer timeline, as I know it can feel a bit overwhelming. If you\u2019d like, I can help clarify the next steps and discuss how the current market conditions might benefit your plans.",
-    "draft_passed_critique": false,
+    "draft_message": "Hi Priya, I hope you\u2019re doing well! I wanted to follow up on our recent discussion about your daughter's education fund transfer timeline, as I understand it can feel a bit overwhelming. If you\u2019d like, I\u2019m here to help clarify any next steps or address any concerns you might have.",
+    "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092344636
+        "ts_ms": 1783451634077
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092344637
+        "ts_ms": 1783451634078
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092344637
+        "ts_ms": 1783451634079
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Muni Bonds looks bullish: Municipal bond yields at 3-year highs; tax-equivalent yield attractive",
-        "ts_ms": 1783092344638
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451634080
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (49 words).",
-        "ts_ms": 1783092345764
+        "finding": "Drafted re-engagement opener (53 words).",
+        "ts_ms": 1783451635817
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions a specific topic but could be improved by avoiding phrases that imply a sales pitch..",
-        "ts_ms": 1783092347731
+        "finding": "Quality gate failed \u2014 The message is too generic; it should include more specific details about the conversation or the client's situation..",
+        "ts_ms": 1783451637892
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted re-engagement opener (50 words).",
-        "ts_ms": 1783092348975
+        "ts_ms": 1783451639723
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is too generic; it needs to be more specific about the next steps or details discussed in the last conversation..",
-        "ts_ms": 1783092350508
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (55 words).",
-        "ts_ms": 1783092351689
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'current market conditions', which is a generic term that could be considered an internal metric..",
-        "ts_ms": 1783092353402
+        "finding": "Quality gate passed.",
+        "ts_ms": 1783451640918
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Municipal bond yields at 3-year highs; tax-equivalent yield attractive for HNW.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -1157,7 +1133,7 @@
     "revenue_impact": 827064,
     "revenue_impact_score": 3,
     "priority_rank": 13,
-    "confidence": 90,
+    "confidence": 100,
     "segment": {
       "id": 1,
       "label": "Disengaging"
@@ -1170,74 +1146,62 @@
       "Large withdrawal $182,326",
       "Loyal client 5.7y"
     ],
-    "draft_message": "Hi Paula, I hope you're doing well! I wanted to touch base since I haven\u2019t heard from you in a while; with the recent changes in interest rates, there are some attractive opportunities that might be worth discussing. Let me know if you\u2019d like to chat!",
-    "draft_passed_critique": false,
+    "draft_message": "Hi Paula, I hope you\u2019ve been well! I was thinking about our last conversation regarding your interest in Treasury bonds, and I wanted to see if you had any questions or thoughts on the recent market developments. Let me know if you\u2019d like to chat!",
+    "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092355052
+        "ts_ms": 1783451642364
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092355053
+        "ts_ms": 1783451642365
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092355053
+        "ts_ms": 1783451642365
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Treasury Bonds looks bullish: Yield curve normalising; front-end rates offer 5%+ with minimal durati",
-        "ts_ms": 1783092355054
+        "finding": "Treasury Bonds looks neutral: Treasury bonds (IEF) +0.6% over the past month; trading roughly flat \u2014",
+        "ts_ms": 1783451642366
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (49 words).",
-        "ts_ms": 1783092356497
+        "finding": "Drafted re-engagement opener (45 words).",
+        "ts_ms": 1783451643972
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is too generic; it needs more specific details about the client or past conversations..",
-        "ts_ms": 1783092358833
+        "finding": "Quality gate failed \u2014 The message is too generic; it needs more specific references to past conversations or events related to Paula..",
+        "ts_ms": 1783451649681
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (47 words).",
-        "ts_ms": 1783092359913
+        "finding": "Drafted re-engagement opener (45 words).",
+        "ts_ms": 1783451651803
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions 'optimizing your cash position', which is an internal metric term that needs to be removed..",
-        "ts_ms": 1783092361166
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783092362361
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'recent changes in interest rates', which is a relevant market topic but could be seen as a system term; consider rephrasing to avoid potential jargon..",
-        "ts_ms": 1783092363764
+        "finding": "Quality gate passed.",
+        "ts_ms": 1783451653187
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk.",
+    "market_insight": "Treasury bonds (IEF) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -1263,50 +1227,50 @@
       "Large withdrawal $143,853",
       "Loyal client 15.2y"
     ],
-    "draft_message": "Hi Sandra, I hope you\u2019re doing well! I remember you mentioning the possibility of exploring other advisors, and I\u2019d love to reconnect and discuss some recent developments, especially with the opportunities emerging in India. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi Sandra, I hope you\u2019re doing well! I was thinking about our last conversation where you mentioned exploring other advisors. If you\u2019d like, I\u2019d love to catch up and share some insights on the current muni bond landscape that might help you in your decision-making.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092365561
+        "ts_ms": 1783451654675
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092365561
+        "ts_ms": 1783451654677
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783092365562
+        "ts_ms": 1783451654677
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783092365562
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451654678
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (42 words).",
-        "ts_ms": 1783092366593
+        "finding": "Drafted re-engagement opener (45 words).",
+        "ts_ms": 1783451656101
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092367613
+        "ts_ms": 1783451657162
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -1333,50 +1297,74 @@
       "Loyal client 18.1y",
       "Life event: relocation"
     ],
-    "draft_message": "Hi Michael, I hope you're settling in well after your recent move! With energy prices stabilizing and some attractive dividend yields in the market, I\u2019d love to catch up and discuss how these developments might align with your investment goals. Let me know if you\u2019re available for a quick chat!",
+    "draft_message": "Hi Michael, I hope your recent relocation has been going smoothly! With the positive momentum we're seeing in the real estate market, I'd love to catch up and explore how these developments could align with your goals. Let me know a good time for you to chat!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092369567
+        "ts_ms": 1783451658565
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092369568
+        "ts_ms": 1783451658566
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783092369569
+        "ts_ms": 1783451658567
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Energy Sector looks neutral: Energy prices stabilising; dividend yields in majors above 4%.",
-        "ts_ms": 1783092369569
+        "finding": "Real Estate Funds looks bullish: Real estate funds (VNQ) +4.0% over the past month; momentum firmly pos",
+        "ts_ms": 1783451658567
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (50 words).",
-        "ts_ms": 1783092370908
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451660389
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message is somewhat generic; it could benefit from more specific details about the opportunities or past interactions..",
+        "ts_ms": 1783451662874
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted re-engagement opener (45 words).",
+        "ts_ms": 1783451665413
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The message is somewhat generic and could benefit from more specific details about the real estate opportunities..",
+        "ts_ms": 1783451672198
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451673822
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092372025
+        "ts_ms": 1783451675537
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Energy prices stabilising; dividend yields in majors above 4%.",
+    "market_insight": "Real estate funds (VNQ) +4.0% over the past month; momentum firmly positive \u2014 a timely opening to discuss adding on strength.",
     "action_status": "pending"
   },
   {
@@ -1401,68 +1389,56 @@
       "Recently contacted <30 days",
       "Loyal client 13.9y"
     ],
-    "draft_message": "Hi Matthew, I hope you're doing well! I remember how enthusiastic you were about rebalancing your portfolio, and with energy prices stabilizing and strong dividend yields available, I think there are some exciting opportunities to explore together. Let me know if you\u2019d like to chat about some ideas that could align with your goals.",
+    "draft_message": "Hi Matthew, I hope you\u2019re doing well! I remember how enthusiastic you were about the portfolio rebalancing toward private equity, and I wanted to share some insights on potential opportunities in the current market, especially considering the energy sector's recent challenges. Let me know if you\u2019d like to chat about how we can enhance your strategy!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092373254
+        "ts_ms": 1783451677086
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Steady loyalist' with 3 look-alike clients.",
-        "ts_ms": 1783092373256
+        "ts_ms": 1783451677087
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 60% \u2014 top driver: Portfolio up 18.4%. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783092373257
+        "ts_ms": 1783451677087
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Energy Sector looks neutral: Energy prices stabilising; dividend yields in majors above 4%.",
-        "ts_ms": 1783092373258
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451677088
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Consider trimming emerging markets and rotating toward muni bonds, which screens Eligible: Tax-Advantaged Bond Ladder.",
-        "ts_ms": 1783092373258
+        "finding": "Nudge: Energy sector exposure faces headwinds; a defensive tilt may be worth a conversa Eligible: Tax-Advantaged Bond Ladder.",
+        "ts_ms": 1783451677089
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (57 words).",
-        "ts_ms": 1783092375334
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions specific investment strategies which could be considered internal metrics or system terms..",
-        "ts_ms": 1783092376526
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (54 words).",
-        "ts_ms": 1783092377801
+        "finding": "Drafted opportunity opener (56 words).",
+        "ts_ms": 1783451678290
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092378923
+        "ts_ms": 1783451679883
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Consider trimming emerging markets and rotating toward muni bonds, which screens more favourably right now.",
+    "portfolio_nudge": "Energy sector exposure faces headwinds; a defensive tilt may be worth a conversation.",
     "recommended_product": "Tax-Advantaged Bond Ladder",
-    "market_insight": "Energy prices stabilising; dividend yields in majors above 4%.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -1488,50 +1464,62 @@
       "Email open rate down -60%",
       "Life event: business sale"
     ],
-    "draft_message": "Hi Deepa, I hope you\u2019re doing well after the recent sale of your business. I remember you mentioned feeling frustrated with your current investments, and I\u2019d love to discuss some selective opportunities in India that might align with your goals. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi Deepa, I hope you\u2019re doing well after the recent sale of your business. I remember you mentioned feeling a bit frustrated about your investment situation, and I\u2019d love to chat about how we can align your portfolio with your current goals. Let me know if you\u2019re available for a conversation soon!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092380696
+        "ts_ms": 1783451684965
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092380697
+        "ts_ms": 1783451684966
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783092380697
+        "ts_ms": 1783451684966
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783092380698
+        "finding": "Tech Equities looks bearish: Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defe",
+        "ts_ms": 1783451684967
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (48 words).",
-        "ts_ms": 1783092382872
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451687484
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate failed \u2014 The draft mentions specific challenges related to investment returns, which could imply internal metrics or risks..",
+        "ts_ms": 1783451688866
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted re-engagement opener (52 words).",
+        "ts_ms": 1783451690092
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092385787
+        "ts_ms": 1783451692028
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
+    "market_insight": "Tech equities (XLK) -2.9% over the past month; under pressure \u2014 a defensive or reassurance conversation may be worthwhile.",
     "action_status": "pending"
   },
   {
@@ -1544,7 +1532,7 @@
     "revenue_impact": 0,
     "revenue_impact_score": 0,
     "priority_rank": 18,
-    "confidence": 80,
+    "confidence": 90,
     "segment": {
       "id": 1,
       "label": "Disengaging"
@@ -1556,74 +1544,74 @@
       "Login frequency down -44%",
       "Email open rate down -42%"
     ],
-    "draft_message": "Hi Tricia, I hope you\u2019re doing well! I wanted to follow up on our last conversation, as I know things can get busy. If you have a moment, I\u2019d love to catch up and discuss how the recent changes in rates might align with your goals.",
-    "draft_passed_critique": false,
+    "draft_message": "Hi Tricia, I hope you\u2019re doing well! I noticed that real estate funds have shown some positive momentum recently, and I\u2019d love to catch up and explore how that might fit into your plans. Let me know if you have some time to chat!",
+    "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783092387887
+        "ts_ms": 1783451697261
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783092387889
+        "ts_ms": 1783451697262
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783092387889
+        "ts_ms": 1783451697263
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Treasury Bonds looks bullish: Yield curve normalising; front-end rates offer 5%+ with minimal durati",
-        "ts_ms": 1783092387891
+        "finding": "Real Estate Funds looks bullish: Real estate funds (VNQ) +4.0% over the past month; momentum firmly pos",
+        "ts_ms": 1783451697263
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (52 words).",
-        "ts_ms": 1783092390636
+        "finding": "Drafted re-engagement opener (47 words).",
+        "ts_ms": 1783451698722
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'recent changes in rates', which could be considered an internal metric or system term..",
-        "ts_ms": 1783092392469
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (44 words).",
-        "ts_ms": 1783092393898
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message is generic and lacks specific details about Tricia's goals or updates to make it more personalized..",
-        "ts_ms": 1783092395009
+        "finding": "Quality gate failed \u2014 The message is generic and lacks specific details about the last conversation or relevant opportunities..",
+        "ts_ms": 1783451699930
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783092396754
+        "ts_ms": 1783451701244
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'recent changes in rates', which could be considered an internal metric or system term..",
-        "ts_ms": 1783092398325
+        "finding": "Quality gate failed \u2014 The message is warm and professional, but it lacks specificity about the recent positive momentum in real estate, which could be seen as generic..",
+        "ts_ms": 1783451702884
+      },
+      {
+        "agent": "outreach",
+        "tool": "draft_message",
+        "finding": "Drafted re-engagement opener (44 words).",
+        "ts_ms": 1783451704625
+      },
+      {
+        "agent": "outreach",
+        "tool": "critique",
+        "finding": "Quality gate passed.",
+        "ts_ms": 1783451705957
       }
     ],
     "framing": "re-engagement",
     "portfolio_nudge": null,
     "recommended_product": null,
-    "market_insight": "Yield curve normalising; front-end rates offer 5%+ with minimal duration risk.",
+    "market_insight": "Real estate funds (VNQ) +4.0% over the past month; momentum firmly positive \u2014 a timely opening to discuss adding on strength.",
     "action_status": "pending"
   },
   {
@@ -1649,68 +1637,68 @@
       "Loyal client 7.5y",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi John, I hope you\u2019re enjoying your new property! I remember you mentioning your interest in exploring healthcare investments, and I\u2019d love to discuss some options that may align better with the current market outlook. Let me know a good time for us to connect!",
+    "draft_message": "Hi John, I hope you\u2019re enjoying your new property! I remember you mentioned exploring healthcare equities, and I\u2019d love to discuss some options that could align well with your interests. Let me know when you have a moment to chat!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092401143
+        "ts_ms": 1783451708018
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092401144
+        "ts_ms": 1783451708021
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 75% \u2014 top driver: Portfolio up 23.0%. Digital engagement flat, net flows trending inflows.",
-        "ts_ms": 1783092401144
+        "ts_ms": 1783451708022
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783092401145
+        "finding": "Muni Bonds looks neutral: Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no ",
+        "ts_ms": 1783451708023
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
-        "finding": "Nudge: Consider trimming healthcare equities and rotating toward treasury bonds, which  Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092401146
+        "finding": "Nudge: Consider trimming commodities and rotating toward healthcare equities, which scr Eligible: Real Estate Diversification Fund.",
+        "ts_ms": 1783451708024
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (56 words).",
-        "ts_ms": 1783092403069
+        "finding": "Drafted opportunity opener (49 words).",
+        "ts_ms": 1783451709359
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The draft mentions specific investment options, which could be considered internal metrics or system terms..",
-        "ts_ms": 1783092405253
+        "finding": "Quality gate failed \u2014 The draft mentions a specific market topic, which could be considered an internal metric; please avoid such references..",
+        "ts_ms": 1783451710769
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (45 words).",
-        "ts_ms": 1783092406751
+        "finding": "Drafted opportunity opener (40 words).",
+        "ts_ms": 1783451713643
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092408150
+        "ts_ms": 1783451715178
       }
     ],
     "framing": "opportunity",
-    "portfolio_nudge": "Consider trimming healthcare equities and rotating toward treasury bonds, which screens more favourably right now.",
+    "portfolio_nudge": "Consider trimming commodities and rotating toward healthcare equities, which screens more favourably right now.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "Healthcare lagging; defensive positioning ahead of policy changes.",
+    "market_insight": "Muni bonds (MUB) +0.6% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {
@@ -1736,56 +1724,56 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi Donald, I hope you\u2019re doing well! I\u2019ve been thinking about our recent conversation on healthcare equities and wanted to share some ideas on how your new inheritance could help you build a more diversified core allocation in your portfolio. Let me know if you\u2019d like to chat about this further!",
+    "draft_message": "Hi Donald, I hope you\u2019re doing well! I remember you were excited about rebalancing your portfolio towards healthcare equities, and with your recent inheritance, this might be a great time to explore diversifying further with the Real Estate Diversification Fund. Let me know if you\u2019d like to chat about this opportunity!",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783092410124
+        "ts_ms": 1783451716658
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783092410124
+        "ts_ms": 1783451716659
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 75% \u2014 top driver: Portfolio up 18.4%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783092410125
+        "ts_ms": 1783451716660
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
-        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783092410125
+        "finding": "Emerging Markets looks neutral: Emerging markets (EEM) +0.2% over the past month; trading roughly flat",
+        "ts_ms": 1783451716661
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783092410125
+        "ts_ms": 1783451716662
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
         "finding": "Drafted opportunity opener (51 words).",
-        "ts_ms": 1783092411643
+        "ts_ms": 1783451717896
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783092412663
+        "ts_ms": 1783451719448
       }
     ],
     "framing": "opportunity",
     "portfolio_nudge": "New liquidity is a chance to build a diversified core allocation before deploying into higher-conviction sleeves.",
     "recommended_product": "Real Estate Diversification Fund",
-    "market_insight": "EM currencies under pressure from a strong dollar; selective opportunities in India.",
+    "market_insight": "Emerging markets (EEM) +0.2% over the past month; trading roughly flat \u2014 no strong signal either way right now.",
     "action_status": "pending"
   },
   {

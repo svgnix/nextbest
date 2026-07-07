@@ -21,6 +21,7 @@ import time
 
 from langgraph.graph import END, StateGraph
 
+from backend import telemetry
 from backend.agents.state import AgentState
 from backend.llm import chat, extract_json
 from backend.prompts import CRITIQUE_SYSTEM, DRAFT_SYSTEM, PLANNER_SYSTEM
@@ -94,6 +95,7 @@ def _orchestrator_plan(state: AgentState) -> dict:
         system=PLANNER_SYSTEM,
         temperature=0.2,
         force_json=True,
+        purpose="plan",
     )
     plan = extract_json(response.get("text", "")) or {}
 
@@ -248,6 +250,7 @@ def _outreach_draft(state: AgentState) -> dict:
         messages=[{"role": "user", "content": user_msg}],
         system=DRAFT_SYSTEM,
         temperature=0.6,
+        purpose="draft",
     )
     draft = response["text"].strip()
 
@@ -276,6 +279,7 @@ def _outreach_critique(state: AgentState) -> dict:
         system=CRITIQUE_SYSTEM,
         temperature=0.1,
         force_json=True,
+        purpose="critique",
     )
     critique = extract_json(response.get("text", ""))
     if not isinstance(critique, dict):
@@ -287,6 +291,7 @@ def _outreach_critique(state: AgentState) -> dict:
     leak = _local_metric_leak(draft)
     if leak:
         passed = False
+        telemetry.mark_metric_leak()
         if not feedback:
             feedback = (
                 f"Draft leaks an internal metric/term ('{leak}'). Remove all numbers, "
@@ -314,16 +319,29 @@ def _should_redraft(state: AgentState) -> str:
 # Graph assembly
 # ---------------------------------------------------------------------------
 
+def _timed(name: str, fn):
+    """Wrap a node so its wall-time is recorded to the active run telemetry."""
+
+    def wrapped(state: AgentState) -> dict:
+        t0 = time.perf_counter()
+        try:
+            return fn(state)
+        finally:
+            telemetry.record_node(name, (time.perf_counter() - t0) * 1000)
+
+    return wrapped
+
+
 def build_agent_graph():
     graph = StateGraph(AgentState)
 
-    graph.add_node("plan", _orchestrator_plan)
-    graph.add_node("segmentation", _segmentation_agent)
-    graph.add_node("propensity", _propensity_agent)
-    graph.add_node("market", _market_agent)
-    graph.add_node("portfolio", _portfolio_agent)
-    graph.add_node("draft", _outreach_draft)
-    graph.add_node("critique", _outreach_critique)
+    graph.add_node("plan", _timed("plan", _orchestrator_plan))
+    graph.add_node("segmentation", _timed("segmentation", _segmentation_agent))
+    graph.add_node("propensity", _timed("propensity", _propensity_agent))
+    graph.add_node("market", _timed("market", _market_agent))
+    graph.add_node("portfolio", _timed("portfolio", _portfolio_agent))
+    graph.add_node("draft", _timed("draft", _outreach_draft))
+    graph.add_node("critique", _timed("critique", _outreach_critique))
 
     graph.set_entry_point("plan")
     graph.add_edge("plan", "segmentation")
@@ -341,7 +359,11 @@ _GRAPH = None
 
 
 def run_orchestrator_for_client(client: dict, propensity: dict) -> dict:
-    """Run the full multi-agent loop for one client. Returns the final state."""
+    """Run the full multi-agent loop for one client.
+
+    Returns the final state with an extra `telemetry` key summarising the run
+    (latency, per-node timing, token usage, live/mock mode, guard hits).
+    """
     global _GRAPH
     if _GRAPH is None:
         _GRAPH = build_agent_graph()
@@ -362,4 +384,11 @@ def run_orchestrator_for_client(client: dict, propensity: dict) -> dict:
         "critique_attempts": 0,
         "reasoning_trace": [],
     }
-    return _GRAPH.invoke(initial)
+
+    tel = telemetry.start()
+    try:
+        final = _GRAPH.invoke(initial)
+    finally:
+        telemetry.stop()
+    final["telemetry"] = tel.summary()
+    return final

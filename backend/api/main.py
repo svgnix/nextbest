@@ -6,6 +6,7 @@ Run from the repo root:
 
 from __future__ import annotations
 
+import json
 from collections import defaultdict
 
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -19,10 +20,11 @@ from backend.api.serializers import (
     client_detail,
     client_summary,
 )
-from backend.config import PRIMARY_ADVISOR_ID
+from backend.config import MARKET_HISTORY_PATH, PRIMARY_ADVISOR_ID
 from backend.db import (
     Advisor,
     AdvisorAction,
+    AgentRun,
     Client,
     MarketSignal,
     ScoredAction,
@@ -30,6 +32,7 @@ from backend.db import (
     get_session,
     init_db,
 )
+from backend.eval import REPORT_PATH, _avg, _pct, compute_report
 from backend.rag import chat as rag_chat
 from backend.rag.store import VectorStore
 from backend.schemas import AdvisorActionIn, ChatRequest
@@ -217,6 +220,19 @@ def book_analytics(
 
 @app.get("/api/market")
 def market(db: Session = Depends(get_session)) -> list[dict]:
+    """Rich per-sector market detail (price history for the live charts) from the
+    cached ETF snapshot. Falls back to the DB sentiment feed if the file is
+    missing, so the page always renders."""
+    if MARKET_HISTORY_PATH.exists():
+        try:
+            detail = json.loads(MARKET_HISTORY_PATH.read_text(encoding="utf-8"))
+            if detail:
+                order = {"bearish": 0, "neutral": 1, "bullish": 2}
+                detail.sort(key=lambda d: (order.get(d.get("sentiment"), 1), -abs(d.get("change_pct", 0))))
+                return detail
+        except (json.JSONDecodeError, OSError):
+            pass
+
     rows = db.query(MarketSignal).order_by(MarketSignal.date.desc()).all()
     seen = set()
     out = []
@@ -224,7 +240,11 @@ def market(db: Session = Depends(get_session)) -> list[dict]:
         if m.sector in seen:
             continue
         seen.add(m.sector)
-        out.append({"date": m.date, "sector": m.sector, "sentiment": m.sentiment, "signal": m.signal})
+        out.append({
+            "date": m.date, "sector": m.sector, "label": m.sector.replace("_", " ").title(),
+            "sentiment": m.sentiment, "signal": m.signal, "ticker": "", "change_pct": 0.0,
+            "last_close": 0.0, "live": False, "history": [],
+        })
     return out
 
 
@@ -275,6 +295,118 @@ def agent_activity(
             })
     activity.sort(key=lambda s: s["ts_ms"])
     return activity
+
+
+# ---------------------------------------------------------------------------
+# Observability — aggregate agent-run telemetry
+# ---------------------------------------------------------------------------
+
+@app.get("/api/agent/metrics")
+def agent_metrics(
+    advisor_id: str = Query(PRIMARY_ADVISOR_ID),
+    db: Session = Depends(get_session),
+) -> dict:
+    runs = db.query(AgentRun).filter(AgentRun.advisor_id == advisor_id).all()
+    if not runs:
+        return {"runs": 0}
+
+    from collections import Counter
+
+    latencies = [r.total_ms for r in runs if r.total_ms]
+    redrafts = [r.redrafts for r in runs]
+    tokens = [r.total_tokens for r in runs]
+    modes = {r.mode for r in runs}
+
+    # Average time spent in each node across runs.
+    node_totals: dict[str, float] = {}
+    node_counts: dict[str, int] = {}
+    for r in runs:
+        for node, ms in (r.node_timings or {}).items():
+            node_totals[node] = node_totals.get(node, 0.0) + ms
+            node_counts[node] = node_counts.get(node, 0) + 1
+    node_avg = [
+        {"label": n, "value": round(node_totals[n] / node_counts[n], 1)}
+        for n in sorted(node_totals, key=lambda k: node_totals[k] / node_counts[k], reverse=True)
+    ]
+
+    framing_dist = Counter(r.framing or "check-in" for r in runs)
+    redraft_dist = Counter(str(r.redrafts) for r in runs)
+    passed = sum(1 for r in runs if r.draft_passed)
+
+    return {
+        "runs": len(runs),
+        "mode": "mixed" if len(modes) > 1 else next(iter(modes)),
+        "avg_latency_ms": _avg(latencies),
+        "p50_latency_ms": _pct(latencies, 0.5),
+        "p95_latency_ms": _pct(latencies, 0.95),
+        "avg_redrafts": _avg(redrafts),
+        "critique_pass_rate": round(passed / len(runs), 3),
+        "metric_leaks_caught": sum(1 for r in runs if r.metric_leak_caught),
+        "llm_calls_total": sum(r.llm_calls for r in runs),
+        "tokens": {
+            "total": sum(tokens),
+            "prompt": sum(r.prompt_tokens for r in runs),
+            "completion": sum(r.completion_tokens for r in runs),
+            "avg_per_run": _avg(tokens),
+        },
+        "node_timings_avg": node_avg,
+        "framing_distribution": [{"label": k, "count": v} for k, v in framing_dist.most_common()],
+        "redraft_distribution": [
+            {"label": f"{k} redraft{'s' if k != '1' else ''}", "count": v}
+            for k, v in sorted(redraft_dist.items())
+        ],
+    }
+
+
+@app.get("/api/agent/runs")
+def agent_runs(
+    advisor_id: str = Query(PRIMARY_ADVISOR_ID),
+    db: Session = Depends(get_session),
+) -> list[dict]:
+    rows = (
+        db.query(AgentRun)
+        .filter(AgentRun.advisor_id == advisor_id)
+        .order_by(AgentRun.priority_rank)
+        .all()
+    )
+    return [
+        {
+            "client_id": r.client_id,
+            "name": r.name,
+            "priority_rank": r.priority_rank,
+            "framing": r.framing,
+            "total_ms": round(r.total_ms or 0, 1),
+            "llm_calls": r.llm_calls,
+            "total_tokens": r.total_tokens,
+            "mode": r.mode,
+            "redrafts": r.redrafts,
+            "draft_passed": r.draft_passed,
+            "metric_leak_caught": r.metric_leak_caught,
+            "draft_word_count": r.draft_word_count,
+        }
+        for r in rows
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Evaluation — quality report (deterministic + optional LLM-as-judge)
+# ---------------------------------------------------------------------------
+
+@app.get("/api/eval/report")
+def eval_report(db: Session = Depends(get_session)) -> dict:
+    """Serve the saved eval report (with judge scores if it was run), else
+    compute the deterministic metrics live so the page always has data."""
+    if REPORT_PATH.exists():
+        try:
+            report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+            report["source"] = "saved"
+            return report
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    report = compute_report(db, include_judge=False)
+    report["source"] = "live"
+    return report
 
 
 # ---------------------------------------------------------------------------

@@ -141,6 +141,24 @@ export interface MarketSignal {
   signal: string;
 }
 
+export interface MarketPoint {
+  date: string;
+  close: number;
+}
+
+export interface MarketSectorDetail {
+  sector: string;
+  label: string;
+  ticker: string;
+  date: string;
+  sentiment: Sentiment;
+  signal: string;
+  change_pct: number;
+  last_close: number;
+  live: boolean;
+  history: MarketPoint[];
+}
+
 export interface AgentActivityItem {
   client_id: string;
   client_name: string;
@@ -172,4 +190,94 @@ export interface ChatMessage {
   citations?: ChatCitation[];
   grounded?: boolean;
   pending?: boolean;
+}
+
+export interface LabeledCount {
+  label: string;
+  count: number;
+}
+
+export interface LabeledValue {
+  label: string;
+  value: number;
+}
+
+export interface AgentMetrics {
+  runs: number;
+  mode?: string;
+  avg_latency_ms?: number;
+  p50_latency_ms?: number;
+  p95_latency_ms?: number;
+  avg_redrafts?: number;
+  critique_pass_rate?: number;
+  metric_leaks_caught?: number;
+  llm_calls_total?: number;
+  tokens?: {
+    total: number;
+    prompt: number;
+    completion: number;
+    avg_per_run: number;
+  };
+  node_timings_avg?: LabeledValue[];
+  framing_distribution?: LabeledCount[];
+  redraft_distribution?: LabeledCount[];
+}
+
+export interface AgentRunRow {
+  client_id: string;
+  name: string;
+  priority_rank: number;
+  framing: string;
+  total_ms: number;
+  llm_calls: number;
+  total_tokens: number;
+  mode: string;
+  redrafts: number;
+  draft_passed: boolean;
+  metric_leak_caught: boolean;
+  draft_word_count: number;
+}
+
+export interface JudgeScore {
+  client_id: string;
+  name: string;
+  framing: string;
+  personalization: number;
+  tone: number;
+  actionability: number;
+  groundedness: number;
+  overall: number;
+  compliant: boolean;
+  comment: string;
+}
+
+export interface EvalReport {
+  generated_at: string;
+  mode: string;
+  source?: string;
+  deterministic: {
+    top_n: number;
+    runs: number;
+    drafted: number;
+    draft_coverage: number;
+    critique_pass_rate: number;
+    metric_leak_rate: number;
+    avg_redrafts: number;
+    specialist_coverage: number;
+    framing_distribution: LabeledCount[];
+    confidence: {
+      avg: number;
+      min: number;
+      max: number;
+      distribution: LabeledCount[];
+    };
+    latency_ms: { avg: number; p50: number; p95: number };
+    tokens: { total: number; avg_per_run: number; prompt: number; completion: number };
+  };
+  judge: {
+    scored: number;
+    averages: Record<string, number>;
+    compliant_rate: number;
+    per_client: JudgeScore[];
+  } | null;
 }

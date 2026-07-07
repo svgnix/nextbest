@@ -9,6 +9,7 @@ import MarketPage from './pages/MarketPage'
 import CampaignsPage from './pages/CampaignsPage'
 import AgentActivityPage from './pages/AgentActivityPage'
 import AssistantPage from './pages/AssistantPage'
+import EvalPage from './pages/EvalPage'
 import './App.css'
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="campaigns" element={<CampaignsPage />} />
         <Route path="assistant" element={<AssistantPage />} />
         <Route path="agent" element={<AgentActivityPage />} />
+        <Route path="eval" element={<EvalPage />} />
       </Route>
     </Routes>
   )

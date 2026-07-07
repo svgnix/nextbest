@@ -9,9 +9,12 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 from typing import Any
 
 from dotenv import load_dotenv
+
+from backend import telemetry
 
 load_dotenv()
 
@@ -35,6 +38,11 @@ def _has_api_key() -> bool:
     elif _PROVIDER == "openai":
         return bool(os.environ.get("OPENAI_API_KEY", "").strip())
     return False
+
+
+def has_api_key() -> bool:
+    """Public: is a live LLM configured? (Drives eval's LLM-as-judge.)"""
+    return _has_api_key()
 
 
 def _get_anthropic_client():
@@ -124,6 +132,7 @@ def chat(
     tools: list[dict] | None = None,
     temperature: float = 0.4,
     force_json: bool = False,
+    purpose: str = "",
 ) -> dict[str, Any]:
     """Send a chat completion and return {text, tool_calls}.
 
@@ -132,19 +141,38 @@ def chat(
     tools: optional list of tool schemas (provider-native format auto-handled)
     force_json: request a strict JSON object from the model where the provider
         supports it (OpenAI response_format). Safe to combine with extract_json.
+    purpose: a label ("plan"/"draft"/"critique"/"rag"/"judge") recorded in
+        telemetry so observability can attribute tokens/latency by role.
 
     Falls back to deterministic mock responses when no API key is configured,
     so the pipeline can run end-to-end for demo/testing without live LLM calls.
-    """
-    if not _has_api_key():
-        return _chat_mock(messages, system)
 
-    if _PROVIDER == "anthropic":
-        return _chat_anthropic(messages, system, tools, temperature, force_json)
+    Every call is recorded to the active run telemetry (a no-op outside a run).
+    """
+    t0 = time.perf_counter()
+    if not _has_api_key():
+        result = _chat_mock(messages, system)
+        mode = "mock"
+    elif _PROVIDER == "anthropic":
+        result = _chat_anthropic(messages, system, tools, temperature, force_json)
+        mode = "live"
     elif _PROVIDER == "openai":
-        return _chat_openai(messages, system, tools, temperature, force_json)
+        result = _chat_openai(messages, system, tools, temperature, force_json)
+        mode = "live"
     else:
         raise ValueError(f"Unsupported LLM_PROVIDER: {_PROVIDER}")
+
+    latency_ms = (time.perf_counter() - t0) * 1000
+    usage = result.get("usage") or {}
+    telemetry.record_llm(
+        purpose=purpose,
+        model=result.get("model", mode),
+        mode=mode,
+        prompt_tokens=usage.get("prompt_tokens", 0),
+        completion_tokens=usage.get("completion_tokens", 0),
+        latency_ms=latency_ms,
+    )
+    return result
 
 
 def _chat_mock(messages: list[dict], system: str | None) -> dict[str, Any]:
@@ -154,15 +182,19 @@ def _chat_mock(messages: list[dict], system: str | None) -> dict[str, Any]:
     system = system or ""
 
     if "Plan the tool calls" in user_msg:
-        return _mock_planner(user_msg)
+        out = _mock_planner(user_msg)
     elif "Write the outreach message" in user_msg:
-        return _mock_draft(user_msg)
+        out = _mock_draft(user_msg)
     elif "Score this draft" in user_msg:
-        return _mock_critique(user_msg)
+        out = _mock_critique(user_msg)
     elif "Answer the advisor's question" in user_msg:
-        return _mock_rag(user_msg)
+        out = _mock_rag(user_msg)
+    else:
+        out = {"text": "", "tool_calls": []}
 
-    return {"text": "", "tool_calls": []}
+    out.setdefault("model", "mock")
+    out.setdefault("usage", {"prompt_tokens": 0, "completion_tokens": 0})
+    return out
 
 
 def _mock_rag(user_msg: str) -> dict[str, Any]:
@@ -330,7 +362,12 @@ def _chat_anthropic(
                 "input": block.input,
             })
 
-    return {"text": text, "tool_calls": tool_calls}
+    usage = getattr(response, "usage", None)
+    usage_dict = {
+        "prompt_tokens": getattr(usage, "input_tokens", 0) or 0,
+        "completion_tokens": getattr(usage, "output_tokens", 0) or 0,
+    }
+    return {"text": text, "tool_calls": tool_calls, "model": kwargs["model"], "usage": usage_dict}
 
 
 def _chat_openai(
@@ -380,4 +417,9 @@ def _chat_openai(
                 "input": json.loads(tc.function.arguments),
             })
 
-    return {"text": text, "tool_calls": tool_calls}
+    usage = getattr(response, "usage", None)
+    usage_dict = {
+        "prompt_tokens": getattr(usage, "prompt_tokens", 0) or 0,
+        "completion_tokens": getattr(usage, "completion_tokens", 0) or 0,
+    }
+    return {"text": text, "tool_calls": tool_calls, "model": kwargs["model"], "usage": usage_dict}

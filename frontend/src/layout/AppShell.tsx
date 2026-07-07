@@ -9,6 +9,7 @@ import {
   ChatIcon,
   ClientsIcon,
   DispatchIcon,
+  EvalIcon,
   MarketIcon,
   SegmentsIcon,
 } from './icons'
@@ -30,6 +31,7 @@ const NAV: NavItem[] = [
   { to: '/campaigns', label: 'Campaigns', icon: CampaignsIcon },
   { to: '/assistant', label: 'Book Assistant', icon: ChatIcon },
   { to: '/agent', label: 'Agent Activity', icon: AgentIcon },
+  { to: '/eval', label: 'Agent Eval', icon: EvalIcon },
 ]
 
 export default function AppShell() {

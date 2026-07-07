@@ -24,6 +24,15 @@ export default function DispatchFeed({ actions, onPersist }: DispatchFeedProps) 
     setExpandedId(expandedId === clientId ? null : clientId)
   }
 
+  const handleNotchClick = (clientId: string) => {
+    setExpandedId(clientId)
+    // Wait a frame so the expanded card has its final height before scrolling.
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`dispatch-card-${clientId}`)
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+
   const handleAccept = (clientId: string) => {
     setAccepted(prev => new Set(prev).add(clientId))
     setExpandedId(null)
@@ -50,6 +59,8 @@ export default function DispatchFeed({ actions, onPersist }: DispatchFeedProps) 
               action={action}
               index={i}
               isSkipped={skipped.has(action.client_id)}
+              isActive={expandedId === action.client_id}
+              onSelect={() => handleNotchClick(action.client_id)}
             />
           ))}
         </AnimatePresence>
@@ -60,6 +71,7 @@ export default function DispatchFeed({ actions, onPersist }: DispatchFeedProps) 
           {orderedActions.map((action, i) => (
             <motion.div
               key={action.client_id}
+              id={`dispatch-card-${action.client_id}`}
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{
@@ -96,10 +108,14 @@ function RailNotch({
   action,
   index,
   isSkipped,
+  isActive,
+  onSelect,
 }: {
   action: NextBestAction
   index: number
   isSkipped: boolean
+  isActive: boolean
+  onSelect: () => void
 }) {
   const dotColor =
     action.action_type === 'URGENT'
@@ -112,8 +128,12 @@ function RailNotch({
   const tickWidth = 4 + (leadingScore / 100) * 20
 
   return (
-    <motion.div
-      className={`rail__notch ${isSkipped ? 'rail__notch--skipped' : ''}`}
+    <motion.button
+      type="button"
+      className={`rail__notch ${isSkipped ? 'rail__notch--skipped' : ''} ${isActive ? 'rail__notch--active' : ''}`}
+      onClick={onSelect}
+      title={`#${index + 1} · ${action.name}`}
+      aria-label={`Jump to ${action.name}, priority ${index + 1}`}
       layout
       initial={{ opacity: 0 }}
       animate={{ opacity: isSkipped ? 0.3 : 1 }}
@@ -122,6 +142,10 @@ function RailNotch({
       <span className="rail__rank">{String(index + 1).padStart(2, '0')}</span>
       <span className="rail__dot" style={{ background: dotColor }} />
       <span className="rail__tick" style={{ width: tickWidth, background: dotColor }} />
-    </motion.div>
+      <span className="rail__label" style={{ borderLeftColor: dotColor }}>
+        <span className="rail__label-name">{action.name}</span>
+        <span className="rail__label-type">{action.action_type.toLowerCase()}</span>
+      </span>
+    </motion.button>
   )
 }

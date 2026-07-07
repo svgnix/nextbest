@@ -1,0 +1,42 @@
+.eval__section-head {
+  padding-bottom: var(--space-3);
+}
+
+.eval__section-head .kpi__sub {
+  margin-top: var(--space-2);
+  max-width: 68ch;
+}
+
+.eval__tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.eval__pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.eval__pill--pass {
+  color: var(--bullish, #2e7d5b);
+  background: color-mix(in srgb, var(--bullish, #2e7d5b) 14%, transparent);
+}
+
+.eval__pill--fail {
+  color: var(--bearish, #c0492f);
+  background: color-mix(in srgb, var(--bearish, #c0492f) 14%, transparent);
+}
+
+.eval__note {
+  color: var(--text-600);
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 42ch;
+}

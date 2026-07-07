@@ -128,6 +128,31 @@ class AdvisorAction(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
+class AgentRun(Base):
+    """Observability: one row per orchestrated client (agent telemetry)."""
+
+    __tablename__ = "agent_runs"
+    client_id = Column(String, ForeignKey("clients.client_id"), primary_key=True)
+    name = Column(String)
+    advisor_id = Column(String, index=True)
+    priority_rank = Column(Integer, index=True)
+    framing = Column(String)
+    consulted = Column(JSON, default=list)          # specialists the orchestrator routed to
+    total_ms = Column(Float)                         # wall-clock for the whole run
+    node_timings = Column(JSON, default=dict)        # {node: ms}
+    llm_calls = Column(Integer, default=0)
+    prompt_tokens = Column(Integer, default=0)
+    completion_tokens = Column(Integer, default=0)
+    total_tokens = Column(Integer, default=0)
+    mode = Column(String)                            # live | mock
+    critique_attempts = Column(Integer, default=0)   # draft passes through the gate
+    redrafts = Column(Integer, default=0)            # regenerations = attempts - 1
+    draft_passed = Column(Boolean, default=False)
+    metric_leak_caught = Column(Boolean, default=False)
+    draft_word_count = Column(Integer, default=0)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+
 # ---------------------------------------------------------------------------
 # Engine / session helpers
 # ---------------------------------------------------------------------------

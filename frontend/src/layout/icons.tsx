@@ -84,3 +84,13 @@ export function ChatIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function EvalIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M4 20a8 8 0 1 1 16 0" />
+      <path d="M12 12l4-3" />
+      <circle cx="12" cy="20" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}

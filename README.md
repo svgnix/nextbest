@@ -30,6 +30,7 @@ Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
 - [Frontend UI flow](#frontend-ui-flow)
 - [The multi-agent system](#the-multi-agent-system)
 - [The pages (advisor suite)](#the-pages-advisor-suite)
+- [Evaluation & observability](#evaluation--observability)
 - [Setup guide](#setup-guide)
 - [Regenerating data / re-scoring](#regenerating-data--re-scoring)
 - [Running the tests](#running-the-tests)
@@ -52,6 +53,9 @@ Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
    every action persists to the database.
 5. **Answers questions about the book** — a retrieval-grounded copilot cites its sources from call notes,
    life events, market signals, and the agent's own rationale.
+6. **Evaluates and observes itself** — every agent run is instrumented (latency, tokens, redrafts,
+   compliance guard hits) and an evaluation harness grades output quality (deterministic checks plus an
+   optional LLM-as-judge), all surfaced on an in-app dashboard.
 
 ---
 
@@ -65,6 +69,7 @@ Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
 | Persistence | **SQLAlchemy** + **SQLite** (one local DB file) |
 | LLM | Provider-agnostic wrapper (PwC GenAI Shared Service / OpenAI / Anthropic / any OpenAI-compatible gateway) with a deterministic **mock mode** |
 | Retrieval (copilot) | Dense embeddings when a key is present, deterministic `HashingVectorizer` fallback otherwise |
+| Eval & observability | In-repo telemetry collector + evaluation harness (deterministic metrics + optional LLM-as-judge); no external tracing service |
 | API | **FastAPI** + Uvicorn |
 | Frontend | **React + Vite + TypeScript**, `react-router`, hand-built CSS + SVG charts (no component library) |
 
@@ -100,9 +105,16 @@ flowchart TB
 
     TOOLS["tools.py<br/>get_client_segment · compute_propensity<br/>get_call_context · get_market_sentiment<br/>recommend_rebalance · get_product_catalog ..."]
     LLM["llm.py<br/>provider-agnostic chat<br/>(+ mock mode, OS trust store)"]
+    TELE["telemetry.py<br/>per-run latency · tokens<br/>node timing · redrafts"]
 
-    subgraph API["4 · FastAPI service (api/main.py)"]
-        EP["/api/dispatch · /api/clients · /api/segments<br/>/api/book/analytics · /api/market · /api/campaigns<br/>/api/agent/activity · /api/actions · /api/chat"]
+    subgraph EVALS["5 · Evaluation & observability"]
+        EVAL["eval.py<br/>deterministic metrics<br/>+ optional LLM-as-judge"]
+        REPORT["eval_report.json"]
+        EVAL --> REPORT
+    end
+
+    subgraph API["6 · FastAPI service (api/main.py)"]
+        EP["/api/dispatch · /api/clients · /api/segments<br/>/api/book/analytics · /api/market · /api/campaigns<br/>/api/agent/activity · /api/actions · /api/chat<br/>/api/agent/metrics · /api/agent/runs · /api/eval/report"]
         RAG["RAG copilot<br/>VectorStore (dense or hashing) → retrieve → cite"]
     end
 
@@ -113,8 +125,12 @@ flowchart TB
     SPEC -. calls .-> TOOLS
     OUT -. calls .-> LLM
     ORCH -. calls .-> LLM
+    LLM -. records .-> TELE
+    AGENT -. node timing .-> TELE
     TOOLS --> DB
-    AGENT -->|scored_actions + reasoning traces| DB
+    AGENT -->|scored_actions + reasoning traces + AgentRun telemetry| DB
+    DB --> EVAL
+    REPORT --> EP
     DB --> EP
     DB --> RAG
     EP --> UI
@@ -130,8 +146,11 @@ flowchart TB
    route, specialist agents append findings to a shared reasoning trace, and an outreach agent drafts and
    self-critiques a compliance-safe message. Results (draft, framing, trace, confidence) are written back
    to `scored_actions`.
-4. **FastAPI** serves the scored book to the frontend and persists advisor Accept/Edit/Skip actions. A
-   separate **RAG copilot** answers grounded questions over the same records.
+4. Throughout the run, `telemetry.py` captures per-node timing and every LLM call's token/latency; the
+   pipeline persists one `AgentRun` row per client. `eval.py` then grades the book (deterministic
+   metrics + optional LLM-as-judge) into `eval_report.json`.
+5. **FastAPI** serves the scored book, telemetry, and eval report to the frontend and persists advisor
+   Accept/Edit/Skip actions. A separate **RAG copilot** answers grounded questions over the same records.
 
 ---
 
@@ -153,6 +172,7 @@ flowchart LR
     SHELL --> CAMPAIGNS["Campaigns /campaigns<br/>outreach queue + statuses"]
     SHELL --> ASSIST["Book Assistant /assistant<br/>grounded copilot + citations"]
     SHELL --> ACTIVITY["Agent Activity /agent<br/>multi-agent reasoning log"]
+    SHELL --> EVAL["Agent Eval /eval<br/>telemetry + quality metrics + LLM-judge"]
 
     DISPATCH -->|click a client| C360["Client 360 /clients/:id"]
     CLIENTS -->|click a client| C360
@@ -225,6 +245,41 @@ flowchart LR
   life events, market signals, agent rationale) and cites every source; says so when records don't
   support an answer, and never drafts client-facing messages.
 - **Agent Activity** — the full chronological multi-agent reasoning log.
+- **Agent Eval** — evaluation & observability: runtime telemetry (latency, tokens, per-node timing,
+  framing mix, reflection-loop redrafts) alongside quality metrics (compliance, critique pass rate,
+  specialist coverage, confidence) and per-draft LLM-as-judge scores.
+
+---
+
+## Evaluation & observability
+
+NextBest treats the agent as something to be **measured**, not just run. This is deliberately
+lightweight and in-repo — no external tracing service, no second framework — so it runs entirely on a
+laptop (in keeping with the project's constraints).
+
+**Observability (runtime telemetry).** A tiny context-local collector (`backend/telemetry.py`) records
+each agent run as it happens: `llm.py` logs every completion (token usage, latency, live/mock, and its
+purpose — plan/draft/critique/judge), and the orchestrator times each graph node. `run_pipeline.py`
+persists one `AgentRun` row per client (total latency, per-node timing, token spend, redraft count,
+compliance-guard hits, live/mock mode).
+
+**Evaluation (output quality).** `backend/eval.py` grades the scored book:
+
+- **Deterministic** (always, no LLM): draft coverage, critique pass rate, **metric-leak rate**
+  (compliance), average redrafts, specialist coverage (did each consulted agent actually contribute a
+  finding?), confidence distribution, latency p50/p95, and token spend.
+- **LLM-as-judge** (only when an API key is set): an independent model scores each draft 1–5 on
+  personalization, tone, actionability, and groundedness, plus a compliance flag.
+
+Both are exposed via the API (`/api/agent/metrics`, `/api/agent/runs`, `/api/eval/report`) and rendered
+on the **Agent Eval** page. Run it with:
+
+```powershell
+python -m backend.eval    # writes data/eval_report.json (judge scores included when a key is set)
+```
+
+The Agent Eval page always shows deterministic metrics live; running `backend.eval` adds the saved
+LLM-as-judge scores.
 
 ---
 
@@ -289,7 +344,14 @@ python -m backend.run_pipeline  # engines + multi-agent scoring -> writes to the
 `seed` creates ~300 clients across 3 advisors with 6 data sources (profiles, transactions, call logs,
 life events, market sentiment, digital behaviour). `run_pipeline` scores the whole book and runs the
 multi-agent orchestrator for the top-priority clients. With a real key you'll see per-client drafting
-and critiquing; the run takes a few minutes.
+and critiquing; the run takes a few minutes. It also records per-run telemetry (see
+[Evaluation & observability](#evaluation--observability)) that powers the **Agent Eval** page.
+
+Optionally grade the results:
+
+```powershell
+python -m backend.eval    # deterministic quality metrics (+ LLM-as-judge when a key is set)
+```
 
 ### 4. (Optional) Build the RAG index for the Book Assistant
 
@@ -327,7 +389,8 @@ Open the URL it prints (default **http://localhost:5173/**). The dev server prox
 ```powershell
 python -m backend.generate_data   # optional: regenerate the JSON (seeded, reproducible)
 python -m backend.seed            # rebuild the DB from JSON (drops + recreates tables)
-python -m backend.run_pipeline    # re-score + re-draft
+python -m backend.run_pipeline    # re-score + re-draft (records agent telemetry)
+python -m backend.eval            # re-grade quality (writes eval_report.json)
 python -m backend.rag.index       # refresh the Book Assistant index (only with a key)
 ```
 
@@ -375,11 +438,13 @@ nextbest/
 │   ├── segment.py          # Engine 1 — KMeans behavioural segmentation
 │   ├── propensity.py       # Engine 2 — attrition / upsell / revenue scoring
 │   ├── tools.py            # agent tools (segment, propensity, market, rebalance, ...)
-│   ├── llm.py              # provider-agnostic LLM client (+ mock mode, OS trust store)
-│   ├── prompts.py          # orchestrator / draft / critique / RAG prompts
+│   ├── llm.py              # provider-agnostic LLM client (+ mock mode, telemetry, OS trust store)
+│   ├── prompts.py          # orchestrator / draft / critique / RAG / judge prompts
+│   ├── telemetry.py        # per-run agent telemetry collector (observability)
 │   ├── agents/             # multi-agent core (orchestrator + specialists + state)
 │   ├── rag/                # Book Assistant: corpus, vector store, index, chat
-│   ├── run_pipeline.py     # engines + agents -> DB
+│   ├── run_pipeline.py     # engines + agents -> DB (persists AgentRun telemetry)
+│   ├── eval.py             # evaluation harness (deterministic metrics + LLM-as-judge)
 │   ├── api/                # FastAPI service (main.py + serializers)
 │   └── tests/              # deterministic engine tests
 └── frontend/               # Vite + React + TS multi-page SPA
