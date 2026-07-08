@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { api } from '../api/client'
 import { ChatCitation, ChatMessage } from '../types'
 import './AssistantChat.css'
@@ -111,7 +112,13 @@ export default function AssistantChat({ scopeClientId, scopeName, compact }: Pro
         )}
 
         {messages.map((m, i) => (
-          <div key={i} className={`chat__msg chat__msg--${m.role}`}>
+          <motion.div
+            key={i}
+            className={`chat__msg chat__msg--${m.role}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
             {m.pending ? (
               <div className="chat__typing"><span /><span /><span /></div>
             ) : (
@@ -130,7 +137,7 @@ export default function AssistantChat({ scopeClientId, scopeName, compact }: Pro
                 )}
               </>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
 

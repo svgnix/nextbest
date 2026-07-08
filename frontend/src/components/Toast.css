@@ -3,13 +3,27 @@
   bottom: var(--space-8);
   left: 50%;
   transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--text-inv);
-  background: var(--ink-800);
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-chip);
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  padding: var(--space-3) var(--space-6) var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 24px rgba(16, 20, 27, 0.18);
   z-index: 1000;
   pointer-events: none;
+}
+
+.toast::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--cool-500);
 }

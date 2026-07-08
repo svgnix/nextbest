@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import './Charts.css'
 
 export interface DonutSlice {
@@ -15,14 +16,15 @@ interface DonutChartProps {
 
 export default function DonutChart({
   slices,
-  size = 150,
+  size = 160,
   centerLabel,
   centerSub,
 }: DonutChartProps) {
+  const reduce = useReducedMotion()
   const total = slices.reduce((s, d) => s + d.value, 0) || 1
   const r = size / 2
-  const stroke = 22
-  const radius = r - stroke / 2
+  const stroke = 24
+  const radius = r - stroke / 2 - 2
   const circ = 2 * Math.PI * radius
 
   let offset = 0
@@ -37,9 +39,15 @@ export default function DonutChart({
   return (
     <div className="donut__wrap">
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img">
-        <g transform={`rotate(-90 ${r} ${r})`}>
+        <motion.g
+          transform={`rotate(-90 ${r} ${r})`}
+          initial={reduce ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: `${r}px ${r}px` }}
+        >
           {arcs.map((a, i) => (
-            <circle
+            <motion.circle
               key={i}
               cx={r}
               cy={r}
@@ -49,11 +57,15 @@ export default function DonutChart({
               strokeWidth={stroke}
               strokeDasharray={`${a.dash} ${a.gap}`}
               strokeDashoffset={a.offset}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.25 + i * 0.12 }}
+              strokeLinecap="butt"
             />
           ))}
-        </g>
+        </motion.g>
         {centerLabel && (
-          <text className="donut__center" x={r} y={r - 2} textAnchor="middle" fontSize={22} fontWeight={600}>
+          <text className="donut__center" x={r} y={r - 2} textAnchor="middle" fontSize={24} fontWeight={600}>
             {centerLabel}
           </text>
         )}

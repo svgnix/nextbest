@@ -1,9 +1,11 @@
 import { api } from '../api/client'
+import BookVitals from '../components/BookVitals'
 import DispatchFeed from '../components/DispatchFeed'
 import EmptyState from '../components/EmptyState'
 import PageState from '../components/PageState'
 import { PageBar } from '../layout/AppShell'
 import { useAsync } from '../lib/useAsync'
+import { CountUp } from '../lib/motion'
 import { NextBestAction } from '../types'
 
 const WEEKDAY = new Date().toLocaleDateString('en-GB', {
@@ -20,17 +22,28 @@ export default function DispatchPage() {
   }
 
   const count = data?.length ?? 0
+  const meta = status === 'ready' ? (
+    <>
+      {WEEKDAY} · <CountUp value={count} /> clients need you
+    </>
+  ) : (
+    WEEKDAY
+  )
 
   return (
     <>
-      <PageBar
-        title="Today's dispatch"
-        meta={status === 'ready' ? `${WEEKDAY} · ${count} clients need you` : WEEKDAY}
-      />
-      <div className="page">
+      <PageBar title="Today's dispatch" meta={meta} />
+      <div className="page page--dispatch">
         {status === 'loading' && <PageState status="loading" />}
         {status === 'error' && <PageState status="error" onRetry={reload} />}
-        {status === 'ready' && (count === 0 ? <EmptyState /> : <DispatchFeed actions={data!} onPersist={persist} />)}
+        {status === 'ready' && (
+          count === 0 ? <EmptyState /> : (
+            <>
+              <BookVitals />
+              <DispatchFeed actions={data!} onPersist={persist} />
+            </>
+          )
+        )}
       </div>
     </>
   )

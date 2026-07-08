@@ -1,33 +1,29 @@
+/* ============================================================
+   NextBest design tokens — ink chrome + paper reading surface.
+   Two themes: dark (default, terminal/IB gravitas) and light
+   (warm off-white paper, NOT pure white). Surfaces, text, lines,
+   shadows and chart neutrals swap on [data-theme]; signal solids
+   and ink chrome are constant. Components reference these tokens,
+   so flipping [data-theme] re-skins the whole app.
+   ============================================================ */
+
 :root {
-  /* Ink chrome — rail, top bar, expanded panels */
-  --ink-900: #0E1116;
-  --ink-800: #171B22;
+  /* ---- Fixed palette primitives (constant across themes) ---- */
+
+  /* Signal solids — WARM pole = attrition / urgent, COOL pole = upsell / opportunity.
+   * -500 = fill/accent (constant). -600 = text-on-tint (theme-aware, see below). */
+  --warm-500: #E8873A;
+  --cool-500: #12A594;
+  --slate-500: #64707E;
+
+  /* Ink chrome — nav + rail + toast. Always the deepest surface in both themes,
+   * so the chrome reads as a recessed frame around the reading surface. */
+  --ink-900: #0B0E13;
+  --ink-800: #161A21;
   --ink-700: #232833;
 
-  /* Paper — the reading surface / cards */
-  --paper-0: #F6F7F9;
-  --paper-50: #FFFFFF;
-  --line: #E4E7EC;
-
-  /* Text */
-  --text-900: #10141B;
-  --text-600: #545B67;
-  --text-400: #8A909B;
+  /* Text on ink chrome — always light, since chrome is always dark. */
   --text-inv: #EDEFF3;
-
-  /* Signal — WARM pole = attrition / urgent */
-  --warm-600: #C9522C;
-  --warm-500: #E8873A;
-  --warm-100: #FBE5D8;
-
-  /* Signal — COOL pole = upsell / opportunity */
-  --cool-600: #0E7C6B;
-  --cool-500: #12A594;
-  --cool-100: #D6F0EB;
-
-  /* Neutral signal = watchlist */
-  --slate-500: #64707E;
-  --slate-100: #E9ECF0;
 
   /* Typography */
   --font-display: "Space Grotesk", sans-serif;
@@ -47,15 +43,18 @@
   --radius-chip: 8px;
   --radius-pill: 999px;
 
-  /* Elevation */
-  --shadow-card: 0 1px 2px rgba(16, 20, 27, 0.04), 0 8px 24px rgba(16, 20, 27, 0.06);
-
   /* App shell */
   --nav-width: 240px;
   --nav-width-collapsed: 68px;
   --topbar-height: 60px;
 
-  /* Sentiment (market feed) — mapped onto the warm↔cool axis */
+  /* Motion easings */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sentiment (market feed) — mapped onto the warm↔cool axis.
+   * The -100 tints follow the theme via the tint tokens below. */
   --bullish: var(--cool-600);
   --bullish-100: var(--cool-100);
   --bearish: var(--warm-600);
@@ -63,9 +62,106 @@
   --neutral: var(--slate-500);
   --neutral-100: var(--slate-100);
 
-  /* Chart ink (hand-built SVG) */
-  --chart-grid: #EEF0F3;
-  --chart-line: var(--ink-800);
+  /* Chart signal inks (hand-built SVG) — warm/cool are constant solids. */
   --chart-warm: var(--warm-500);
   --chart-cool: var(--cool-500);
+}
+
+/* ============================================================
+   Dark theme — DEFAULT. Ink canvas, elevated dark cards, light
+   text, hairline edges as low-alpha light. The "instrument on a
+   dark deck" read that projects well in a leadership room.
+   ============================================================ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Reading surface tiers — canvas < card < raised < hover */
+  --paper-0: #0F141B;   /* content canvas */
+  --paper-50: #181E27;  /* cards / panels */
+  --paper-100: #1F2632; /* raised inputs / expanded inner */
+  --paper-200: #262E3B; /* hover */
+
+  /* Hairlines — low-alpha light on dark */
+  --line: rgba(237, 239, 243, 0.07);
+  --line-strong: rgba(237, 239, 243, 0.13);
+
+  /* Text on the reading surface */
+  --text-900: #EDEFF3;
+  --text-600: #A6ADBA;
+  --text-400: #6E7682;
+
+  /* Signal text-on-tint — brightened so labels read on dark tints */
+  --warm-600: #ECA060;
+  --cool-600: #2EC4AB;
+
+  /* Signal/neutral tints — low-alpha so they sit on dark cards */
+  --warm-100: rgba(232, 135, 58, 0.16);
+  --cool-100: rgba(18, 165, 148, 0.16);
+  --slate-100: rgba(237, 239, 243, 0.06);
+
+  /* Elevation — layered dark shadows give tangible z-depth without glow */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(0, 0, 0, 0.42);
+  --shadow-raised: 0 2px 6px rgba(0, 0, 0, 0.5), 0 28px 70px rgba(0, 0, 0, 0.6);
+
+  /* Chart neutrals — light-on-dark */
+  --chart-grid: rgba(237, 239, 243, 0.07);
+  --chart-line: #EDEFF3;
+  --chart-track: rgba(237, 239, 243, 0.08);
+  --chart-tick: rgba(237, 239, 243, 0.16);
+
+  /* Shimmer sweep for skeletons */
+  --shimmer-tint: rgba(237, 239, 243, 0.05);
+
+  /* Subtle top light on the canvas — gives the deck a faint depth without
+   * ambient motion or a background field. */
+  --canvas-depth: radial-gradient(120% 80% at 50% -10%, rgba(237, 239, 243, 0.045), transparent 60%);
+
+  /* Focus rings — signal-tinted, readable on dark */
+  --focus-cool: rgba(18, 165, 148, 0.22);
+  --focus-warm: rgba(232, 135, 58, 0.22);
+}
+
+/* ============================================================
+   Light theme — warm off-white paper (NOT pure white), warm
+   near-black ink text, warm hairlines. The "briefing on paper"
+   read. Signal solids unchanged; signal text returns to the
+   deeper -600 tones that read on light tints.
+   ============================================================ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --paper-0: #F2EEE6;   /* warm canvas */
+  --paper-50: #FBF8F2;  /* warm cards (not pure white) */
+  --paper-100: #FFFFFF; /* raised inputs */
+  --paper-200: #F5F0E7; /* hover */
+
+  --line: #E4DCCD;
+  --line-strong: #D5CAB8;
+
+  --text-900: #1C1A15;
+  --text-600: #5C5448;
+  --text-400: #8E8675;
+
+  --warm-600: #C9522C;
+  --cool-600: #0E7C6B;
+
+  --warm-100: #FBE5D8;
+  --cool-100: #DCF0EB;
+  --slate-100: #EAE4DA;
+
+  --shadow-card: 0 1px 2px rgba(60, 45, 20, 0.05), 0 10px 28px rgba(60, 45, 20, 0.07);
+  --shadow-raised: 0 2px 6px rgba(60, 45, 20, 0.06), 0 26px 60px rgba(60, 45, 20, 0.12);
+
+  --chart-grid: #ECE5D7;
+  --chart-line: #2A2620;
+  --chart-track: rgba(28, 26, 21, 0.08);
+  --chart-tick: rgba(28, 26, 21, 0.18);
+
+  --shimmer-tint: rgba(60, 45, 20, 0.05);
+
+  --canvas-depth: radial-gradient(120% 80% at 50% -10%, rgba(232, 135, 58, 0.04), transparent 60%);
+
+  --focus-cool: rgba(18, 165, 148, 0.16);
+  --focus-warm: rgba(232, 135, 58, 0.20);
 }

@@ -1,0 +1,94 @@
+.book-vitals {
+  max-width: 1180px;
+  margin: var(--space-8) auto 0;
+  background: var(--paper-50);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: var(--space-6) var(--space-8) var(--space-8);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  isolation: isolate; /* keep the stacked plate behind this panel, not the canvas */
+  will-change: transform; /* parallax drift */
+}
+
+/* Stacked instrument plate — a hairline-edged layer offset behind the panel,
+ * the enterprise "3D depth" cue: a second tier peeking out the bottom. No tilt,
+ * no canvas, no particles. */
+.book-vitals::before {
+  content: '';
+  position: absolute;
+  inset: 12px -8px -16px -8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper-50);
+  box-shadow: var(--shadow-card);
+  z-index: -1;
+}
+
+.book-vitals__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.book-vitals__eyebrow {
+  margin-bottom: 0;
+  color: var(--text-400);
+}
+
+.book-vitals__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--warm-600);
+}
+
+.book-vitals__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--warm-500);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.book-vitals__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.book-vitals__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-chip);
+}
+
+@media (max-width: 760px) {
+  .book-vitals__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  .book-vitals {
+    padding: var(--space-6);
+  }
+  .book-vitals::before {
+    inset: 10px 0 -12px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-vitals__live-dot {
+    animation: none !important;
+  }
+}

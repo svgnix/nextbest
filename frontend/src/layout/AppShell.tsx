@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { api } from '../api/client'
 import { Advisor } from '../types'
+import ThemeToggle from '../components/ThemeToggle'
 import {
   AgentIcon,
   BookIcon,
@@ -49,10 +50,20 @@ export default function AppShell() {
 
   return (
     <div className="shell">
-      <nav className="nav">
+      <nav className="nav" aria-label="Primary">
         <div className="nav__brand">
-          <span className="nav__brand-mark" />
-          <span className="nav__brand-name">NextBest</span>
+          <span className="nav__brand-mark" aria-hidden="true">
+            <span className="nav__brand-mark-core" />
+          </span>
+          <div className="nav__brand-text">
+            <span className="nav__brand-name">NextBest</span>
+            <span className="nav__brand-sub">Advisor Intelligence</span>
+          </div>
+        </div>
+
+        <div className="nav__edition" aria-label="Enterprise edition">
+          <span className="nav__edition-dot" aria-hidden="true" />
+          Enterprise Edition
         </div>
 
         <div className="nav__links">
@@ -64,7 +75,7 @@ export default function AppShell() {
               className={({ isActive }) => `nav__link ${isActive ? 'nav__link--active' : ''}`}
             >
               <Icon className="nav__icon" />
-              <span>{label}</span>
+              <span className="nav__label">{label}</span>
               {to === '/' && dispatchCount > 0 && (
                 <span className="nav__link-badge">{dispatchCount}</span>
               )}
@@ -74,8 +85,8 @@ export default function AppShell() {
 
         <div className="nav__footer">
           <div className="nav__advisor">
-            <span className="nav__avatar">{initials}</span>
-            <div>
+            <span className="nav__avatar" aria-hidden="true">{initials}</span>
+            <div className="nav__advisor-meta">
               <div className="nav__advisor-name">{advisor?.name ?? 'Advisor'}</div>
               <div className="nav__advisor-title">{advisor?.title ?? 'Relationship Manager'}</div>
             </div>
@@ -93,8 +104,13 @@ export default function AppShell() {
 export function PageBar({ title, meta }: { title: string; meta?: ReactNode }) {
   return (
     <div className="pagebar">
-      <span className="pagebar__title">{title}</span>
-      {meta && <span className="pagebar__meta">{meta}</span>}
+      <div className="pagebar__left">
+        <span className="pagebar__title">{title}</span>
+      </div>
+      <div className="pagebar__right">
+        {meta && <span className="pagebar__meta">{meta}</span>}
+        <ThemeToggle />
+      </div>
     </div>
   )
 }

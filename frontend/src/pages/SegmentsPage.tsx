@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { api } from '../api/client'
 import BarList from '../components/charts/BarList'
 import PageState from '../components/PageState'
 import { PageBar } from '../layout/AppShell'
 import { useAsync } from '../lib/useAsync'
+import { fadeRise, staggerContainer } from '../lib/motion'
 import { money } from '../lib/format'
 import { SegmentSummary } from '../types'
 import './SegmentsPage.css'
@@ -25,14 +27,14 @@ export default function SegmentsPage() {
         {status === 'loading' && <PageState status="loading" />}
         {status === 'error' && <PageState status="error" onRetry={reload} />}
         {status === 'ready' && data && (
-          <>
-            <p className="segments__intro">
+          <motion.div variants={staggerContainer} initial="hidden" animate="show">
+            <motion.p className="segments__intro" variants={fadeRise}>
               Clients are grouped by <b>behaviour</b> — engagement trend, flows, and life events — not by
               assets alone. Each cluster carries a suggested playbook the agent uses to frame outreach.
-            </p>
+            </motion.p>
             <div className="grid grid--2">
               {data.map((s) => (
-                <div key={s.id} className="panel segment-card">
+                <motion.div key={s.id} className="panel segment-card" variants={fadeRise}>
                   <div className="segment-card__head">
                     <span className="segment-card__dot" style={{ background: SEGMENT_COLORS[s.label] ?? 'var(--slate-500)' }} />
                     <h3 className="segment-card__title">{s.label}</h3>
@@ -59,10 +61,10 @@ export default function SegmentsPage() {
                       <Link key={id} to={`/clients/${id}`} className="chip">{id}</Link>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </>
+          </motion.div>
         )}
       </div>
     </>

@@ -2,162 +2,219 @@
   display: flex;
   flex: 1;
   position: relative;
+  align-items: flex-start;
 }
 
+/* ---- Priority Rail: ink spine + labeled scroll-spy index ----
+ * Enterprise "you are here" index. Each notch = rank · signal dot · client
+ * name · leading metric, so the RM always knows which client each position is.
+ * The active notch tracks the card currently in view (IntersectionObserver in
+ * DispatchFeed.tsx) and a signal-colored accent bar slides to it as you scroll. */
 .dispatch__rail {
   position: sticky;
-  top: 49px;
+  top: var(--topbar-height);
   align-self: flex-start;
-  width: 72px;
-  min-height: calc(100vh - 49px);
+  width: 252px;
+  max-height: calc(100vh - var(--topbar-height));
   background: var(--ink-900);
+  border-right: 1px solid var(--ink-800);
   display: flex;
   flex-direction: column;
-  padding: var(--space-6) 0;
-  gap: 0;
-  z-index: 10;
+  padding: var(--space-3) 0 var(--space-6);
+  z-index: 9;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.dispatch__rail::-webkit-scrollbar {
+  display: none;
 }
 
-.dispatch__feed {
-  flex: 1;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: var(--space-6);
+.rail__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  margin: 0 var(--space-3);
+  border-bottom: 1px solid var(--ink-800);
+}
+
+.rail__eyebrow {
+  color: var(--text-400);
+}
+
+.rail__count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-inv);
+  font-variant-numeric: tabular-nums;
+}
+
+.rail__notches {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  padding-top: var(--space-2);
 }
 
-/* Rail notch */
 .rail__notch {
-  position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
-  gap: 6px;
-  padding: 14px 12px;
-  min-height: 48px;
-  width: 100%;
-  background: none;
+  gap: 10px;
+  padding: 10px var(--space-4);
+  min-height: 44px;
+  background: transparent;
   border: none;
-  border-left: 2px solid transparent;
   cursor: pointer;
-  font: inherit;
   text-align: left;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  color: var(--text-400);
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .rail__notch:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.rail__notch:focus-visible {
-  outline: 2px solid var(--cool-400, #7aa7ff);
-  outline-offset: -2px;
+  color: var(--text-inv);
+  background: var(--ink-800);
 }
 
 .rail__notch--active {
-  background: rgba(255, 255, 255, 0.1);
-  border-left-color: var(--text-100, #fff);
+  color: var(--text-inv);
+  background: var(--ink-800);
 }
 
-.rail__notch--active .rail__rank {
-  color: #fff;
-}
-
-/* Hover flyout label (name + type), sits to the right of the dark rail */
-.rail__label {
+/* Sliding "you are here" accent bar (framer-motion layoutId). Sits at the
+ * rail's left edge and slides between rows as the active card changes. */
+.rail__active-bar {
   position: absolute;
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-4px);
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 6px 10px;
-  background: var(--ink-900, #16181d);
-  border-left: 3px solid var(--slate-500);
-  border-radius: var(--radius-sm, 6px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  z-index: 30;
-}
-
-.rail__notch:hover .rail__label,
-.rail__notch:focus-visible .rail__label {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
-
-.rail__label-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-100, #fff);
-}
-
-.rail__label-type {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-400, #9aa0aa);
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--notch-color, var(--warm-500));
 }
 
 .rail__rank {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-400);
   font-variant-numeric: tabular-nums;
-  min-width: 18px;
+  min-width: 20px;
+  transition: color 0.15s ease;
+}
+
+.rail__notch--active .rail__rank,
+.rail__notch:hover .rail__rank {
+  color: var(--text-inv);
 }
 
 .rail__dot {
   width: 8px;
   height: 8px;
   border-radius: var(--radius-pill);
+  background: var(--notch-color, var(--slate-500));
   flex-shrink: 0;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.rail__tick {
-  height: 3px;
-  border-radius: 2px;
-  opacity: 0.7;
+.rail__notch--active .rail__dot {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px rgba(237, 239, 243, 0.08);
+}
+
+.rail__name {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.rail__metric {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-inv);
+}
+
+.rail__metric-pct {
+  font-size: 10px;
+  color: var(--text-400);
+  margin-left: 1px;
 }
 
 .rail__notch--skipped {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 .rail__notch--skipped .rail__dot {
-  background: var(--slate-500) !important;
+  background: var(--slate-500);
 }
 
-/* Responsive: collapse rail below 720px */
+/* ---- Feed column ---- */
+.dispatch__feed {
+  flex: 1;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-8) var(--space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Cards respect the sticky page bar when smooth-scrolled into view. */
+.dispatch__feed > * {
+  scroll-margin-top: calc(var(--topbar-height) + 24px);
+}
+
+/* Dispatch page breaks out of the centered .page container so the rail hugs
+ * the left edge of the content column. BookVitals centers itself. */
+.page--dispatch {
+  max-width: none;
+  padding: 0;
+}
+
+.page--dispatch > .dispatch {
+  max-width: none;
+  margin: var(--space-6) 0 0;
+}
+
+@media (max-width: 980px) {
+  .dispatch__rail {
+    width: 208px;
+  }
+}
+
 @media (max-width: 720px) {
   .dispatch__rail {
-    width: 36px;
+    width: 56px;
   }
-
-  .rail__rank {
-    font-size: 11px;
-  }
-
-  .rail__tick {
+  .rail__head {
     display: none;
   }
-
+  .rail__name,
+  .rail__metric {
+    display: none;
+  }
+  .rail__notch {
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 8px;
+  }
   .dispatch__feed {
     padding: var(--space-4);
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .dispatch__rail,
-  .rail__notch {
-    animation: none !important;
+  .rail__notch,
+  .rail__dot,
+  .rail__rank {
     transition: none !important;
   }
 }

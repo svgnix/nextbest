@@ -6,6 +6,17 @@
   gap: var(--space-4);
   padding: var(--space-12) var(--space-8);
   flex: 1;
+  background: var(--paper-50);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  max-width: 560px;
+  margin: var(--space-8) auto;
+}
+
+.error-state__icon {
+  display: grid;
+  place-items: center;
 }
 
 .error-state__text {
@@ -20,14 +31,15 @@
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
-  color: var(--cool-600);
-  background: var(--cool-100);
-  padding: 8px 20px;
+  color: var(--warm-600);
+  background: var(--warm-100);
+  padding: 9px 22px;
   border-radius: var(--radius-chip);
-  transition: background 0.12s ease;
+  transition: background 0.15s ease, color 0.15s ease;
+  border: 1px solid rgba(232, 135, 58, 0.3);
 }
 
 .error-state__btn:hover {
-  background: var(--cool-500);
-  color: white;
+  background: var(--warm-500);
+  color: var(--ink-900);
 }

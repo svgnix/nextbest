@@ -17,11 +17,15 @@
   font-size: 14px;
   background: var(--paper-50);
   color: var(--text-900);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
+
+.roster__search::placeholder { color: var(--text-400); }
 
 .roster__search:focus {
   outline: none;
   border-color: var(--cool-500);
+  box-shadow: 0 0 0 3px var(--focus-cool);
 }
 
 .roster__filters {
@@ -40,10 +44,12 @@
   background: var(--paper-50);
   border: 1px solid var(--line);
   color: var(--text-600);
-  transition: all 0.12s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.roster__filter:hover { border-color: var(--slate-500); }
+.roster__filter:hover {
+  border-color: var(--slate-500);
+}
 
 .roster__filter--active {
   background: var(--ink-900);

@@ -4,9 +4,10 @@
   min-height: 100vh;
 }
 
-/* ---- Side nav (ink spine) ---- */
+/* ---- Side nav: solid ink chrome ---- */
 .nav {
   background: var(--ink-900);
+  border-right: 1px solid var(--ink-800);
   color: var(--text-inv);
   display: flex;
   flex-direction: column;
@@ -14,27 +15,80 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  z-index: 5;
 }
 
 .nav__brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 0 var(--space-6) var(--space-8);
 }
 
 .nav__brand-mark {
-  width: 6px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
+}
+
+.nav__brand-mark-core {
+  width: 4px;
+  height: 14px;
   border-radius: var(--radius-pill);
   background: var(--warm-500);
+}
+
+.nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
 .nav__brand-name {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 0.01em;
+  color: var(--text-inv);
+}
+
+.nav__brand-sub {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  margin-top: 2px;
+}
+
+/* Enterprise edition mark — a hairline pill under the brand. Reads as a
+ * product tier, not decoration. */
+.nav__edition {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: -8px var(--space-6) var(--space-6);
+  padding: 5px 10px;
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-pill);
+  background: var(--ink-800);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  align-self: flex-start;
+}
+
+.nav__edition-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--cool-500);
 }
 
 .nav__links {
@@ -48,23 +102,36 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
   color: var(--text-400);
   text-decoration: none;
   font-family: var(--font-body);
   font-size: 14px;
-  transition: background 0.14s ease, color 0.14s ease;
+  position: relative;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
 .nav__link:hover {
-  background: var(--ink-800);
   color: var(--text-inv);
+  background: var(--ink-800);
 }
 
+/* Active: signal left-accent bar + ink row + brightened label. Enterprise-quiet. */
 .nav__link--active {
-  background: var(--ink-800);
   color: var(--text-inv);
+  background: var(--ink-800);
+}
+
+.nav__link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--warm-500);
 }
 
 .nav__link--active .nav__icon {
@@ -76,65 +143,86 @@
   height: 18px;
   flex-shrink: 0;
   color: var(--text-400);
+  transition: color 0.15s ease;
+}
+
+.nav__label {
+  flex: 1;
 }
 
 .nav__link-badge {
-  margin-left: auto;
   font-family: var(--font-mono);
   font-size: 11px;
   background: var(--warm-500);
   color: var(--ink-900);
   border-radius: var(--radius-pill);
   padding: 1px 7px;
-  font-weight: 500;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .nav__footer {
   margin-top: auto;
-  padding: var(--space-6) var(--space-6) 0;
-  border-top: 1px solid var(--ink-700);
+  padding: var(--space-4) var(--space-6) 0;
+  border-top: 1px solid var(--ink-800);
   margin-inline: var(--space-3);
 }
 
 .nav__advisor {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   padding-top: var(--space-4);
 }
 
 .nav__avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-pill);
-  background: var(--cool-600);
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
   color: var(--text-inv);
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.nav__advisor-meta {
+  min-width: 0;
 }
 
 .nav__advisor-name {
   font-size: 13px;
   color: var(--text-inv);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nav__advisor-title {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--text-400);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ---- Content column ---- */
+/* ---- Content column: cool paper reading surface ---- */
 .shell__main {
   min-width: 0;
   background: var(--paper-0);
+  position: relative;
 }
 
+/* Sticky page bar — paper with a hairline bottom border. */
 .pagebar {
   height: var(--topbar-height);
   border-bottom: 1px solid var(--line);
@@ -148,16 +236,25 @@
   z-index: 10;
 }
 
+.pagebar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
 .pagebar__title {
   font-family: var(--font-display);
   font-size: 20px;
   font-weight: 600;
+  color: var(--text-900);
+  letter-spacing: 0.01em;
 }
 
 .pagebar__meta {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-600);
+  color: var(--text-400);
+  font-variant-numeric: tabular-nums;
 }
 
 .page {
@@ -170,14 +267,19 @@
   .shell {
     grid-template-columns: var(--nav-width-collapsed) 1fr;
   }
-  .nav__brand-name,
-  .nav__link span,
+  .nav__brand-text,
+  .nav__label,
   .nav__link-badge,
+  .nav__advisor-meta,
   .nav__footer {
     display: none;
   }
   .nav__link {
     justify-content: center;
+  }
+  .nav__brand {
+    justify-content: center;
+    padding-inline: 0;
   }
   .page {
     padding: var(--space-4);
