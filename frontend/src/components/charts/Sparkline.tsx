@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import './Charts.css'
 
 interface SparklineProps {
@@ -13,6 +14,7 @@ export default function Sparkline({
   height = 40,
   fill = true,
 }: SparklineProps) {
+  const reduce = useReducedMotion()
   if (values.length < 2) return null
   const w = 100
   const max = Math.max(...values)
@@ -27,13 +29,40 @@ export default function Sparkline({
 
   const line = points.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ')
   const area = `0,${height} ${line} ${w},${height}`
+  const [endX, endY] = points[points.length - 1]
 
   return (
     <div className="chart">
       <svg viewBox={`0 0 ${w} ${height}`} preserveAspectRatio="none" aria-hidden="true">
-        {fill && <polygon points={area} fill={color} opacity={0.1} />}
-        <polyline points={line} fill="none" stroke={color} strokeWidth={1.6} strokeLinejoin="round" />
-        <circle cx={points[points.length - 1][0]} cy={points[points.length - 1][1]} r={2} fill={color} />
+        {fill && (
+          <motion.polygon
+            points={area}
+            fill={color}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.14 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
+        )}
+        <motion.polyline
+          points={line}
+          fill="none"
+          stroke={color}
+          strokeWidth={1.8}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          initial={{ pathLength: reduce ? 1 : 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        />
+        <motion.circle
+          cx={endX}
+          cy={endY}
+          r={2.4}
+          fill={color}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 1.0, type: 'spring', stiffness: 500, damping: 20 }}
+        />
       </svg>
     </div>
   )

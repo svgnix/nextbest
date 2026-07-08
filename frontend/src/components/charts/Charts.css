@@ -91,3 +91,53 @@
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
+
+/* ---- Instrument gauge (BookVitals hero) ---- */
+.gauge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  gap: 2px;
+  /* lift the center slightly above the arc's optical center */
+  transform: translateY(4px);
+}
+
+.gauge__value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-900);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.gauge__label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  max-width: 92px;
+  line-height: 1.25;
+}
+
+.gauge__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

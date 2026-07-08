@@ -10,14 +10,25 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* color-scheme is set per-theme in tokens.css via [data-theme] */
 }
 
+/* Reading surface — the "briefing" canvas. Ink chrome (nav, rail) sits on top.
+ * A faint top-light gradient (var(--canvas-depth)) gives the deck subtle z-depth
+ * without ambient motion or a background field. No moving particles. */
 body {
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.6;
   color: var(--text-900);
   background: var(--paper-0);
+  background-image: var(--canvas-depth);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 button {
@@ -25,6 +36,7 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  color: inherit;
 }
 
 textarea {
@@ -32,7 +44,55 @@ textarea {
   resize: vertical;
 }
 
+a {
+  color: inherit;
+}
+
+/* Keyboard focus — visible ring tied to the cool signal pole. */
 :focus-visible {
   outline: 2px solid var(--cool-500);
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Selection — warm-tinted to match the signal system. */
+::selection {
+  background: var(--warm-100);
+  color: var(--text-900);
+}
+
+/* Scrollbar — slim, neutral, reads as instrument on paper. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--line-strong);
+  background-clip: padding-box;
+}
+
+/* Respect reduced motion globally as a safety net; component-level
+ * hooks also check framer-motion's useReducedMotion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

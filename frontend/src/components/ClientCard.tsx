@@ -5,6 +5,7 @@ import { NextBestAction } from '../types'
 import ConfidenceArc from './ConfidenceArc'
 import ReasoningTrace from './ReasoningTrace'
 import Toast from './Toast'
+import { CountUp } from '../lib/motion'
 import './ClientCard.css'
 
 interface ClientCardProps {
@@ -53,7 +54,7 @@ export default function ClientCard({
   const handleEdit = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation()
     if (!isExpanded) onExpand()
-    setTimeout(() => textareaRef.current?.focus(), 150)
+    setTimeout(() => textareaRef.current?.focus(), 180)
   }
 
   const handleSkip = (e: React.MouseEvent | React.KeyboardEvent) => {
@@ -78,36 +79,40 @@ export default function ClientCard({
         ? `$${(action.revenue_impact / 1_000).toFixed(0)}K upside`
         : null
 
-  // Accepted state: collapsed stamp
   if (isAccepted) {
     return (
       <motion.div
         className="card card--accepted"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0.6 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 1, scale: 0.99 }}
+        animate={{ opacity: 0.7, scale: 1 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="card__accepted-stamp">ACCEPTED · ready to send</div>
+        <div className="card__accepted-stamp">
+          <span className="card__accepted-check" aria-hidden="true">✓</span>
+          ACCEPTED · ready to send
+        </div>
         <div className="card__name">{action.name}</div>
-        <AnimatePresence>
-          {toastMsg && <Toast message={toastMsg} />}
-        </AnimatePresence>
+        <AnimatePresence>{toastMsg && <Toast message={toastMsg} />}</AnimatePresence>
       </motion.div>
     )
   }
 
-  // Skipped state: muted card
   if (isSkipped) {
     return (
-      <div className="card card--skipped">
+      <motion.div
+        className="card card--skipped"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0.45, y: 6 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="card__skipped-stamp">SKIPPED</div>
         <div className="card__name">{action.name}</div>
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div
+    <motion.div
       className={`card ${isExpanded ? 'card--expanded-state' : ''}`}
       onClick={onExpand}
       onKeyDown={handleKeyDown}
@@ -119,12 +124,17 @@ export default function ClientCard({
         <div className="card__name">{action.name}</div>
         <ActionBadge type={action.action_type} />
         <div className="card__metric">
-          <span className="card__metric-value">{leadingMetric.value}%</span>
+          <span className="card__metric-value">
+            <CountUp value={leadingMetric.value} suffix="%" />
+          </span>
           <span className="card__metric-label">{leadingMetric.label}</span>
           <span className="card__metric-bar">
-            <span
+            <motion.span
               className="card__metric-bar-fill"
-              style={{ width: `${leadingMetric.value}%`, background: metricBarColor }}
+              initial={{ width: 0 }}
+              animate={{ width: `${leadingMetric.value}%` }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+              style={{ background: metricBarColor }}
             />
           </span>
         </div>
@@ -169,7 +179,7 @@ export default function ClientCard({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.24, ease: 'easeInOut' }}
+            transition={{ duration: 0.28, ease: 'easeInOut' }}
           >
             <div className="card__expanded-inner">
               <div className="card__expanded-row">
@@ -183,14 +193,28 @@ export default function ClientCard({
                 </div>
               </div>
 
-              <div className="card__reasons">
+              <motion.div
+                className="card__reasons"
+                initial="hidden"
+                animate="show"
+                variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.2 } } }}
+              >
                 <span className="eyebrow">DRIVERS</span>
                 <div className="card__reasons-list">
                   {action.reasons.map((r, i) => (
-                    <span key={i} className="card__reason-chip">{r}</span>
+                    <motion.span
+                      key={i}
+                      className="card__reason-chip"
+                      variants={{
+                        hidden: { opacity: 0, y: 6 },
+                        show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+                      }}
+                    >
+                      {r}
+                    </motion.span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {(action.market_insight || action.portfolio_nudge || action.recommended_product) && (
                 <div className="card__intel">
@@ -214,7 +238,7 @@ export default function ClientCard({
 
               <Link
                 to={`/clients/${action.client_id}`}
-                className="link"
+                className="link card__link"
                 onClick={(e) => e.stopPropagation()}
               >
                 View full client 360 &rarr;
@@ -224,10 +248,8 @@ export default function ClientCard({
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {toastMsg && <Toast message={toastMsg} />}
-      </AnimatePresence>
-    </div>
+      <AnimatePresence>{toastMsg && <Toast message={toastMsg} />}</AnimatePresence>
+    </motion.div>
   )
 }
 

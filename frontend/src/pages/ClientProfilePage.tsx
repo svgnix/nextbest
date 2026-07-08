@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { api } from '../api/client'
 import AssistantChat from '../components/AssistantChat'
 import ConfidenceArc from '../components/ConfidenceArc'
@@ -8,9 +9,24 @@ import TrendChart from '../components/charts/TrendChart'
 import PageState from '../components/PageState'
 import { PageBar } from '../layout/AppShell'
 import { useAsync } from '../lib/useAsync'
+import { CountUp, fadeRise, staggerContainer } from '../lib/motion'
 import { money, signedPct, titleize } from '../lib/format'
 import { ClientDetail } from '../types'
 import './ClientProfilePage.css'
+
+interface Unit {
+  value: number
+  decimals: number
+  prefix: string
+  suffix: string
+}
+
+function moneyUnit(n: number): Unit {
+  if (Math.abs(n) >= 1_000_000_000) return { value: n / 1_000_000_000, decimals: 2, prefix: '$', suffix: 'B' }
+  if (Math.abs(n) >= 1_000_000) return { value: n / 1_000_000, decimals: 1, prefix: '$', suffix: 'M' }
+  if (Math.abs(n) >= 1_000) return { value: n / 1_000, decimals: 0, prefix: '$', suffix: 'K' }
+  return { value: n, decimals: 0, prefix: '$', suffix: '' }
+}
 
 export default function ClientProfilePage() {
   const { clientId } = useParams<{ clientId: string }>()
@@ -34,6 +50,7 @@ function Profile({ c }: { c: ClientDetail }) {
   const portfolioLabels = c.transactions.map((t) => t.month)
   const loginSeries = c.digital_behavior.map((b) => b.logins)
   const openSeries = c.digital_behavior.map((b) => b.email_opens)
+  const portUnit = moneyUnit(c.portfolio_value)
 
   const timeline = [
     ...c.life_events_detail.map((e) => ({ date: e.date, kind: 'event' as const, text: `Life event: ${titleize(e.type)}` })),
@@ -41,8 +58,13 @@ function Profile({ c }: { c: ClientDetail }) {
   ].sort((a, b) => (a.date < b.date ? 1 : -1))
 
   return (
-    <>
-      <div className="panel profile__header">
+    <motion.div
+      className="stack"
+      variants={staggerContainer}
+      initial="hidden"
+      animate="show"
+    >
+      <motion.div className="panel profile__header" variants={fadeRise}>
         <div>
           <div className="profile__name-row">
             <h1 className="profile__name">{c.name}</h1>
@@ -54,16 +76,18 @@ function Profile({ c }: { c: ClientDetail }) {
           </p>
         </div>
         <div className="profile__value">
-          <span className="kpi__value">{money(c.portfolio_value)}</span>
+          <span className="kpi__value">
+            <CountUp value={portUnit.value} decimals={portUnit.decimals} prefix={portUnit.prefix} suffix={portUnit.suffix} />
+          </span>
           <span className={c.portfolio_change_pct >= 0 ? 'text-cool mono' : 'text-warm mono'}>
             {signedPct(c.portfolio_change_pct)} · 90d
           </span>
         </div>
-      </div>
+      </motion.div>
 
       <div className="profile__grid">
         <div className="stack">
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head"><span className="panel__title">Portfolio value</span>
               <span className="text-muted mono">transaction history · 12 mo</span>
             </div>
@@ -73,9 +97,9 @@ function Profile({ c }: { c: ClientDetail }) {
               color={c.portfolio_change_pct >= 0 ? 'var(--chart-cool)' : 'var(--chart-warm)'}
               height={180}
             />
-          </div>
+          </motion.div>
 
-          <div className="grid grid--2">
+          <motion.div className="grid grid--2" variants={fadeRise}>
             <div className="panel">
               <span className="eyebrow">Logins · 12 wk</span>
               <Sparkline values={loginSeries} color="var(--cool-500)" height={44} />
@@ -86,26 +110,35 @@ function Profile({ c }: { c: ClientDetail }) {
               <Sparkline values={openSeries} color="var(--warm-500)" height={44} />
               <p className="kpi__sub">{signedPct(c.email_open_rate_change)} vs. baseline</p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head"><span className="panel__title">Relationship timeline</span></div>
-            <div className="timeline">
+            <motion.div
+              className="timeline"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } } }}
+            >
               {timeline.map((t, i) => (
-                <div key={i} className="timeline__item">
+                <motion.div
+                  key={i}
+                  className="timeline__item"
+                  variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.3 } } }}
+                >
                   <span className={`timeline__dot timeline__dot--${t.kind}`} />
                   <div>
                     <span className="timeline__date mono">{t.date}</span>
                     <p className="timeline__text">{t.text}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         <div className="stack">
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head"><span className="panel__title">Agent recommendation</span></div>
             {c.action && c.action.draft_message ? (
               <>
@@ -123,7 +156,7 @@ function Profile({ c }: { c: ClientDetail }) {
                   <span className="eyebrow">Draft opener</span>
                   <p className="profile__draft-text">{c.action.draft_message}</p>
                 </div>
-                <span className="eyebrow" style={{ marginTop: 'var(--space-4)' }}>WHY NOW · multi-agent trace</span>
+                <span className="eyebrow" style={{ marginTop: 'var(--space-4)' }}>WHY NOW · agent trace</span>
                 <ReasoningTrace steps={c.action.reasoning_trace} />
               </>
             ) : (
@@ -132,37 +165,42 @@ function Profile({ c }: { c: ClientDetail }) {
                 drafting threshold, so the agent hasn't composed an opener. The engines still track them.
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head"><span className="panel__title">Signals</span></div>
-            <div className="profile__signals">
+            <motion.div
+              className="profile__signals"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
+            >
               <Signal label="Attrition risk" value={`${c.attrition_risk}%`} tone="warm" />
               <Signal label="Upsell readiness" value={`${c.upsell_ready}%`} tone="cool" />
               <Signal label="Revenue impact" value={money(c.revenue_impact)} tone="cool" />
               <Signal label="90d withdrawals" value={money(c.withdrawals_last_90_days)} tone="warm" />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head">
               <span className="panel__title">Ask about this client</span>
               <span className="text-muted mono">grounded copilot</span>
             </div>
             <AssistantChat scopeClientId={c.client_id} scopeName={c.name.split(' ')[0]} compact />
-          </div>
+          </motion.div>
 
-          <div className="panel">
+          <motion.div className="panel" variants={fadeRise}>
             <div className="panel__head"><span className="panel__title">Market exposure</span></div>
             <div className="chip-row">
               {c.market_exposure.map((m) => (
                 <span key={m} className="chip">{titleize(m)}</span>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {c.lookalikes.length > 0 && (
-            <div className="panel">
+            <motion.div className="panel" variants={fadeRise}>
               <div className="panel__head"><span className="panel__title">Look-alike clients</span></div>
               <div className="chip-row">
                 {c.lookalikes.map((id) => (
@@ -172,19 +210,22 @@ function Profile({ c }: { c: ClientDetail }) {
               <p className="kpi__sub" style={{ marginTop: 'var(--space-3)' }}>
                 Nearest neighbours in behavioural feature space — what worked for them may work here.
               </p>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
-    </>
+    </motion.div>
   )
 }
 
 function Signal({ label, value, tone }: { label: string; value: string; tone: 'warm' | 'cool' }) {
   return (
-    <div className="profile__signal">
+    <motion.div
+      className="profile__signal"
+      variants={{ hidden: { opacity: 0, y: 6 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } }}
+    >
       <span className="kpi__label">{label}</span>
       <span className={`mono profile__signal-val ${tone === 'warm' ? 'text-warm' : 'text-cool'}`}>{value}</span>
-    </div>
+    </motion.div>
   )
 }

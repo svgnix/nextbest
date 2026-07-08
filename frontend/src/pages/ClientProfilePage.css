@@ -90,7 +90,7 @@
   line-height: 1.5;
 }
 
-/* Recommendation */
+/* Recommendation (paper panel) */
 .profile__reco-head {
   display: flex;
   justify-content: space-between;

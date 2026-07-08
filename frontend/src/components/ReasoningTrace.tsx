@@ -6,22 +6,31 @@ interface ReasoningTraceProps {
   steps: ReasoningStep[]
 }
 
-const AGENT_LABELS: Record<string, string> = {
-  orchestrator: 'ORCHESTRATOR',
-  segmentation: 'SEGMENTATION',
-  propensity: 'PROPENSITY',
-  market: 'MARKET',
-  portfolio: 'PORTFOLIO',
-  outreach: 'OUTREACH',
+/* Tool-based mapping (the trace records the tool each agent step called).
+ * Failed critique steps pulse warm to tie into the warm/cool signal system. */
+
+type Tone = 'cool' | 'warm' | 'neutral'
+
+const TOOL_META: Record<string, { label: string; tone: Tone }> = {
+  get_client_segment: { label: 'SEGMENTATION', tone: 'cool' },
+  compute_propensity: { label: 'PROPENSITY', tone: 'warm' },
+  get_call_context: { label: 'CALL CONTEXT', tone: 'cool' },
+  get_market_context: { label: 'MARKET', tone: 'cool' },
+  get_market_sentiment: { label: 'MARKET', tone: 'cool' },
+  get_product_catalog: { label: 'PRODUCTS', tone: 'cool' },
+  recommend_rebalance: { label: 'PORTFOLIO', tone: 'cool' },
+  draft_message: { label: 'DRAFT', tone: 'warm' },
+  critique: { label: 'CRITIQUE', tone: 'warm' },
 }
 
-const AGENT_COLORS: Record<string, string> = {
-  orchestrator: 'var(--ink-700)',
-  segmentation: 'var(--cool-500)',
-  propensity: 'var(--warm-500)',
-  market: 'var(--cool-600)',
-  portfolio: 'var(--cool-500)',
-  outreach: 'var(--ink-800)',
+const TONE_COLOR: Record<Tone, string> = {
+  cool: 'var(--cool-500)',
+  warm: 'var(--warm-500)',
+  neutral: 'var(--slate-500)',
+}
+
+function isFailed(step: ReasoningStep): boolean {
+  return step.tool === 'critique' && step.finding.toLowerCase().includes('failed')
 }
 
 export default function ReasoningTrace({ steps }: ReasoningTraceProps) {
@@ -30,28 +39,40 @@ export default function ReasoningTrace({ steps }: ReasoningTraceProps) {
   }
 
   return (
-    <div className="trace">
+    <motion.div
+      className="trace"
+      initial="hidden"
+      animate="show"
+      variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }}
+    >
       {steps.map((step, i) => {
-        const color = AGENT_COLORS[step.agent] ?? 'var(--cool-500)'
+        const meta = TOOL_META[step.tool] ?? { label: step.tool.toUpperCase(), tone: 'cool' as Tone }
+        const failed = isFailed(step)
+        const color = TONE_COLOR[meta.tone]
+        const isLast = i === steps.length - 1
         return (
           <motion.div
             key={i}
-            className="trace__step"
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.2, delay: i * 0.04 }}
+            className={`trace__step ${failed ? 'trace__step--failed' : ''}`}
+            variants={{
+              hidden: { opacity: 0, x: -10 },
+              show: { opacity: 1, x: 0, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
+            }}
           >
-            <div className="trace__node" style={{ borderColor: color }} />
-            {i < steps.length - 1 && <div className="trace__connector" />}
+            <div className="trace__marker">
+              <span className="trace__node" style={{ ['--node-color' as string]: color }} />
+              {!isLast && <span className="trace__connector" style={{ ['--node-color' as string]: color }} />}
+            </div>
             <div className="trace__content">
-              <span className="trace__agent" style={{ color }}>
-                {AGENT_LABELS[step.agent] ?? step.agent.toUpperCase()}
-              </span>
+              <div className="trace__label-row">
+                <span className="trace__agent" style={{ color }}>{meta.label}</span>
+                {failed && <span className="trace__failed-tag">FAILED</span>}
+              </div>
               <span className="trace__finding">{step.finding}</span>
             </div>
           </motion.div>
         )
       })}
-    </div>
+    </motion.div>
   )
 }

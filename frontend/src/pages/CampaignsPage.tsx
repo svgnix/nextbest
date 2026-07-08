@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { api } from '../api/client'
 import PageState from '../components/PageState'
 import { PageBar } from '../layout/AppShell'
 import { useAsync } from '../lib/useAsync'
+import { fadeRise, staggerContainer } from '../lib/motion'
 import { NextBestAction, ActionStatus } from '../types'
 import './CampaignsPage.css'
 
@@ -56,9 +58,14 @@ export default function CampaignsPage() {
               ))}
             </div>
 
-            <div className="stack">
+            <motion.div
+              className="stack"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+            >
               {filtered.map((c) => (
-                <div key={c.client_id} className={`panel campaign ${c.action_status !== 'pending' ? 'campaign--done' : ''}`}>
+                <motion.div key={c.client_id} className={`panel campaign ${c.action_status !== 'pending' ? 'campaign--done' : ''}`} variants={fadeRise}>
                   <div className="campaign__top">
                     <div>
                       <Link className="link campaign__name" to={`/clients/${c.client_id}`}>{c.name}</Link>
@@ -74,10 +81,10 @@ export default function CampaignsPage() {
                   </div>
                   <p className="campaign__headline">{c.headline}</p>
                   <p className="campaign__draft">{c.draft_message}</p>
-                </div>
+                </motion.div>
               ))}
               {filtered.length === 0 && <p className="state__text">Nothing here yet.</p>}
-            </div>
+            </motion.div>
           </>
         )}
       </div>

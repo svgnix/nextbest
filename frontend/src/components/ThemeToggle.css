@@ -1,0 +1,39 @@
+/* Compact light/dark switch for the page bar. Hairline icon button — no glow,
+ * no transform — that reads as an instrument control. The icon reflects the
+ * current theme; the accessible label names the theme it switches to. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-chip);
+  border: 1px solid var(--line);
+  background: var(--paper-50);
+  color: var(--text-600);
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text-900);
+  border-color: var(--line-strong);
+  background: var(--paper-100);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--cool-500);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  display: none;
+}
+.theme-toggle[data-theme-current="dark"] .theme-toggle__icon--moon,
+.theme-toggle[data-theme-current="light"] .theme-toggle__icon--sun {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle { transition: none; }
+}

@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import './Charts.css'
 
 interface TrendChartProps {
@@ -14,6 +15,7 @@ export default function TrendChart({
   color = 'var(--chart-cool)',
   height = 160,
 }: TrendChartProps) {
+  const reduce = useReducedMotion()
   if (values.length < 2) return null
   const w = 320
   const padL = 6
@@ -34,6 +36,7 @@ export default function TrendChart({
 
   const line = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ')
   const area = `${padL},${6 + innerH} ${line} ${padL + innerW},${6 + innerH}`
+  const [endX, endY] = pts[pts.length - 1]
 
   const gridLines = [0, 0.5, 1].map((f) => 6 + innerH * f)
 
@@ -41,10 +44,45 @@ export default function TrendChart({
     <div className="chart">
       <svg viewBox={`0 0 ${w} ${height}`} preserveAspectRatio="none">
         {gridLines.map((y, i) => (
-          <line key={i} className="chart__grid" x1={padL} y1={y} x2={padL + innerW} y2={y} />
+          <motion.line
+            key={i}
+            className="chart__grid"
+            x1={padL}
+            y1={y}
+            x2={padL + innerW}
+            y2={y}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.06 }}
+          />
         ))}
-        <polygon points={area} fill={color} opacity={0.12} />
-        <polyline points={line} fill="none" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+        <motion.polygon
+          points={area}
+          fill={color}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.16 }}
+          transition={{ duration: 0.9, delay: 0.35 }}
+        />
+        <motion.polyline
+          points={line}
+          fill="none"
+          stroke={color}
+          strokeWidth={2.2}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          initial={{ pathLength: reduce ? 1 : 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+        />
+        <motion.circle
+          cx={endX}
+          cy={endY}
+          r={3}
+          fill={color}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 1.2, type: 'spring', stiffness: 500, damping: 20 }}
+        />
         {labels && (
           <>
             <text className="chart__axis-label" x={padL} y={height - 4}>

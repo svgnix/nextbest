@@ -1,15 +1,21 @@
+import { motion } from 'framer-motion'
 import './ErrorState.css'
 
 export default function ErrorState() {
   return (
     <div className="error-state">
-      <div className="error-state__icon">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="16" stroke="var(--warm-500)" strokeWidth="2" fill="none" />
-          <line x1="20" y1="12" x2="20" y2="22" stroke="var(--warm-500)" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="20" cy="27" r="1.5" fill="var(--warm-500)" />
+      <motion.div
+        className="error-state__icon"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <circle cx="22" cy="22" r="17" stroke="var(--warm-500)" strokeWidth="2" fill="none" style={{ filter: 'drop-shadow(0 0 6px var(--warm-glow))' }} />
+          <line x1="22" y1="13" x2="22" y2="24" stroke="var(--warm-500)" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="22" cy="29" r="1.8" fill="var(--warm-500)" />
         </svg>
-      </div>
+      </motion.div>
       <p className="error-state__text">
         Something went wrong loading today's dispatch. Check that the pipeline has run and try refreshing.
       </p>

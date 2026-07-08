@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { api } from '../api/client'
 import BarList from '../components/charts/BarList'
 import DonutChart from '../components/charts/DonutChart'
 import PageState from '../components/PageState'
 import { PageBar } from '../layout/AppShell'
 import { useAsync } from '../lib/useAsync'
+import { CountUp, fadeRise, staggerContainer } from '../lib/motion'
 import { money } from '../lib/format'
 import { BookAnalytics, ClientSummary } from '../types'
 
@@ -15,12 +17,30 @@ const SEGMENT_COLORS: Record<string, string> = {
   'New & exploring': 'var(--cool-600)',
 }
 
+interface Unit {
+  value: number
+  decimals: number
+  prefix: string
+  suffix: string
+}
+
+function moneyUnit(n: number): Unit {
+  if (Math.abs(n) >= 1_000_000_000) return { value: n / 1_000_000_000, decimals: 2, prefix: '$', suffix: 'B' }
+  if (Math.abs(n) >= 1_000_000) return { value: n / 1_000_000, decimals: 1, prefix: '$', suffix: 'M' }
+  if (Math.abs(n) >= 1_000) return { value: n / 1_000, decimals: 0, prefix: '$', suffix: 'K' }
+  return { value: n, decimals: 0, prefix: '$', suffix: '' }
+}
+
 export default function BookAnalyticsPage() {
   const { data, status, reload } = useAsync<BookAnalytics>(() => api.analytics(), [])
 
+  const meta = data ? (
+    <><CountUp value={data.total_clients} /> clients</>
+  ) : ''
+
   return (
     <>
-      <PageBar title="Book analytics" meta={data ? `${data.total_clients} clients` : ''} />
+      <PageBar title="Book analytics" meta={meta} />
       <div className="page stack">
         {status === 'loading' && <PageState status="loading" />}
         {status === 'error' && <PageState status="error" onRetry={reload} />}
@@ -37,16 +57,33 @@ function Analytics({ data }: { data: BookAnalytics }) {
     color: SEGMENT_COLORS[s.label] ?? 'var(--slate-500)',
   }))
 
+  const aum = moneyUnit(data.total_aum)
+  const rev = moneyUnit(data.revenue_at_risk)
+  const upsell = moneyUnit(data.upsell_pipeline)
+
   return (
-    <>
+    <motion.div
+      className="stack"
+      variants={staggerContainer}
+      initial="hidden"
+      animate="show"
+    >
       <div className="grid grid--4">
-        <Kpi label="Assets under management" value={money(data.total_aum)} />
-        <Kpi label="Revenue at risk" value={money(data.revenue_at_risk)} tone="warm" sub={`${data.urgent_count} urgent clients`} />
-        <Kpi label="Upsell pipeline" value={money(data.upsell_pipeline)} tone="cool" sub={`${data.opportunity_count} opportunities`} />
-        <Kpi label="Avg days since contact" value={String(data.avg_days_since_contact)} sub="across the book" />
+        <Kpi label="Assets under management">
+          <CountUp value={aum.value} decimals={aum.decimals} prefix={aum.prefix} suffix={aum.suffix} className="kpi__value kpi__value--cool" />
+        </Kpi>
+        <Kpi label="Revenue at risk" sub={`${data.urgent_count} urgent clients`}>
+          <CountUp value={rev.value} decimals={rev.decimals} prefix={rev.prefix} suffix={rev.suffix} className="kpi__value kpi__value--warm" />
+        </Kpi>
+        <Kpi label="Upsell pipeline" sub={`${data.opportunity_count} opportunities`}>
+          <CountUp value={upsell.value} decimals={upsell.decimals} prefix={upsell.prefix} suffix={upsell.suffix} className="kpi__value kpi__value--cool" />
+        </Kpi>
+        <Kpi label="Avg days since contact" sub="across the book">
+          <CountUp value={data.avg_days_since_contact} className="kpi__value" />
+        </Kpi>
       </div>
 
-      <div className="grid grid--2">
+      <motion.div className="grid grid--2" variants={fadeRise}>
         <div className="panel">
           <div className="panel__head"><span className="panel__title">Behavioural segments</span></div>
           <DonutChart
@@ -69,23 +106,31 @@ function Analytics({ data }: { data: BookAnalytics }) {
             Segmentation is behavioural, not AUM-based — engagement, flows, and life events drive the clusters.
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid grid--2">
+      <motion.div className="grid grid--2" variants={fadeRise}>
         <ClientTable title="Top attrition risks" rows={data.top_at_risk} metric="attrition_risk" tone="warm" />
         <ClientTable title="Top upsell opportunities" rows={data.top_opportunities} metric="upsell_ready" tone="cool" />
-      </div>
-    </>
+      </motion.div>
+    </motion.div>
   )
 }
 
-function Kpi({ label, value, sub, tone }: { label: string; value: string; sub?: string; tone?: 'warm' | 'cool' }) {
+function Kpi({
+  label,
+  sub,
+  children,
+}: {
+  label: string
+  sub?: string
+  children: React.ReactNode
+}) {
   return (
-    <div className="kpi">
+    <motion.div className="kpi" variants={fadeRise}>
       <span className="kpi__label">{label}</span>
-      <span className={`kpi__value ${tone === 'warm' ? 'kpi__value--warm' : tone === 'cool' ? 'kpi__value--cool' : ''}`}>{value}</span>
+      {children}
       {sub && <span className="kpi__sub">{sub}</span>}
-    </div>
+    </motion.div>
   )
 }
 
