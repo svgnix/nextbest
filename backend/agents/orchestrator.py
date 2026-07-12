@@ -167,8 +167,7 @@ def _propensity_agent(state: AgentState) -> dict:
 # ---------------------------------------------------------------------------
 
 def _market_agent(state: AgentState) -> dict:
-    if "market" not in state.get("consulted", []):
-        return {}
+    # Only reached when the orchestrator routed here (see conditional edges).
     client = state["client"]
     signals = get_market_sentiment(client.get("market_exposure", [])).get("signals", [])
     if not signals:
@@ -191,8 +190,7 @@ def _market_agent(state: AgentState) -> dict:
 # ---------------------------------------------------------------------------
 
 def _portfolio_agent(state: AgentState) -> dict:
-    if "portfolio" not in state.get("consulted", []):
-        return {}
+    # Only reached when the orchestrator routed here (see conditional edges).
     client = state["client"]
     rebalance = recommend_rebalance(client["client_id"])
     catalog = get_product_catalog(
@@ -316,6 +314,27 @@ def _should_redraft(state: AgentState) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Conditional routing: the orchestrator's plan decides which specialists run
+# ---------------------------------------------------------------------------
+
+def _route_after_propensity(state: AgentState) -> str:
+    """Branch on the plan: opportunities go through the portfolio-nudge agent,
+    re-engagements go straight to the market agent, and light check-ins skip
+    both specialists entirely. This is the agentic substance — the path taken
+    changes with the client, it is not a fixed pipeline."""
+    consulted = state.get("consulted", [])
+    if "portfolio" in consulted:
+        return "portfolio"
+    if "market" in consulted:
+        return "market"
+    return "draft"
+
+
+def _route_after_portfolio(state: AgentState) -> str:
+    return "market" if "market" in state.get("consulted", []) else "draft"
+
+
+# ---------------------------------------------------------------------------
 # Graph assembly
 # ---------------------------------------------------------------------------
 
@@ -346,9 +365,18 @@ def build_agent_graph():
     graph.set_entry_point("plan")
     graph.add_edge("plan", "segmentation")
     graph.add_edge("segmentation", "propensity")
-    graph.add_edge("propensity", "market")
-    graph.add_edge("market", "portfolio")
-    graph.add_edge("portfolio", "draft")
+    # Branch on the orchestrator's plan instead of running every node.
+    graph.add_conditional_edges(
+        "propensity",
+        _route_after_propensity,
+        {"portfolio": "portfolio", "market": "market", "draft": "draft"},
+    )
+    graph.add_conditional_edges(
+        "portfolio",
+        _route_after_portfolio,
+        {"market": "market", "draft": "draft"},
+    )
+    graph.add_edge("market", "draft")
     graph.add_edge("draft", "critique")
     graph.add_conditional_edges("critique", _should_redraft, {"end": END, "redraft": "draft"})
 

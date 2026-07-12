@@ -50,8 +50,9 @@ look fake.
 Include 4–5 fixed clients so the ranked feed tells an obvious story. At minimum, matching the pitch deck:
 
 - **Priya Mehta** — clear **attrition**: `days_since_last_contact≈94`, logins/opens down sharply, a
-  recent large withdrawal; `last_contact_note` mentions her daughter's education fund. Should land ~78%
-  attrition risk and rank #1.
+  recent large withdrawal; `last_contact_note` mentions her daughter's education fund. A large
+  (~$20M), long-tenured client, so she is both the highest-attrition *and* highest revenue-at-risk
+  case — she should land ~80% attrition risk and rank **#1** in the dispatch.
 - **Arjun Rao** — clear **upsell**: `portfolio_change_pct≈+22`, `life_events` includes
   `property_purchase`; should land ~61% upsell readiness.
 - **The Sharma family** — **watchlist**: mild engagement dip, nothing urgent.
@@ -103,10 +104,13 @@ cap at 100
 
 ### Revenue impact (for ranking — from the pitch's "ranked by revenue impact and attrition risk")
 ```
-revenue_impact = round( (upsell_ready/100) * portfolio_value )   # USD upside proxy
+revenue_impact = round( (max(attrition_risk, upsell_ready)/100) * portfolio_value )   # USD at stake
 ```
-A high-upsell $30M client must outrank a high-upsell $2M client. Expose both the raw number and a
-0–100 normalized `revenue_impact_score` (min-max across the book) for display.
+The revenue *at stake* on the relationship: for an at-risk client it's the revenue at risk of walking;
+for a receptive client it's the upside from deepening. Using the stronger of the two means a large,
+highly-at-risk client (revenue to *lose*) and a large, highly-receptive one (revenue to *win*) are
+both treated as big fires. A high-signal $30M client must outrank a high-signal $2M client. Expose both
+the raw number and a 0–100 normalized `revenue_impact_score` (min-max across the book) for display.
 
 ### Emit, per client
 `attrition_risk`, `upsell_ready`, `revenue_impact` (USD), `revenue_impact_score` (0–100), and a list of
@@ -202,9 +206,11 @@ class NextBestAction(BaseModel):
 ### Ranking rule
 `action_type`: `URGENT` if attrition_risk > upsell_ready and attrition_risk ≥ 50; `OPPORTUNITY` if
 upsell_ready ≥ attrition_risk and upsell_ready ≥ 50; else `WATCHLIST`.
-`priority_rank`: sort descending by a blended score
-`0.6 * max(attrition_risk, upsell_ready) + 0.4 * revenue_impact_score`, so both urgency and money matter
-(matches the pitch's "ranked by revenue impact and attrition risk"). Assign 1..N after sorting.
+`priority_rank`: **triage by tier first** (`URGENT` → `OPPORTUNITY` → `WATCHLIST`) so the morning feed
+reads "most at-risk on top" and a big upsell never buries a client about to leave. *Within* each tier,
+sort descending by the blended score `0.6 * max(attrition_risk, upsell_ready) + 0.4 * revenue_impact_score`,
+so both urgency and money matter (the pitch's "ranked by revenue impact and attrition risk"). Assign
+1..N after sorting.
 
 `confidence`: derive from signal strength/agreement (e.g. how many rules fired, whether call context was
 found, whether the draft passed critique on the first try). Keep the formula simple and documented.

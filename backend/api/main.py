@@ -20,7 +20,7 @@ from backend.api.serializers import (
     client_detail,
     client_summary,
 )
-from backend.config import MARKET_HISTORY_PATH, PRIMARY_ADVISOR_ID
+from backend.config import MARKET_HISTORY_PATH, PRIMARY_ADVISOR_ID, XGB_META_PATH
 from backend.db import (
     Advisor,
     AdvisorAction,
@@ -391,6 +391,21 @@ def agent_runs(
 # ---------------------------------------------------------------------------
 # Evaluation — quality report (deterministic + optional LLM-as-judge)
 # ---------------------------------------------------------------------------
+
+@app.get("/api/model/propensity")
+def model_propensity() -> dict:
+    """Metadata for the trained XGBoost propensity model (fit quality + feature
+    importances). Returns {"trained": false} until the model has been trained
+    via `python -m backend.propensity_model`."""
+    if XGB_META_PATH.exists():
+        try:
+            meta = json.loads(XGB_META_PATH.read_text(encoding="utf-8"))
+            meta["trained"] = True
+            return meta
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {"trained": False}
+
 
 @app.get("/api/eval/report")
 def eval_report(db: Session = Depends(get_session)) -> dict:

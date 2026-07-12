@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026-07-07T07:23:03.807830+00:00",
+  "generated_at": "2026-07-11T21:07:33.640544+00:00",
   "mode": "live",
   "deterministic": {
     "top_n": 20,
-    "runs": 18,
-    "drafted": 18,
-    "draft_coverage": 0.9,
-    "critique_pass_rate": 0.444,
+    "runs": 20,
+    "drafted": 20,
+    "draft_coverage": 1.0,
+    "critique_pass_rate": 0.95,
     "metric_leak_rate": 0.0,
-    "avg_redrafts": 1.61,
+    "avg_redrafts": 0.55,
     "specialist_coverage": 1.0,
     "framing_distribution": [
       {
-        "label": "opportunity",
-        "count": 11
+        "label": "re-engagement",
+        "count": 14
       },
       {
-        "label": "re-engagement",
-        "count": 7
+        "label": "opportunity",
+        "count": 6
       }
     ],
     "confidence": {
-      "avg": 91.11,
-      "min": 80,
+      "avg": 98.5,
+      "min": 90,
       "max": 100,
       "distribution": [
         {
@@ -35,52 +35,208 @@
         },
         {
           "label": "80-89",
-          "count": 3
+          "count": 0
         },
         {
           "label": "90-100",
-          "count": 15
+          "count": 20
         }
       ]
     },
     "latency_ms": {
-      "avg": 16032.78,
-      "p50": 13544.2,
-      "p95": 30477.3
+      "avg": 6707.93,
+      "p50": 5610.1,
+      "p95": 12990.4
     },
     "tokens": {
-      "total": 44051,
-      "avg_per_run": 2447.28,
-      "prompt": 36935,
-      "completion": 7116
+      "total": 37924,
+      "avg_per_run": 1896.2,
+      "prompt": 32927,
+      "completion": 4997
     }
   },
   "judge": {
-    "scored": 18,
+    "scored": 20,
     "averages": {
-      "personalization": 4.33,
-      "tone": 4.61,
-      "actionability": 3.94,
-      "groundedness": 4.56,
-      "overall": 4.36
+      "personalization": 3.85,
+      "tone": 4.6,
+      "actionability": 3.8,
+      "groundedness": 4.3,
+      "overall": 4.14
     },
     "compliant_rate": 1.0,
     "per_client": [
       {
-        "client_id": "C005",
-        "name": "Rahul Kapoor",
-        "framing": "opportunity",
-        "personalization": 5,
+        "client_id": "C001",
+        "name": "Priya Mehta",
+        "framing": "re-engagement",
+        "personalization": 4,
         "tone": 5,
-        "actionability": 5,
+        "actionability": 4,
         "groundedness": 5,
-        "overall": 5.0,
+        "overall": 4.5,
         "compliant": true,
-        "comment": "The message effectively references the client's inheritance and invites a conversation without any jargon."
+        "comment": "The message references a specific past conversation and offers assistance, maintaining a warm tone."
       },
       {
-        "client_id": "C083",
-        "name": "Kelly Donovan",
+        "client_id": "C004",
+        "name": "Deepa Krishnan",
+        "framing": "re-engagement",
+        "personalization": 4,
+        "tone": 5,
+        "actionability": 4,
+        "groundedness": 5,
+        "overall": 4.5,
+        "compliant": true,
+        "comment": "The message references the client's recent experiences and invites a conversation about the market, maintaining a warm tone."
+      },
+      {
+        "client_id": "C267",
+        "name": "Yvonne Burns",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 3,
+        "groundedness": 4,
+        "overall": 3.5,
+        "compliant": true,
+        "comment": "The message is warm and acknowledges Yvonne's life transition, but could be more specific about the energy market context."
+      },
+      {
+        "client_id": "C269",
+        "name": "Kimberly Gibson",
+        "framing": "re-engagement",
+        "personalization": 4,
+        "tone": 5,
+        "actionability": 3,
+        "groundedness": 4,
+        "overall": 4.0,
+        "compliant": true,
+        "comment": "The message is warm and acknowledges the client's retirement, but the ask could be more specific."
+      },
+      {
+        "client_id": "C195",
+        "name": "Debra Christian",
+        "framing": "re-engagement",
+        "personalization": 4,
+        "tone": 4,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 4.0,
+        "compliant": true,
+        "comment": "The message references a specific past conversation and maintains a warm tone while encouraging a follow-up discussion."
+      },
+      {
+        "client_id": "C043",
+        "name": "Paula Moreno",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 3,
+        "groundedness": 4,
+        "overall": 3.5,
+        "compliant": true,
+        "comment": "The message references the client's busy schedule but lacks specific details about the market context."
+      },
+      {
+        "client_id": "C076",
+        "name": "Lauren Daniels",
+        "framing": "re-engagement",
+        "personalization": 4,
+        "tone": 5,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 4.25,
+        "compliant": true,
+        "comment": "The message is warm and references the client's recent relocation, but could be more specific about market changes."
+      },
+      {
+        "client_id": "C210",
+        "name": "Cathy Robinson",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 3.75,
+        "compliant": true,
+        "comment": "The message references the last conversation but lacks specific details about Cathy or her interests."
+      },
+      {
+        "client_id": "C268",
+        "name": "Joshua Reed",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 3.75,
+        "compliant": true,
+        "comment": "The message references the previous call but lacks specific details about the market context."
+      },
+      {
+        "client_id": "C180",
+        "name": "Michael Wang",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 3,
+        "groundedness": 4,
+        "overall": 3.5,
+        "compliant": true,
+        "comment": "The message references a past conversation but lacks specific market context to enhance relevance."
+      },
+      {
+        "client_id": "C259",
+        "name": "Susan Murray MD",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 3.75,
+        "compliant": true,
+        "comment": "The message references the client's busy schedule but lacks deeper personalization related to her interests or past conversations."
+      },
+      {
+        "client_id": "C203",
+        "name": "Melissa Brewer",
+        "framing": "re-engagement",
+        "personalization": 5,
+        "tone": 5,
+        "actionability": 4,
+        "groundedness": 5,
+        "overall": 4.75,
+        "compliant": true,
+        "comment": "The message is personalized to Melissa's relocation and invites her to discuss her investment strategy without being pushy."
+      },
+      {
+        "client_id": "C179",
+        "name": "Michael Elliott",
+        "framing": "re-engagement",
+        "personalization": 4,
+        "tone": 5,
+        "actionability": 4,
+        "groundedness": 5,
+        "overall": 4.5,
+        "compliant": true,
+        "comment": "The message references the previous call and invites a reconnection, maintaining a warm tone."
+      },
+      {
+        "client_id": "C015",
+        "name": "Lisa Hensley",
+        "framing": "re-engagement",
+        "personalization": 3,
+        "tone": 4,
+        "actionability": 4,
+        "groundedness": 4,
+        "overall": 3.75,
+        "compliant": true,
+        "comment": "The message references the previous call but lacks specific details about Lisa's interests or situation."
+      },
+      {
+        "client_id": "C005",
+        "name": "Rahul Kapoor",
         "framing": "opportunity",
         "personalization": 4,
         "tone": 5,
@@ -88,19 +244,19 @@
         "groundedness": 4,
         "overall": 4.25,
         "compliant": true,
-        "comment": "The message effectively references the client's interest and recent life event while maintaining a warm tone and clear call to action."
+        "comment": "The message references the client's inheritance and desire to discuss allocation options, maintaining a warm tone and clear call to action."
       },
       {
-        "client_id": "C153",
-        "name": "David Wright",
-        "framing": "re-engagement",
+        "client_id": "C168",
+        "name": "John Anderson",
+        "framing": "opportunity",
         "personalization": 5,
-        "tone": 4,
+        "tone": 5,
         "actionability": 4,
         "groundedness": 5,
-        "overall": 4.5,
+        "overall": 4.75,
         "compliant": true,
-        "comment": "The message is personalized to David's retirement and references relevant market context."
+        "comment": "The message effectively references John's new property and his interest in real estate funds while maintaining a warm tone."
       },
       {
         "client_id": "C002",
@@ -112,23 +268,11 @@
         "groundedness": 5,
         "overall": 4.75,
         "compliant": true,
-        "comment": "The message effectively references the client's recent property purchase and expresses a warm tone while suggesting a discussion on opportunities."
+        "comment": "The message effectively references the client's recent property purchase and expresses a warm tone while making a clear request for a chat."
       },
       {
-        "client_id": "C213",
-        "name": "Christopher Smith",
-        "framing": "opportunity",
-        "personalization": 5,
-        "tone": 4,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.5,
-        "compliant": true,
-        "comment": "The message effectively references Christopher's new property and recent satisfaction, while maintaining a warm tone and clear call to action."
-      },
-      {
-        "client_id": "C298",
-        "name": "John Young",
+        "client_id": "C217",
+        "name": "Julie Alexander",
         "framing": "opportunity",
         "personalization": 5,
         "tone": 5,
@@ -136,151 +280,31 @@
         "groundedness": 5,
         "overall": 4.75,
         "compliant": true,
-        "comment": "The message effectively references the client's recent life event and maintains a warm, professional tone while suggesting a specific action."
+        "comment": "The message effectively references Julie's recent property purchase and maintains a warm, professional tone."
       },
       {
-        "client_id": "C293",
-        "name": "David Smith",
+        "client_id": "C300",
+        "name": "William Barrett",
         "framing": "opportunity",
-        "personalization": 5,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.75,
-        "compliant": true,
-        "comment": "The message effectively references the client's inheritance and previous discussion, maintaining a warm tone and providing a clear invitation to discuss further."
-      },
-      {
-        "client_id": "C114",
-        "name": "Shannon Walker",
-        "framing": "opportunity",
-        "personalization": 5,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 4,
-        "overall": 4.5,
-        "compliant": true,
-        "comment": "The message references Shannon's recent property purchase and satisfaction with returns, maintaining a warm tone and suggesting a conversation about investment adjustments."
-      },
-      {
-        "client_id": "C087",
-        "name": "Zachary Ferrell",
-        "framing": "opportunity",
-        "personalization": 5,
-        "tone": 4,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.5,
-        "compliant": true,
-        "comment": "The message effectively references Zachary's new property and previous discussion, maintaining a warm tone while suggesting a clear next step."
-      },
-      {
-        "client_id": "C001",
-        "name": "Priya Mehta",
-        "framing": "re-engagement",
         "personalization": 4,
         "tone": 5,
         "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.5,
+        "groundedness": 4,
+        "overall": 4.25,
         "compliant": true,
-        "comment": "The message references a specific topic discussed with the client and maintains a warm, professional tone."
+        "comment": "The message references the client's interest in private equity and the current market context, maintaining a warm tone and a clear invitation to discuss options."
       },
       {
-        "client_id": "C043",
-        "name": "Paula Moreno",
-        "framing": "re-engagement",
-        "personalization": 2,
-        "tone": 4,
-        "actionability": 3,
+        "client_id": "C254",
+        "name": "Olivia Harris",
+        "framing": "opportunity",
+        "personalization": 4,
+        "tone": 5,
+        "actionability": 4,
         "groundedness": 3,
-        "overall": 3.0,
+        "overall": 4.0,
         "compliant": true,
-        "comment": "The message references a past conversation but lacks specific details about Paula's investment goals."
-      },
-      {
-        "client_id": "C103",
-        "name": "Sandra Aguilar",
-        "framing": "re-engagement",
-        "personalization": 4,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.5,
-        "compliant": true,
-        "comment": "The message references a specific past conversation and offers a relevant market topic, maintaining a warm tone."
-      },
-      {
-        "client_id": "C230",
-        "name": "Michael Warner",
-        "framing": "re-engagement",
-        "personalization": 5,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.75,
-        "compliant": true,
-        "comment": "The message is personalized, warm, and actionable while remaining compliant."
-      },
-      {
-        "client_id": "C278",
-        "name": "Matthew Moore",
-        "framing": "opportunity",
-        "personalization": 4,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.5,
-        "compliant": true,
-        "comment": "The message effectively references the client's enthusiasm for private equity and maintains a warm, professional tone."
-      },
-      {
-        "client_id": "C004",
-        "name": "Deepa Krishnan",
-        "framing": "re-engagement",
-        "personalization": 5,
-        "tone": 5,
-        "actionability": 4,
-        "groundedness": 5,
-        "overall": 4.75,
-        "compliant": true,
-        "comment": "The message effectively references Deepa's recent business sale and her frustration with returns, while maintaining a warm tone and suggesting a conversation about specific opportunities."
-      },
-      {
-        "client_id": "C035",
-        "name": "Tricia Valencia",
-        "framing": "re-engagement",
-        "personalization": 3,
-        "tone": 4,
-        "actionability": 4,
-        "groundedness": 4,
-        "overall": 3.75,
-        "compliant": true,
-        "comment": "The message references the previous brief call, but lacks specific details about the market context."
-      },
-      {
-        "client_id": "C062",
-        "name": "John Daniel",
-        "framing": "opportunity",
-        "personalization": 4,
-        "tone": 4,
-        "actionability": 3,
-        "groundedness": 3,
-        "overall": 3.5,
-        "compliant": true,
-        "comment": "The message is warm and references the client's property purchase, but the connection between healthcare equities and real estate is unclear."
-      },
-      {
-        "client_id": "C066",
-        "name": "Donald Wright",
-        "framing": "opportunity",
-        "personalization": 3,
-        "tone": 4,
-        "actionability": 4,
-        "groundedness": 4,
-        "overall": 3.75,
-        "compliant": true,
-        "comment": "The message references the client's inheritance and previous conversation but lacks specific details about the portfolio rebalancing discussed."
+        "comment": "The message is warm and references the client's enthusiasm, but the mention of ESG funds is not directly supported by the provided context."
       }
     ]
   }

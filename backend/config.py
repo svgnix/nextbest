@@ -31,6 +31,15 @@ PRIMARY_ADVISOR_ID = "A001"
 # time/tokens; deterministic engines still score the whole book.
 TOP_N_DRAFT = 20
 
+# Propensity — learned model (Engine 2, XGBoost variant)
+# The rule engine is the default (transparent, lists fired rules). The XGBoost
+# models are trained to reproduce that policy from the same features and can be
+# swapped in without touching the agent or UI. Set USE_XGB_PROPENSITY=1 to have
+# run_pipeline score with the model (falls back to rules if it isn't trained).
+XGB_ATTRITION_PATH = DATA_DIR / "xgb_attrition.json"
+XGB_UPSELL_PATH = DATA_DIR / "xgb_upsell.json"
+XGB_META_PATH = DATA_DIR / "xgb_meta.json"
+
 # Time-series depth for synthetic history.
 N_TRANSACTION_MONTHS = 12
 N_BEHAVIOR_WEEKS = 12
@@ -43,6 +52,11 @@ N_BEHAVIOR_WEEKS = 12
 import os
 
 USE_LIVE_MARKET = os.getenv("USE_LIVE_MARKET", "1") not in ("0", "false", "False")
+
+# Score the whole book with the trained XGBoost models instead of the rule
+# engine. Off by default so the demo stays transparent; the rule fired-lists are
+# always computed either way for explainability.
+USE_XGB_PROPENSITY = os.getenv("USE_XGB_PROPENSITY", "0") not in ("0", "false", "False")
 MARKET_LOOKBACK = "3mo"          # window of daily closes pulled for the charts
 MARKET_SENTIMENT_WINDOW = 21     # trailing trading days used for the sentiment read
 MARKET_FETCH_TIMEOUT = 12        # seconds before we give up and fall back

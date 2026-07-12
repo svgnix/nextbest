@@ -207,10 +207,13 @@ def _generate_market_data() -> tuple[list[dict], list[dict]]:
 # ---------------------------------------------------------------------------
 
 def _hero_clients() -> list[dict]:
+    # Priya is the flagship attrition story and must lead the morning dispatch:
+    # a large, long-tenured client who has gone quiet (94 days), with engagement
+    # falling and a recent withdrawal — the biggest retention fire on the book.
     priya = {
         "client_id": "C001",
         "name": "Priya Mehta",
-        "portfolio_value": 8_500_000,
+        "portfolio_value": 20_000_000,
         "portfolio_change_pct": -4.2,
         "withdrawals_last_90_days": 250_000,
         "account_tenure_years": 12.0,
@@ -317,11 +320,17 @@ def _hero_clients() -> list[dict]:
 ARCHETYPES = {
     "disengaging": {
         "weight": 0.20,
-        "days_since_last_contact": (50, 120),
+        # Capped just under 90 days so the +40 "no contact in >90 days" tier is
+        # reserved for the hand-designed hero cases (Priya at 94). Random
+        # churners still read as clearly at-risk without eclipsing the heroes.
+        "days_since_last_contact": (50, 88),
         "login_frequency_change": (-45.0, -10.0),
         "email_open_rate_change": (-55.0, -10.0),
         "portfolio_change_pct": (-14.0, 3.0),
         "withdrawals_factor": (0.005, 0.03),
+        # Keep churning clients mid-sized so the largest revenue-at-stake fire on
+        # the book is a hero, not an anonymous random record.
+        "portfolio_range": (1_500_000, 9_000_000),
         "life_events_pool": ["retirement", "divorce_settlement", "relocation"],
         "life_events_count": (0, 1),
         "tenure": (2.5, 20.0),
@@ -395,7 +404,11 @@ def _generate_random_client(client_id: str) -> dict:
     archetype = _pick_archetype()
     cfg = ARCHETYPES[archetype]
 
-    portfolio_value = int(random.lognormvariate(math.log(5_000_000), 0.7))
+    port_range = cfg.get("portfolio_range")
+    if port_range:
+        portfolio_value = int(random.uniform(*port_range))
+    else:
+        portfolio_value = int(random.lognormvariate(math.log(5_000_000), 0.7))
     portfolio_value = max(1_000_000, min(50_000_000, portfolio_value))
 
     days_since = random.randint(*cfg["days_since_last_contact"])

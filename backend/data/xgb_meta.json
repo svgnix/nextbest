@@ -1,0 +1,121 @@
+{
+  "trained_at": "2026-07-11T21:23:40.140401+00:00",
+  "model": "xgboost.XGBRegressor",
+  "n_samples": 300,
+  "n_features": 10,
+  "feature_names": [
+    "days_since_last_contact",
+    "login_frequency_change",
+    "email_open_rate_change",
+    "withdrawals_last_90_days",
+    "account_tenure_years",
+    "portfolio_change_pct",
+    "portfolio_value",
+    "has_property_purchase",
+    "has_inheritance",
+    "n_life_events"
+  ],
+  "labels": "rule-engine scores (learns the scoring policy)",
+  "params": {
+    "n_estimators": 300,
+    "max_depth": 4,
+    "learning_rate": 0.12,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "random_state": 42,
+    "objective": "reg:squarederror",
+    "n_jobs": 1
+  },
+  "attrition": {
+    "r2": 1.0,
+    "mae": 0.003,
+    "importances": [
+      {
+        "feature": "login_frequency_change",
+        "importance": 0.2609
+      },
+      {
+        "feature": "withdrawals_last_90_days",
+        "importance": 0.2513
+      },
+      {
+        "feature": "days_since_last_contact",
+        "importance": 0.2083
+      },
+      {
+        "feature": "email_open_rate_change",
+        "importance": 0.2053
+      },
+      {
+        "feature": "account_tenure_years",
+        "importance": 0.0505
+      },
+      {
+        "feature": "portfolio_value",
+        "importance": 0.0185
+      },
+      {
+        "feature": "portfolio_change_pct",
+        "importance": 0.0039
+      },
+      {
+        "feature": "n_life_events",
+        "importance": 0.0012
+      },
+      {
+        "feature": "has_inheritance",
+        "importance": 0.0001
+      },
+      {
+        "feature": "has_property_purchase",
+        "importance": 0.0
+      }
+    ]
+  },
+  "upsell": {
+    "r2": 1.0,
+    "mae": 0.003,
+    "importances": [
+      {
+        "feature": "portfolio_change_pct",
+        "importance": 0.3354
+      },
+      {
+        "feature": "has_property_purchase",
+        "importance": 0.2703
+      },
+      {
+        "feature": "has_inheritance",
+        "importance": 0.2612
+      },
+      {
+        "feature": "days_since_last_contact",
+        "importance": 0.0669
+      },
+      {
+        "feature": "account_tenure_years",
+        "importance": 0.0436
+      },
+      {
+        "feature": "n_life_events",
+        "importance": 0.0105
+      },
+      {
+        "feature": "email_open_rate_change",
+        "importance": 0.0079
+      },
+      {
+        "feature": "login_frequency_change",
+        "importance": 0.0018
+      },
+      {
+        "feature": "portfolio_value",
+        "importance": 0.0015
+      },
+      {
+        "feature": "withdrawals_last_90_days",
+        "importance": 0.0009
+      }
+    ]
+  }
+}

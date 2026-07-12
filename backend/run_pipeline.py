@@ -11,9 +11,10 @@ from __future__ import annotations
 import json
 
 from backend.agents import run_orchestrator_for_client
-from backend.config import DATA_DIR, TOP_N_DRAFT
+from backend.config import DATA_DIR, TOP_N_DRAFT, USE_XGB_PROPENSITY
 from backend.db import AgentRun, Client, MarketSignal, ScoredAction, SessionLocal, init_db
 from backend.propensity import run_propensity
+from backend.propensity_model import PropensityModel
 from backend.schemas import NextBestAction, ReasoningStep
 from backend.segment import run_segmentation
 from backend.tools import init_tools
@@ -72,10 +73,19 @@ def _compute_confidence(client: dict, propensity: dict, draft_passed: bool) -> i
     return min(confidence, 100)
 
 
+# Triage order: retention risks first, then opportunities, then routine
+# check-ins. This makes the morning feed read as "most at-risk on top" (the
+# demo bar) rather than letting a large upsell outrank a client about to leave.
+_TIER = {"URGENT": 0, "OPPORTUNITY": 1, "WATCHLIST": 2}
+
+
 def _rank_clients(scored: list[dict]) -> list[dict]:
     for c in scored:
+        # Within a tier, blend urgency (attrition/upsell strength) with the
+        # dollars at stake so both "who's most likely to move" and "how much is
+        # on the line" shape the order (the pitch's revenue-impact + risk rank).
         c["_blend"] = 0.6 * max(c["attrition_risk"], c["upsell_ready"]) + 0.4 * c["revenue_impact_score"]
-    scored.sort(key=lambda c: c["_blend"], reverse=True)
+    scored.sort(key=lambda c: (_TIER.get(c["action_type"], 3), -c["_blend"]))
     for rank, c in enumerate(scored, 1):
         c["priority_rank"] = rank
         del c["_blend"]
@@ -162,8 +172,15 @@ def run_pipeline() -> list[dict]:
         print("[2/4] Running segmentation (KMeans k=4)...")
         segmented = run_segmentation(clients)
 
-        print("[3/4] Running propensity scoring...")
-        scored = run_propensity(segmented)
+        model = None
+        if USE_XGB_PROPENSITY:
+            model = PropensityModel.load()
+            if model is None:
+                print("      USE_XGB_PROPENSITY set but no trained model found — "
+                      "run `python -m backend.propensity_model`. Falling back to rules.")
+        scorer = "XGBoost model" if model is not None else "rule engine"
+        print(f"[3/4] Running propensity scoring ({scorer})...")
+        scored = run_propensity(segmented, model=model)
         for c in scored:
             c["action_type"] = _classify_action_type(c["attrition_risk"], c["upsell_ready"])
         ranked = _rank_clients(scored)

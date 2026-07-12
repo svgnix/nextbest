@@ -45,7 +45,9 @@ Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
 1. **Segments the whole book beyond AUM** — behavioural KMeans clustering (engagement, flows, tenure,
    life events) puts every client into one of four segments with look-alike neighbours.
 2. **Predicts attrition & upsell** — a transparent, rule-based propensity engine scores every client for
-   churn risk, upsell readiness, and revenue impact, and lists exactly which rules fired.
+   churn risk, upsell readiness, and revenue impact, and lists exactly which rules fired. A pair of
+   **XGBoost** models trained on the same feature interface can be swapped in (`USE_XGB_PROPENSITY=1`)
+   to demonstrate the learned drop-in, with feature importances exposed for a data-driven view.
 3. **Reasons its way to an action** — a LangGraph multi-agent orchestrator consults specialist agents,
    grounds an outreach draft on the client's call history and market signals, and self-critiques it for
    compliance before committing.
@@ -64,7 +66,7 @@ Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
 | Layer | Technology |
 |---|---|
 | Agent core | Python 3.11+, **LangGraph** (multi-agent graph) |
-| ML engines | **scikit-learn** (KMeans segmentation, nearest-neighbours look-alikes) |
+| ML engines | **scikit-learn** (KMeans segmentation, nearest-neighbours look-alikes) + optional **XGBoost** propensity models (learned drop-in for the rule engine) |
 | Schemas | **pydantic** (typed contracts shared across every stage) |
 | Persistence | **SQLAlchemy** + **SQLite** (one local DB file) |
 | LLM | Provider-agnostic wrapper (PwC GenAI Shared Service / OpenAI / Anthropic / any OpenAI-compatible gateway) with a deterministic **mock mode** |
@@ -220,9 +222,18 @@ guardrail (`_METRIC_LEAK_PATTERNS`) catches any leaked number or term even if th
 lenient — a failed check triggers a redraft (up to 3 attempts). This shows in the trace as an
 `outreach · critique` step marked *failed*, followed by another `draft_message` step.
 
+The orchestrator's plan drives **conditional edges** in the graph — the path taken changes with the
+client, it is not a fixed pipeline. An opportunity routes through the portfolio-nudge agent, a
+re-engagement goes straight to the market agent, and a light check-in skips both specialists.
+
 ```mermaid
 flowchart LR
-    P[plan] --> S[segmentation] --> R[propensity] --> M[market] --> PF[portfolio] --> D[draft] --> C{critique<br/>passed?}
+    P[plan] --> S[segmentation] --> R[propensity]
+    R -->|opportunity| PF[portfolio] --> M[market]
+    R -->|re-engagement| M
+    R -->|check-in| D[draft]
+    M --> D
+    D --> C{critique<br/>passed?}
     C -->|yes| E([commit])
     C -->|no & < 3 tries| D
     C -->|no & 3 tries| E
@@ -387,12 +398,20 @@ Open the URL it prints (default **http://localhost:5173/**). The dev server prox
 ## Regenerating data / re-scoring
 
 ```powershell
-python -m backend.generate_data   # optional: regenerate the JSON (seeded, reproducible)
-python -m backend.seed            # rebuild the DB from JSON (drops + recreates tables)
-python -m backend.run_pipeline    # re-score + re-draft (records agent telemetry)
-python -m backend.eval            # re-grade quality (writes eval_report.json)
-python -m backend.rag.index       # refresh the Book Assistant index (only with a key)
+python -m backend.generate_data     # optional: regenerate the JSON (seeded, reproducible)
+python -m backend.seed              # rebuild the DB from JSON (drops + recreates tables)
+python -m backend.propensity_model  # optional: train the XGBoost propensity models (+ metrics)
+python -m backend.run_pipeline      # re-score + re-draft (records agent telemetry)
+python -m backend.eval              # re-grade quality (writes eval_report.json)
+python -m backend.rag.index         # refresh the Book Assistant index (only with a key)
 ```
+
+**Propensity: rules vs learned model.** The rule engine is the transparent default (it lists the exact
+rules that fired). To score the book with the trained **XGBoost** models instead, train them once with
+`python -m backend.propensity_model`, then run the pipeline with `USE_XGB_PROPENSITY=1`. The models
+learn the rule scoring policy from the shared `features_for()` interface, so the agent, ranking, and UI
+are unchanged — and the fired-rule explanations are still computed either way. Model fit quality and
+feature importances are served at `GET /api/model/propensity`.
 
 ## Running the tests
 

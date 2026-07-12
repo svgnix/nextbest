@@ -98,24 +98,45 @@ def _score_upsell(features: dict) -> tuple[int, list[str]]:
 
 
 # ---------------------------------------------------------------------------
-# Revenue impact
+# Revenue impact — the revenue *at stake*, whichever way it can move
 # ---------------------------------------------------------------------------
 
-def _compute_revenue_impact(upsell_ready: int, portfolio_value: int) -> int:
-    return round((upsell_ready / 100) * portfolio_value)
+def _compute_revenue_impact(attrition_risk: int, upsell_ready: int, portfolio_value: int) -> int:
+    """Dollar value the relationship puts in play.
+
+    For an at-risk client it's the revenue at risk of walking; for a receptive
+    client it's the upside from deepening the relationship. Taking the stronger
+    of the two against the portfolio means a large, highly-at-risk client
+    (revenue to *lose*) ranks alongside a large, highly-receptive one (revenue
+    to *win*) — both are big fires, which is what the RM should triage first.
+    """
+    stake = max(attrition_risk, upsell_ready) / 100
+    return round(stake * portfolio_value)
 
 
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
-def score_client(client: dict) -> dict:
-    """Score a single client. Returns a dict of propensity fields."""
+def score_client(client: dict, model=None) -> dict:
+    """Score a single client. Returns a dict of propensity fields.
+
+    ``model`` is an optional trained propensity model (see
+    ``backend.propensity_model.PropensityModel``). When supplied, the
+    ``attrition_risk`` / ``upsell_ready`` scores come from the model; when None
+    they come from the rule engine. The fired-rule lists are always computed
+    from the rules so the RM keeps a transparent explanation either way.
+    """
     feat = features_for(client)
 
     attrition_risk, attrition_rules = _score_attrition(feat)
     upsell_ready, upsell_rules = _score_upsell(feat)
-    revenue_impact = _compute_revenue_impact(upsell_ready, feat["portfolio_value"])
+
+    if model is not None:
+        attrition_risk = model.predict_attrition(client)
+        upsell_ready = model.predict_upsell(client)
+
+    revenue_impact = _compute_revenue_impact(attrition_risk, upsell_ready, feat["portfolio_value"])
 
     return {
         "attrition_risk": attrition_risk,
@@ -123,19 +144,21 @@ def score_client(client: dict) -> dict:
         "revenue_impact": revenue_impact,
         "attrition_rules_fired": attrition_rules,
         "upsell_rules_fired": upsell_rules,
+        "scorer": "xgboost" if model is not None else "rules",
     }
 
 
-def run_propensity(clients: list[dict]) -> list[dict]:
+def run_propensity(clients: list[dict], model=None) -> list[dict]:
     """Score all clients. Adds propensity fields + normalized revenue_impact_score.
 
-    Returns enriched client dicts with:
+    Pass ``model`` to score with the trained XGBoost engine instead of the rules
+    (see ``score_client``). Returns enriched client dicts with:
       attrition_risk, upsell_ready, revenue_impact, revenue_impact_score,
       attrition_rules_fired, upsell_rules_fired
     """
     scored = []
     for client in clients:
-        result = score_client(client)
+        result = score_client(client, model=model)
         scored.append({**client, **result})
 
     # Normalize revenue_impact to 0-100 (min-max across the book)

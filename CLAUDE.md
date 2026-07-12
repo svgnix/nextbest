@@ -5,6 +5,14 @@
 > The theme is **Agentic AI**. The single most important thing: NextBest must read as a real agent that
 > *reasons its way to a decision*, not a scripted pipeline that fills a template. Keep that framing central.
 
+> **Status — the build has evolved beyond this original plan; `README.md` is the source of truth for the
+> system as built.** The core intent is unchanged, but concretely: ~300 clients across 3 advisors (not 50);
+> **6** data sources; persistence in **SQLite** via SQLAlchemy; a **FastAPI** service instead of static
+> JSON; the agent is a **multi-agent LangGraph orchestrator** (`backend/agents/orchestrator.py`, not a flat
+> `agent.py`) with **conditional edges** that branch on the plan; plus a **RAG book copilot**, an
+> **eval/observability** harness, and a trained **XGBoost** propensity model (optional drop-in for the rule
+> engine). The nine-page advisor suite is described in `README.md`.
+
 ---
 
 ## What NextBest is
@@ -21,53 +29,61 @@ closes the loop to a specific recommended action.* The agent is how that loop cl
 ## Architecture in one line
 
 ```
-Synthetic data (5 sources)  →  Agent core (LangGraph)  →  Ranked action feed  →  RM dashboard UI
-                                 orchestrates 3 engines
-                                 + reflection loop
+Synthetic data (6 sources) → SQLite → engines (segmentation + propensity)
+  → multi-agent orchestrator (plan → specialists → draft ⇄ critique) → FastAPI → React SPA
 ```
 
 The three "engines" from the pitch are preserved but are now **tools the agent calls**, not a fixed
 pipeline: (1) behavioral **segmentation**, (2) attrition/upsell **propensity**, (3) **GenAI** outreach
-grounded on call-log retrieval. Full detail in `SPEC.md`.
+grounded on call-log retrieval. The orchestrator's plan drives conditional edges, so the path taken
+changes per client. Full behavioural detail in `SPEC.md`; full system detail in `README.md`.
 
 ## Stack (do not substitute without a reason)
 
 - **Backend / agent:** Python 3.11+. `pydantic` (schemas), `scikit-learn` (segmentation), `langgraph`
-  (agent graph). `xgboost` optional (see propensity note in SPEC).
+  (multi-agent graph), `SQLAlchemy` + **SQLite** (persistence), `FastAPI` + `uvicorn` (API).
+  `xgboost` is **implemented** as a learned drop-in for the propensity rules (`backend/propensity_model.py`,
+  off by default — see README §Propensity).
 - **LLM:** the user's own API key, read from env — provider-agnostic wrapper in `backend/llm.py`.
-  Default provider Anthropic; OpenAI supported. **Never hardcode a key. Never commit `.env`.**
-  Do **not** use AWS Bedrock — the user is calling their own API directly.
+  Provider Anthropic or OpenAI-compatible (PwC GenAI proxy). Deterministic **mock mode** when no key.
+  **Never hardcode a key. Never commit `.env`.** Do **not** use AWS Bedrock — calling the API directly.
 - **Frontend:** **React + Vite + TypeScript**, hand-written CSS (CSS Modules or plain CSS with tokens).
   `framer-motion` for the small amount of motion in `DESIGN.md`. **No component library** (no MUI,
   Chakra, Ant, default shadcn) — a kit will make it look generic, which the brief explicitly forbids.
-- **Data contract:** stages communicate via JSON files. The frontend reads
-  `backend/data/scored_clients.json`. For the demo, serve it statically (Vite public dir) or via a tiny
-  FastAPI endpoint — no real backend scaling needed.
+- **Data contract:** the frontend calls the **FastAPI** service (`/api/*`, proxied by Vite in dev); the
+  scored book lives in SQLite. `run_pipeline.py` also writes `backend/data/scored_clients.json` as a
+  debug snapshot. Keep `schemas.py` and `frontend/src/types.ts` in sync — that's the contract.
 
-## Repo layout (create this)
+## Repo layout (as built)
 
 ```
 nextbest/
 ├── CLAUDE.md            # this file
 ├── SPEC.md              # functional + technical spec  (source of truth for behavior)
 ├── DESIGN.md            # frontend visual direction     (source of truth for look/feel)
-├── README.md            # quickstart (generate)
+├── README.md            # quickstart + full system reference (source of truth as built)
+├── .github/workflows/   # CI — backend pytest + frontend build
 ├── backend/
-│   ├── schemas.py       # Client, Scores, ReasoningStep, NextBestAction  (pydantic)
-│   ├── generate_data.py # Component 1 — 50 synthetic clients, 5 data sources, hero clients
-│   ├── segment.py       # Engine 1 — behavioral clustering (KMeans), assigns segment
-│   ├── propensity.py    # Engine 2 — attrition + upsell scoring, revenue_impact
-│   ├── tools.py         # agent tools (get_client_segment, compute_propensity, ...)
-│   ├── llm.py           # provider-agnostic chat + tool-calling client (reads env)
-│   ├── agent.py         # Engine 3 core — LangGraph: plan → tools → draft → critique loop
-│   ├── run_pipeline.py  # runs 1→2→3, writes data/scored_clients.json
-│   ├── data/            # clients.json, scored_clients.json
+│   ├── schemas.py          # Client, ReasoningStep, NextBestAction, API shapes (pydantic)
+│   ├── config.py           # seed, sizes, DB path, flags (USE_XGB_PROPENSITY, ...)
+│   ├── generate_data.py    # Component 1 — ~300 clients, 6 data sources, hero clients
+│   ├── db.py / seed.py     # SQLAlchemy models + load JSON → SQLite (nextbest.db)
+│   ├── segment.py          # Engine 1 — behavioral clustering (KMeans) + look-alikes
+│   ├── propensity.py       # Engine 2 — attrition + upsell + revenue-at-stake (rules)
+│   ├── propensity_model.py # Engine 2 (learned) — XGBoost drop-in trained on the rule policy
+│   ├── tools.py            # agent tools (get_client_segment, compute_propensity, ...)
+│   ├── llm.py / prompts.py # provider-agnostic chat (+ mock mode) + system prompts
+│   ├── telemetry.py        # per-run agent telemetry (latency, tokens, redrafts)
+│   ├── agents/             # multi-agent core: orchestrator.py (conditional graph) + state.py
+│   ├── rag/                # Book Assistant: corpus, vector store, index, chat
+│   ├── api/                # FastAPI service (main.py + serializers.py)
+│   ├── eval.py             # evaluation harness (deterministic metrics + LLM-as-judge)
+│   ├── run_pipeline.py     # engines → agents → DB (+ scored_clients.json snapshot)
+│   ├── tests/              # pytest: engines, model, pipeline/guardrail
 │   ├── requirements.txt
-│   └── .env.example     # LLM_PROVIDER=anthropic  ANTHROPIC_API_KEY=...
-└── frontend/            # Vite React TS app — implement strictly against DESIGN.md
-    ├── src/
-    ├── public/scored_clients.json   # symlink/copy of backend output for the demo
-    └── package.json
+│   └── .env.example
+└── frontend/            # Vite React TS SPA (9 pages) — implement strictly against DESIGN.md
+    └── src/{api,pages,layout,components,lib,styles}
 ```
 
 ## Build order (phased — commit after each phase)
@@ -103,14 +119,16 @@ nextbest/
   stated MVP scope. Say so in the demo.
 - The drafted message must **never mention scores, risk, or internal metrics** — that rule is enforced by
   the critique step (SPEC §Reflection). If a draft leaks a metric, the agent must regenerate.
-- Not building: auth, a database, multi-tenant, deployment, real integrations. It runs on a laptop.
-- Don't over-engineer the agent into three separate services — one graph with clear nodes. Don't add a
-  second framework. Complexity must earn its place.
+- Not building: auth, multi-tenant, cloud deployment/scaling, real integrations. Persistence is a single
+  local **SQLite** file — no server DB, no migrations. It all runs on a laptop.
+- Don't over-engineer the agent into separate services — one LangGraph graph with clear nodes. Don't add a
+  second agent framework. Complexity must earn its place.
 
 ## What "done" looks like (demo bar)
 
-An RM opens the dashboard in the morning, sees ~5 clients ranked by urgency with the most at-risk on top,
-clicks the top client (e.g. Priya Mehta — 78% attrition risk, not contacted in 94 days), sees exactly
+An RM opens the dashboard in the morning, sees clients ranked by urgency with the most at-risk on top
+(retention-first tiering), clicks the top client (Priya Mehta — 80% attrition risk, not contacted in
+94 days, ranked #1), sees exactly
 *why* she's flagged (the agent's reasoning trace) and *what to say* (the draft), clicks **Accept**, and
 the message is ready — the whole thing under 60 seconds and understandable in the first 30 with no
 narration. If a viewer who saw the pitch can point at the running app and tick off all three engines

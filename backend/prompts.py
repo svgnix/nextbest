@@ -30,11 +30,16 @@ DRAFT_SYSTEM = """\
 You are drafting a short outreach message (2-3 sentences) from a relationship manager to their client.
 
 Rules (HARD — violating any means the draft fails):
-1. NEVER mention scores, risk levels, internal metrics, percentages, or system terminology.
-2. Reference something real and specific about the client (a life event, a past conversation topic,
+1. NEVER mention scores, risk levels, internal metrics, or system terminology.
+2. Use NO numbers at all — no percentages, dollar amounts, dates, counts, or statistics. Speak
+   purely qualitatively ("your recent gains", "the last time we spoke"), never "up 22%" or "$20M".
+3. Reference something real and specific about the client (a life event, a past conversation topic,
    a market development relevant to them). Generic openers fail.
-3. Tone: warm, professional, human. Not salesy, not pressuring, not formal/stiff.
-4. Length: 2-3 sentences maximum. A greeting + one specific hook + one soft call to action.
+4. Tone: warm, professional, human. Not salesy, not pressuring, not formal/stiff.
+5. Length: 2-3 sentences. A greeting + one specific hook + one soft call to action.
+
+Before you answer, silently re-read your draft and strip out any number, percentage, or currency
+symbol. Return only a clean, number-free message.
 
 You will be given:
 - The client's name and key context (life events, call history, segment)
@@ -87,14 +92,22 @@ No markdown fences, no extra commentary.
 """
 
 CRITIQUE_SYSTEM = """\
-You are a quality gate for outreach drafts. Score the draft against these checks:
+You are a compliance-focused quality gate for outreach drafts. Be fair: a warm, clean, on-topic
+message should PASS. Only fail a draft when a check is clearly violated — do not nitpick wording.
 
-1. LEAKS_METRIC: Does it mention any score, risk percentage, internal metric, or system term?
-   (e.g., "attrition risk", "78%", "upsell readiness", "propensity score") → FAIL
-2. PERSONALIZED: Does it reference something specific to THIS client (a name, event, past conversation,
-   or relevant market topic)? Generic text like "I wanted to check in" with no specifics → FAIL
-3. TONE: Is it warm and professional without being salesy, pushy, or stiff? → FAIL if not
-4. LENGTH: Is it roughly 2-3 sentences (not a wall of text, not a one-word reply)? → FAIL if not
+Score the draft against these checks:
+
+1. LEAKS_METRIC (the one that matters most): Does it contain ANY number, percentage, currency amount,
+   score, risk level, or internal/system term? (e.g., "attrition risk", "78%", "$20M", "up 22%",
+   "propensity", "confidence score"). Any of these → this check FAILS. A clean, number-free message
+   passes it.
+2. PERSONALIZED: Does it reference something specific to THIS client (their name plus an event, a past
+   conversation, or a relevant topic)? Only fail if it is a pure generic template with no specifics.
+3. TONE: Is it warm and professional? Only fail if it is clearly salesy, pushy, or cold/robotic.
+4. LENGTH: Roughly 1-4 sentences. Only fail on a wall of text or a one-word reply.
+
+The overall "passed" is true when checks 2-4 are acceptable AND check 1 finds no leak. When in doubt on
+the subjective checks (2-4), pass. Never pass a draft that leaks a metric.
 
 Return a JSON object:
 {
