@@ -5,13 +5,31 @@ Deterministic where it matters: seed all RNG so the demo is reproducible.
 
 from __future__ import annotations
 
+import os
+import shutil
 from pathlib import Path
 
 SEED = 42
 
 # Data / persistence
 DATA_DIR = Path(__file__).parent / "data"
-DB_PATH = DATA_DIR / "nextbest.db"
+
+# On read-only serverless filesystems (e.g. Vercel / AWS Lambda) the bundled
+# SQLite file can't be opened read-write in place, so we copy it once to a
+# writable tmp dir and point the app there. This lets init_db() and advisor
+# action writes succeed; the copy is ephemeral (resets on cold start), which is
+# acceptable for a demo deployment.
+_READONLY_FS = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+if _READONLY_FS:
+    _writable_dir = Path(os.getenv("TMPDIR", "/tmp")) / "nextbest"
+    _writable_dir.mkdir(parents=True, exist_ok=True)
+    DB_PATH = _writable_dir / "nextbest.db"
+    _seed_db = DATA_DIR / "nextbest.db"
+    if not DB_PATH.exists() and _seed_db.exists():
+        shutil.copyfile(_seed_db, DB_PATH)
+else:
+    DB_PATH = DATA_DIR / "nextbest.db"
+
 DB_URL = f"sqlite:///{DB_PATH}"
 
 CLIENTS_PATH = DATA_DIR / "clients.json"
@@ -49,8 +67,6 @@ N_BEHAVIOR_WEEKS = 12
 # time, then cached into market_signals.json. If the fetch fails (no network,
 # rate limit), we fall back to a curated static feed so the demo never breaks.
 # Set USE_LIVE_MARKET=0 in env to force the deterministic fallback.
-import os
-
 USE_LIVE_MARKET = os.getenv("USE_LIVE_MARKET", "1") not in ("0", "false", "False")
 
 # Score the whole book with the trained XGBoost models instead of the rule
