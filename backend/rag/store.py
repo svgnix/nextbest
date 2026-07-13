@@ -17,15 +17,51 @@ falls back to the keyword retriever, so the Book Assistant works with no key.
 from __future__ import annotations
 
 import json
+import math
+import re
+from collections import Counter
 from itertools import zip_longest
 from pathlib import Path
 
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 from backend import llm
 from backend.config import RAG_EMBED_BATCH
 from backend.rag.corpus import Document
+
+# ---------------------------------------------------------------------------
+# Lightweight TF-IDF (numpy-only, no scikit-learn)
+# ---------------------------------------------------------------------------
+# The keyword retriever previously used sklearn's TfidfVectorizer. To keep the
+# serverless bundle small (sklearn pulls in scipy, ~170MB), we reimplement the
+# same behaviour here: unigrams + bigrams, english stop-word removal, sublinear
+# TF, smoothed IDF, and L2-normalised cosine similarity.
+
+_TOKEN_RE = re.compile(r"(?u)\b\w\w+\b")
+
+# A compact English stop-word list (subset of sklearn's ENGLISH_STOP_WORDS),
+# enough to keep lexical search focused on content terms.
+_STOPWORDS = frozenset("""
+a about above after again against all am an and any are aren't as at be because been
+before being below between both but by can can't cannot could couldn't did didn't do does
+doesn't doing don't down during each few for from further had hadn't has hasn't have haven't
+having he he'd he'll he's her here here's hers herself him himself his how how's i i'd i'll
+i'm i've if in into is isn't it it's its itself let's me more most mustn't my myself no nor
+not of off on once only or other ought our ours ourselves out over own same shan't she she'd
+she'll she's should shouldn't so some such than that that's the their theirs them themselves
+then there there's these they they'd they'll they're they've this those through to too under
+until up very was wasn't we we'd we'll we're we've were weren't what what's when when's where
+where's which while who who's whom why why's will with won't would wouldn't you you'd you'll
+you're you've your yours yourself yourselves
+""".split())
+
+
+def _analyze(text: str) -> list[str]:
+    """Tokenise into content unigrams + adjacent bigrams (post stop-word removal)."""
+    unigrams = [t for t in _TOKEN_RE.findall(text.lower()) if t not in _STOPWORDS]
+    terms = list(unigrams)
+    terms.extend(f"{a} {b}" for a, b in zip(unigrams, unigrams[1:]))
+    return terms
 
 # Map common advisor vocabulary to the words that actually appear in the
 # corpus (rationales, call notes, market signals), so lexical search matches
@@ -88,8 +124,9 @@ class VectorStore:
         self.docs = docs
         self.mode = mode
         self._dense: np.ndarray | None = None
-        self._vectorizer: TfidfVectorizer | None = None
-        self._matrix = None
+        # Keyword (TF-IDF) index state.
+        self._idf: dict[str, float] = {}
+        self._doc_vecs: list[dict[str, float]] = []
         self._kw_fallback: "VectorStore | None" = None
 
     # -- construction ------------------------------------------------------
@@ -108,14 +145,41 @@ class VectorStore:
 
     @classmethod
     def from_keyword(cls, docs: list[Document]) -> "VectorStore":
-        """Deterministic TF-IDF retriever — no API key needed."""
+        """Deterministic TF-IDF retriever (numpy-only) — no API key needed."""
         store = cls(docs, mode="keyword")
-        store._vectorizer = TfidfVectorizer(
-            ngram_range=(1, 2), sublinear_tf=True, stop_words="english", min_df=1,
-        )
-        corpus = [d["text"] for d in docs] or [""]
-        store._matrix = store._vectorizer.fit_transform(corpus)
+        tokenized = [_analyze(d["text"]) for d in docs]
+
+        # Document frequency + smoothed IDF (matches sklearn's smooth_idf).
+        n_docs = len(tokenized)
+        df: Counter[str] = Counter()
+        for terms in tokenized:
+            df.update(set(terms))
+        store._idf = {
+            term: math.log((1 + n_docs) / (1 + freq)) + 1.0
+            for term, freq in df.items()
+        }
+
+        # Per-doc L2-normalised sublinear TF-IDF vectors (sparse dicts).
+        store._doc_vecs = [store._vectorize(terms) for terms in tokenized]
         return store
+
+    def _vectorize(self, terms: list[str]) -> dict[str, float]:
+        """Build an L2-normalised sublinear TF-IDF vector from token terms.
+
+        Unknown terms (not seen at fit time) are dropped, mirroring sklearn's
+        transform() behaviour."""
+        counts = Counter(terms)
+        vec: dict[str, float] = {}
+        for term, count in counts.items():
+            idf = self._idf.get(term)
+            if idf is None:
+                continue
+            vec[term] = (1.0 + math.log(count)) * idf
+        norm = math.sqrt(sum(w * w for w in vec.values()))
+        if norm > 0:
+            for term in vec:
+                vec[term] /= norm
+        return vec
 
     # -- persistence -------------------------------------------------------
 
@@ -168,8 +232,15 @@ class VectorStore:
         return self._kw_fallback
 
     def _keyword_scores(self, query: str) -> np.ndarray:
-        q = self._vectorizer.transform([_expand_query(query)])
-        return (self._matrix @ q.T).toarray().ravel()
+        q_vec = self._vectorize(_analyze(_expand_query(query)))
+        if not q_vec:
+            return np.zeros(len(self._doc_vecs), dtype=np.float32)
+        # Cosine similarity = dot product of two L2-normalised sparse vectors.
+        scores = [
+            sum(weight * doc_vec.get(term, 0.0) for term, weight in q_vec.items())
+            for doc_vec in self._doc_vecs
+        ]
+        return np.array(scores, dtype=np.float32)
 
     def _rank(self, scores: np.ndarray, k: int, client_id: str | None) -> list[tuple[Document, float]]:
         # When scoped to a client, keep that client's docs plus global market context.
