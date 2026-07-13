@@ -10,12 +10,17 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
 
 from backend import telemetry
 
+# Load backend/.env explicitly (robust to the current working directory and to
+# being imported via `python -c`), then fall back to a default upward search so
+# a repo-root .env still works.
+load_dotenv(Path(__file__).with_name(".env"))
 load_dotenv()
 
 # On corporate networks with TLS inspection (e.g. PwC), the intercepting root
@@ -35,6 +40,8 @@ _PROVIDER = os.environ.get("LLM_PROVIDER", "anthropic").lower()
 def _has_api_key() -> bool:
     if _PROVIDER == "anthropic":
         return bool(os.environ.get("ANTHROPIC_API_KEY", "").strip())
+    elif _PROVIDER == "anthropic_foundry":
+        return bool(os.environ.get("ANTHROPIC_FOUNDRY_API_KEY", "").strip())
     elif _PROVIDER == "openai":
         return bool(os.environ.get("OPENAI_API_KEY", "").strip())
     return False
@@ -52,6 +59,30 @@ def _get_anthropic_client():
     if base_url:
         return anthropic.Anthropic(api_key=key, base_url=base_url)
     return anthropic.Anthropic(api_key=key)
+
+
+def _get_anthropic_foundry_client():
+    """Anthropic Claude hosted on Azure AI Foundry.
+
+    Foundry exposes the *native* Anthropic Messages API under
+    ``{endpoint}/anthropic`` (the SDK appends ``/v1/messages``), but auth is an
+    Azure ``api-key`` header rather than Anthropic's ``x-api-key``. We route the
+    standard anthropic SDK at that base URL and inject the Azure header so all
+    the existing tool-calling / message handling in ``_chat_anthropic`` is reused.
+    The ``model`` passed to the API is the *deployment name*, not the model id.
+    """
+    import anthropic
+    key = os.environ["ANTHROPIC_FOUNDRY_API_KEY"]
+    endpoint = os.environ.get("ANTHROPIC_FOUNDRY_ENDPOINT", "").strip().rstrip("/")
+    if not endpoint:
+        raise ValueError("ANTHROPIC_FOUNDRY_ENDPOINT is required for LLM_PROVIDER=anthropic_foundry")
+    base_url = endpoint + "/anthropic"
+    version = os.environ.get("ANTHROPIC_VERSION", "2023-06-01").strip() or "2023-06-01"
+    return anthropic.Anthropic(
+        api_key=key,  # unused by Foundry but required by the SDK constructor
+        base_url=base_url,
+        default_headers={"api-key": key, "anthropic-version": version},
+    )
 
 
 def _get_openai_client():
@@ -153,7 +184,7 @@ def chat(
     if not _has_api_key():
         result = _chat_mock(messages, system)
         mode = "mock"
-    elif _PROVIDER == "anthropic":
+    elif _PROVIDER in ("anthropic", "anthropic_foundry"):
         result = _chat_anthropic(messages, system, tools, temperature, force_json)
         mode = "live"
     elif _PROVIDER == "openai":
@@ -335,11 +366,19 @@ def _chat_anthropic(
 ) -> dict[str, Any]:
     # Anthropic has no response_format flag; force_json is handled upstream by
     # the prompt + extract_json. Accepted here for a uniform call signature.
-    client = _get_anthropic_client()
+    if _PROVIDER == "anthropic_foundry":
+        client = _get_anthropic_foundry_client()
+        # On Foundry, "model" is the deployment name, not the Anthropic model id.
+        model = os.environ.get("ANTHROPIC_FOUNDRY_DEPLOYMENT", "claude-sonnet-4-6")
+    else:
+        client = _get_anthropic_client()
+        model = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
+
+    max_tokens = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "1024") or "1024")
 
     kwargs: dict[str, Any] = {
-        "model": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-20250514"),
-        "max_tokens": 1024,
+        "model": model,
+        "max_tokens": max_tokens,
         "temperature": temperature,
         "messages": messages,
     }

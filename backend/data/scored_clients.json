@@ -23,56 +23,44 @@
       "Loyal client 12.0y",
       "Life event: child education"
     ],
-    "draft_message": "Hi Priya, I hope you're doing well! I was reflecting on our last conversation about your daughter's education and the plans we discussed. If you\u2019d like, I\u2019m here to help clarify any next steps or explore new opportunities together.",
+    "draft_message": "Hi Priya, I've been thinking about our last conversation around your daughter's education fund and wanted to check in to see if things have become a little clearer since we spoke. There's quite a bit of interesting movement happening in areas that could be relevant to where you're headed with that planning. Would love to find a time to reconnect and work through the next steps together whenever you're ready.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803904085
+        "ts_ms": 1783929836226
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803904086
+        "ts_ms": 1783929836227
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >90 days. Digital engagement flat, net flows trending outflows.",
-        "ts_ms": 1783803904087
+        "ts_ms": 1783929836227
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803904087
+        "ts_ms": 1783929836227
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783803912419
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to a specific topic related to the client, but it leaks a metric by mentioning 'education fund'..",
-        "ts_ms": 1783803913659
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (39 words).",
-        "ts_ms": 1783803915140
+        "finding": "Drafted re-engagement opener (70 words).",
+        "ts_ms": 1783929840797
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803916624
+        "ts_ms": 1783929844148
       }
     ],
     "framing": "re-engagement",
@@ -104,68 +92,44 @@
       "Email open rate down -60%",
       "Life event: business sale"
     ],
-    "draft_message": "Hi Deepa, I hope you\u2019re doing well. I remember our last conversation about your recent experiences with your investment, and I\u2019d love to check in and see how you\u2019re feeling about the current market developments, especially in the tech sector. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi Deepa, I've been thinking about you since we last spoke \u2014 navigating the sale of your business is such a significant transition, and I wanted to check in on how things are settling for you. Given how much has shifted in the market lately, particularly around the tech and innovation space, there may be some interesting conversations worth having as you think about what comes next for your capital. Would you be open to a brief call whenever the timing feels right for you?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803917731
+        "ts_ms": 1783929847786
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803917731
+        "ts_ms": 1783929847787
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803917732
+        "ts_ms": 1783929847787
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803917732
+        "ts_ms": 1783929847788
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (59 words).",
-        "ts_ms": 1783803919240
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to 'recent investment returns', which is a metric that violates the leaks_metric check..",
-        "ts_ms": 1783803920860
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (39 words).",
-        "ts_ms": 1783803924766
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message references a specific event (business sale) which is a potential leak; please remove any specific metrics or details..",
-        "ts_ms": 1783803926757
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (48 words).",
-        "ts_ms": 1783803927983
+        "finding": "Drafted re-engagement opener (85 words).",
+        "ts_ms": 1783929852580
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803929401
+        "ts_ms": 1783929855645
       }
     ],
     "framing": "re-engagement",
@@ -197,44 +161,44 @@
       "Email open rate down -43%",
       "Life event: divorce settlement"
     ],
-    "draft_message": "Hi Yvonne, I hope you're doing well during this transition. I was thinking about our last conversation and wanted to check in with you, especially with the recent developments in the energy market that might align with your interests. Whenever you're ready, I\u2019d love to catch up and hear how you\u2019re doing.",
+    "draft_message": "Hi Yvonne, I've been thinking of you and wanted to reach out \u2014 navigating a major life transition like the one you've been going through can bring a lot of financial questions to the surface, and I'd love to be a helpful resource as things settle. With energy markets finding their footing and some genuinely attractive income opportunities emerging, it feels like a good moment to reconnect and make sure your portfolio is working in a way that reflects where you are now. Would you be open to a brief call whenever the timing feels right for you?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803930678
+        "ts_ms": 1783929859672
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803930679
+        "ts_ms": 1783929859672
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803930680
+        "ts_ms": 1783929859673
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Energy Sector looks neutral: Energy prices stabilising; dividend yields in majors above 4%.",
-        "ts_ms": 1783803930681
+        "ts_ms": 1783929859673
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (52 words).",
-        "ts_ms": 1783803931897
+        "finding": "Drafted re-engagement opener (98 words).",
+        "ts_ms": 1783929865442
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803933202
+        "ts_ms": 1783929868265
       }
     ],
     "framing": "re-engagement",
@@ -267,44 +231,44 @@
       "Loyal client 19.3y",
       "Life event: retirement"
     ],
-    "draft_message": "Hi Kimberly, I hope you\u2019re enjoying your retirement and finding time to relax. I wanted to reconnect and see how you\u2019ve been since our last conversation, as I know things were a bit hectic. If you\u2019d like to chat about any new interests or opportunities that have come up, I\u2019m here for you.",
+    "draft_message": "Hi Kimberly \u2014 I've been thinking about you since our last chat, and with everything that comes with stepping into retirement, I imagine life has been keeping you wonderfully busy. The market has been moving in some interesting ways lately, particularly in areas we've touched on before, and I'd love to catch up when the timing feels right for you. Whenever you have a quiet moment, I'm happy to connect \u2014 even just for a brief conversation.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803934422
+        "ts_ms": 1783929874699
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803934423
+        "ts_ms": 1783929874699
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 80%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803934423
+        "ts_ms": 1783929874700
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803934423
+        "ts_ms": 1783929874700
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (53 words).",
-        "ts_ms": 1783803935423
+        "finding": "Drafted re-engagement opener (77 words).",
+        "ts_ms": 1783929879183
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803936891
+        "ts_ms": 1783929881667
       }
     ],
     "framing": "re-engagement",
@@ -335,44 +299,44 @@
       "Login frequency down -43%",
       "Large withdrawal $241,899"
     ],
-    "draft_message": "Hi Debra, I hope you\u2019re doing well. I\u2019ve been thinking about our last conversation where you mentioned exploring other advisors, and I\u2019d love to reconnect to discuss how we can align your goals with the current market landscape. Let me know a good time for you to chat.",
+    "draft_message": "Hi Debra \u2014 I've been thinking about our last conversation and wanted to reach out, especially given how much is shifting in the healthcare space right now with policy discussions heating up. I know you've been weighing your options, and I'd genuinely love the chance to reconnect and make sure you feel fully supported wherever things stand. Would you be open to a brief call this week just to catch up?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803940335
+        "ts_ms": 1783929886446
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803940335
+        "ts_ms": 1783929886446
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 65%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803940335
+        "ts_ms": 1783929886447
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783803940336
+        "ts_ms": 1783929886447
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (48 words).",
-        "ts_ms": 1783803941558
+        "finding": "Drafted re-engagement opener (71 words).",
+        "ts_ms": 1783929890603
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803942625
+        "ts_ms": 1783929894954
       }
     ],
     "framing": "re-engagement",
@@ -404,44 +368,44 @@
       "Large withdrawal $114,317",
       "Loyal client 14.4y"
     ],
-    "draft_message": "Hi Paula, I hope you\u2019re doing well. I remember you mentioned being quite busy the last time we spoke, but I wanted to check in as there have been some interesting developments in the municipal bond market that could be worth discussing when you have a moment. Let me know if you'd like to chat!",
+    "draft_message": "Hi Paula \u2014 I know things have been hectic on your end, and the last thing I want to do is add to your plate. That said, the municipal bond market has shifted in a way that tends to be particularly meaningful for people in your situation, and I'd hate for the timing to slip by without at least a quick conversation. Even a brief call whenever it suits you would be worthwhile \u2014 I'm happy to work around your schedule completely.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803944243
+        "ts_ms": 1783929898866
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803944244
+        "ts_ms": 1783929898867
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 65%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803944244
+        "ts_ms": 1783929898867
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Muni Bonds looks bullish: Municipal bond yields at 3-year highs; tax-equivalent yield attractive",
-        "ts_ms": 1783803944244
+        "ts_ms": 1783929898867
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (55 words).",
-        "ts_ms": 1783803945392
+        "finding": "Drafted re-engagement opener (82 words).",
+        "ts_ms": 1783929903193
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803946604
+        "ts_ms": 1783929905684
       }
     ],
     "framing": "re-engagement",
@@ -473,44 +437,44 @@
       "Large withdrawal $171,281",
       "Life event: relocation"
     ],
-    "draft_message": "Hi Lauren, I hope you're settling in well after your recent move. I wanted to check in and see how everything is going for you, especially with the changes in the market that might impact your plans. If you have some time, I\u2019d love to catch up and discuss any opportunities that might interest you.",
+    "draft_message": "Hi Lauren \u2014 I hope the move has settled down and you're starting to feel at home in your new surroundings. With some meaningful shifts happening in fixed income right now, there's a timely conversation to be had about capturing attractive short-term yields without taking on much duration risk. Would love to reconnect at your convenience and catch up properly \u2014 just let me know what works for you.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803949235
+        "ts_ms": 1783929909689
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803949235
+        "ts_ms": 1783929909689
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 65%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803949236
+        "ts_ms": 1783929909690
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Treasury Bonds looks bullish: Yield curve normalising; front-end rates offer 5%+ with minimal durati",
-        "ts_ms": 1783803949237
+        "ts_ms": 1783929909691
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (55 words).",
-        "ts_ms": 1783803951430
+        "finding": "Drafted re-engagement opener (69 words).",
+        "ts_ms": 1783929914824
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803952587
+        "ts_ms": 1783929917436
       }
     ],
     "framing": "re-engagement",
@@ -542,44 +506,44 @@
       "Large withdrawal $197,583",
       "Loyal client 7.3y"
     ],
-    "draft_message": "Hi Cathy, I hope you're doing well. I was thinking about our last conversation and wanted to check in to see how things have been on your end, especially with all the recent developments in the tech sector. If you have a moment, I\u2019d love to catch up and hear your thoughts.",
+    "draft_message": "Hi Cathy \u2014 I know our last call was a quick one, and I've been thinking about you since, especially with the momentum we're seeing across the tech space starting to ripple into areas that could be meaningful for your portfolio. Whenever you have a quieter moment, I'd love to reconnect and catch up properly.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803954698
+        "ts_ms": 1783929921382
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803954699
+        "ts_ms": 1783929921383
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 60%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803954700
+        "ts_ms": 1783929921384
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803954700
+        "ts_ms": 1783929921384
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (52 words).",
-        "ts_ms": 1783803956575
+        "finding": "Drafted re-engagement opener (55 words).",
+        "ts_ms": 1783929925239
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803958007
+        "ts_ms": 1783929928343
       }
     ],
     "framing": "re-engagement",
@@ -611,56 +575,44 @@
       "Large withdrawal $147,858",
       "Loyal client 7.6y"
     ],
-    "draft_message": "Hi Joshua, I hope you\u2019re doing well. I wanted to follow up on our last conversation since I sensed you were busy, and I\u2019d love to hear your thoughts on how recent developments might be impacting your plans. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi Joshua \u2014 I've been thinking about you since our last call, which I know got cut short, and wanted to circle back when things might be a bit less hectic on your end. The municipal bond market has shifted in a really interesting way lately, and given your tax situation, I think there's a conversation worth having about what that could mean for you. Would you be open to a quick catch-up when the timing feels right?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803959540
+        "ts_ms": 1783929932364
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803959541
+        "ts_ms": 1783929932365
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 60%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803959542
+        "ts_ms": 1783929932365
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Muni Bonds looks bullish: Municipal bond yields at 3-year highs; tax-equivalent yield attractive",
-        "ts_ms": 1783803959543
+        "ts_ms": 1783929932365
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (49 words).",
-        "ts_ms": 1783803961081
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a metric reference to 'municipal bond yields', which violates the leaks_metric check..",
-        "ts_ms": 1783803962498
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (46 words).",
-        "ts_ms": 1783803964139
+        "finding": "Drafted re-engagement opener (78 words).",
+        "ts_ms": 1783929936753
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803965184
+        "ts_ms": 1783929939696
       }
     ],
     "framing": "re-engagement",
@@ -692,56 +644,44 @@
       "Large withdrawal $115,761",
       "Loyal client 10.9y"
     ],
-    "draft_message": "Hi Michael, I hope you\u2019re doing well! I remember you mentioning that you were considering other advisors, and I wanted to reconnect to see how you\u2019re feeling about your options. If you\u2019d like to chat about any opportunities, I\u2019m here to help.",
+    "draft_message": "Hi Michael \u2014 I've been thinking about our last conversation, and I wanted to reach out personally, because I know you're weighing your options right now. Given what's been unfolding in emerging markets \u2014 particularly some of the selective opportunities we're seeing in India amid the broader currency pressures \u2014 I thought it was worth a conversation to make sure you have a clear picture before making any decisions. Would you be open to a brief call this week so we can catch up properly?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803966708
+        "ts_ms": 1783929943981
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803966709
+        "ts_ms": 1783929943982
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 60%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803966709
+        "ts_ms": 1783929943982
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783803966710
+        "ts_ms": 1783929943982
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (47 words).",
-        "ts_ms": 1783803968861
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message mentions 'recent developments in emerging markets,' which could imply metrics or trends, so it fails the leaks_metric check..",
-        "ts_ms": 1783803970179
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (42 words).",
-        "ts_ms": 1783803971927
+        "finding": "Drafted re-engagement opener (85 words).",
+        "ts_ms": 1783929949344
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803976121
+        "ts_ms": 1783929952371
       }
     ],
     "framing": "re-engagement",
@@ -773,44 +713,44 @@
       "Large withdrawal $103,422",
       "Loyal client 15.8y"
     ],
-    "draft_message": "Hi Susan, I hope you're doing well! I remember you mentioned being quite busy the last time we spoke, but I wanted to touch base and see if you might have some time to discuss any opportunities in India that could align with your interests. Let me know if there's a convenient time for you!",
+    "draft_message": "Hi Susan \u2014 I know things have been hectic on your end, and the last thing I want is to add to your plate. That said, there's been some meaningful movement in emerging markets lately, particularly in India, that I think could be worth a quick conversation given your interest there. Whenever you have a moment to breathe, I'd love to reconnect \u2014 even just a brief call works perfectly.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803977530
+        "ts_ms": 1783929956157
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803977531
+        "ts_ms": 1783929956157
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 60%, upsell 10% \u2014 top driver: Login frequency down -35%. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803977532
+        "ts_ms": 1783929956158
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783803977532
+        "ts_ms": 1783929956159
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (55 words).",
-        "ts_ms": 1783803979235
+        "finding": "Drafted re-engagement opener (70 words).",
+        "ts_ms": 1783929960247
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803981608
+        "ts_ms": 1783929962853
       }
     ],
     "framing": "re-engagement",
@@ -843,44 +783,44 @@
       "Loyal client 15.7y",
       "Life event: relocation"
     ],
-    "draft_message": "Hi Melissa, I hope your relocation is going smoothly and that you\u2019re settling into your new surroundings. I wanted to reconnect and see how your thoughts are evolving regarding your investment strategy, especially with the recent developments in the tech sector. Let me know if you\u2019d like to chat!",
+    "draft_message": "Hi Melissa \u2014 I hope the move has been treating you well and that you're starting to feel settled in your new home. With so much happening in the tech space right now, including some interesting momentum spreading beyond the usual big names, I thought this would be a natural moment to reconnect and make sure your portfolio is still aligned with where you want to go. Would love to find a time to catch up whenever it feels right for you.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803983372
+        "ts_ms": 1783929966698
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803983373
+        "ts_ms": 1783929966698
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 60%, upsell 10% \u2014 top driver: Login frequency down -41%. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803983373
+        "ts_ms": 1783929966699
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803983374
+        "ts_ms": 1783929966699
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (49 words).",
-        "ts_ms": 1783803984611
+        "finding": "Drafted re-engagement opener (82 words).",
+        "ts_ms": 1783929971423
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803986807
+        "ts_ms": 1783929974247
       }
     ],
     "framing": "re-engagement",
@@ -911,44 +851,44 @@
       "Login frequency down -38%",
       "Email open rate down -48%"
     ],
-    "draft_message": "Hi Michael, I hope you\u2019re doing well. I remember our last call felt a bit rushed, and I wanted to check in to see if there\u2019s a good time for us to reconnect and discuss any updates or thoughts you might have about the tech sector. Let me know what works for you!",
+    "draft_message": "Hi Michael \u2014 I know our last conversation got cut short, and I've been meaning to circle back ever since. With the momentum we've been seeing across the tech space lately, particularly as the AI-driven wave starts reaching some of the smaller, more dynamic companies, I thought it might be worth a proper catch-up. Would you be open to finding a time that works better for you?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803988217
+        "ts_ms": 1783929979970
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803988218
+        "ts_ms": 1783929979971
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 55%, upsell 0% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803988219
+        "ts_ms": 1783929979972
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803988219
+        "ts_ms": 1783929979972
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (53 words).",
-        "ts_ms": 1783803989354
+        "finding": "Drafted re-engagement opener (67 words).",
+        "ts_ms": 1783929983915
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803990458
+        "ts_ms": 1783929986506
       }
     ],
     "framing": "re-engagement",
@@ -980,44 +920,44 @@
       "Email open rate down -52%",
       "Loyal client 19.0y"
     ],
-    "draft_message": "Hi Lisa, I hope you\u2019re doing well. I wanted to follow up on our last conversation, as I sensed you had a lot on your mind. If you have a moment, I\u2019d love to catch up and discuss some exciting developments in the tech sector that might interest you.",
+    "draft_message": "Hi Lisa, I know our last conversation was cut short and I've been thinking about you since \u2014 the tech space has been moving in some genuinely interesting ways lately, particularly around AI spreading beyond the usual names into smaller, less obvious companies. I'd love to find a better moment to catch up and share a few thoughts that feel relevant to where you're focused.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 're-engagement'. Consulting 3 specialists: segmentation, propensity, market.",
-        "ts_ms": 1783803991938
+        "ts_ms": 1783929990294
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Disengaging' with 3 look-alike clients.",
-        "ts_ms": 1783803991939
+        "ts_ms": 1783929990295
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 55%, upsell 10% \u2014 top driver: No contact in >60 days. Digital engagement declining, net flows trending outflows.",
-        "ts_ms": 1783803991940
+        "ts_ms": 1783929990296
       },
       {
         "agent": "market",
         "tool": "get_market_sentiment",
         "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803991940
+        "ts_ms": 1783929990301
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted re-engagement opener (49 words).",
-        "ts_ms": 1783803993557
+        "finding": "Drafted re-engagement opener (65 words).",
+        "ts_ms": 1783929995285
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783803995089
+        "ts_ms": 1783929997823
       }
     ],
     "framing": "re-engagement",
@@ -1049,74 +989,50 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi Rahul, I hope you\u2019re doing well! I remember you mentioned wanting to explore allocation options following your recent changes, and I think now could be a great time to discuss how to build a diversified core allocation. Let me know when you\u2019re free to chat!",
+    "draft_message": "Hi Rahul, I've been thinking about our last conversation and the new chapter you're navigating with your inheritance \u2014 it feels like a meaningful moment to be thoughtful and intentional about how that capital gets put to work. Given how quickly parts of the market have been moving lately, I'd love to walk you through some ideas around building a strong foundation first before leaning into higher-conviction opportunities. Would you have time for a call this week to explore what that could look like for you?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783803996192
+        "ts_ms": 1783930002483
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783803996193
+        "ts_ms": 1783930002484
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 85% \u2014 top driver: Portfolio up 18.5%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783803996193
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783803996194
+        "ts_ms": 1783930002484
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783803996195
+        "ts_ms": 1783930002485
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
+        "ts_ms": 1783930002485
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (44 words).",
-        "ts_ms": 1783803997619
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to a specific financial situation, which is considered a metric..",
-        "ts_ms": 1783803998954
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (42 words).",
-        "ts_ms": 1783804000294
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to a recent inheritance, which is considered a metric..",
-        "ts_ms": 1783804001705
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (46 words).",
-        "ts_ms": 1783804002799
+        "finding": "Drafted opportunity opener (86 words).",
+        "ts_ms": 1783930007332
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783804004333
+        "ts_ms": 1783930012988
       }
     ],
     "framing": "opportunity",
@@ -1148,62 +1064,50 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi John, I hope you\u2019re enjoying your new property! I remember you were interested in exploring real estate funds, and I wanted to share that there may be some great opportunities in this area right now. Let me know if you\u2019d like to chat about potential options that could align with your goals.",
+    "draft_message": "Hi John, given your recent property purchase and the conversation we had about real estate fund exposure, I wanted to share that we're seeing some genuinely interesting conditions in the commercial real estate space right now \u2014 institutional investors are quietly moving in as valuations have pulled back from where they were. It might be a good moment to revisit the options we were exploring together, and I'd love to find a time to walk through what could make sense for you.",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783804005665
+        "ts_ms": 1783930016780
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783804005666
+        "ts_ms": 1783930016781
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 90% \u2014 top driver: Portfolio up 20.6%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783804005667
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Real Estate Funds looks bullish: Commercial REIT valuations at a discount to NAV; institutional money r",
-        "ts_ms": 1783804005667
+        "ts_ms": 1783930016782
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: Real estate funds momentum supports adding on any near-term pullback. Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783804005668
+        "ts_ms": 1783930016783
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Real Estate Funds looks bullish: Commercial REIT valuations at a discount to NAV; institutional money r",
+        "ts_ms": 1783930016784
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (56 words).",
-        "ts_ms": 1783804006971
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to 'current market dynamics', which is considered a metric..",
-        "ts_ms": 1783804008227
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (53 words).",
-        "ts_ms": 1783804009750
+        "finding": "Drafted opportunity opener (82 words).",
+        "ts_ms": 1783930021823
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783804010817
+        "ts_ms": 1783930024479
       }
     ],
     "framing": "opportunity",
@@ -1234,50 +1138,50 @@
       "Life event: property purchase",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Arjun, I hope you're doing well and enjoying the excitement of your recent property purchase! Given your interest in diversifying into real estate funds, I\u2019d love to discuss some opportunities that align with your goals. Let me know a good time for us to chat!",
+    "draft_message": "Arjun, congratulations again on closing your commercial property \u2014 it's exciting to see you building out that real estate side of your portfolio. Given your interest in diversifying further into real estate funds, I'd love to share a few ideas that feel like a natural next step from where we left off. Would you have some time this week for a quick conversation?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783804012672
+        "ts_ms": 1783930028481
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783804012673
+        "ts_ms": 1783930028481
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 65% \u2014 top driver: Portfolio up 22.0%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783804012674
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783804012674
+        "ts_ms": 1783930028482
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: Tech equities momentum supports adding on any near-term pullback. Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783804012674
+        "ts_ms": 1783930028483
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
+        "ts_ms": 1783930028483
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (46 words).",
-        "ts_ms": 1783804013728
+        "finding": "Drafted opportunity opener (63 words).",
+        "ts_ms": 1783930036759
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783804014844
+        "ts_ms": 1783930039369
       }
     ],
     "framing": "opportunity",
@@ -1309,50 +1213,50 @@
       "Recently contacted <30 days",
       "Life event: property purchase"
     ],
-    "draft_message": "Hi Julie, I hope you\u2019re enjoying your new property! I wanted to touch base about some interesting opportunities in the tech sector that could complement your recent investment choices. Let me know if you\u2019d like to chat about how we can align your portfolio with these developments.",
+    "draft_message": "Hi Julie, with your recent property purchase, it's a great time to think about how your broader portfolio is working alongside your new asset \u2014 and there are some interesting shifts happening in the tech space right now that could be worth a conversation. Given how well things were tracking when we last spoke, I'd love to explore whether rotating some of your equity exposure could complement where you're headed. Would you have some time for a quick call this week?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783804016824
+        "ts_ms": 1783930043246
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783804016825
+        "ts_ms": 1783930043247
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 90% \u2014 top driver: Portfolio up 18.0%. Digital engagement flat, net flows trending inflows.",
-        "ts_ms": 1783804016825
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
-        "ts_ms": 1783804016826
+        "ts_ms": 1783930043248
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: Consider trimming healthcare equities and rotating toward tech equities, which s Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783804016827
+        "ts_ms": 1783930043249
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Tech Equities looks bullish: Tech sector up 12% YTD; AI-driven rally broadening to mid-caps.",
+        "ts_ms": 1783930043250
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (47 words).",
-        "ts_ms": 1783804017827
+        "finding": "Drafted opportunity opener (81 words).",
+        "ts_ms": 1783930048048
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783804019148
+        "ts_ms": 1783930052143
       }
     ],
     "framing": "opportunity",
@@ -1384,62 +1288,50 @@
       "Recently contacted <30 days",
       "Life event: inheritance"
     ],
-    "draft_message": "Hi William, I hope you\u2019re doing well. I remember you mentioned your interest in private equity exposure during our last conversation, and with the current shifts in healthcare, it might be a good time to explore some diversified options. Let me know if you\u2019d like to chat about potential opportunities that could align with your goals.",
+    "draft_message": "Hi William \u2014 given our last conversation about private equity and the new chapter you're navigating with your inheritance, I wanted to reach out about an approach that's been resonating with clients in similar situations: building a well-diversified foundation first, so any higher-conviction moves later have something solid to anchor to. With healthcare showing some softness ahead of potential policy shifts, this feels like a thoughtful moment to talk through how your new liquidity could be positioned \u2014 would you have time for a brief call this week?",
     "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783804020490
+        "ts_ms": 1783930056100
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'New & exploring' with 3 look-alike clients.",
-        "ts_ms": 1783804020490
+        "ts_ms": 1783930056101
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 85% \u2014 top driver: Portfolio up 16.0%. Digital engagement rising, net flows trending inflows.",
-        "ts_ms": 1783804020491
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
-        "ts_ms": 1783804020492
+        "ts_ms": 1783930056102
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: New liquidity is a chance to build a diversified core allocation before deployin Eligible: Real Estate Diversification Fund.",
-        "ts_ms": 1783804020492
+        "ts_ms": 1783930056103
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Healthcare Equities looks bearish: Healthcare lagging; defensive positioning ahead of policy changes.",
+        "ts_ms": 1783930056104
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (52 words).",
-        "ts_ms": 1783804021663
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to a recent inheritance, which implies a financial metric..",
-        "ts_ms": 1783804022878
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (56 words).",
-        "ts_ms": 1783804023855
+        "finding": "Drafted opportunity opener (88 words).",
+        "ts_ms": 1783930061445
       },
       {
         "agent": "outreach",
         "tool": "critique",
         "finding": "Quality gate passed.",
-        "ts_ms": 1783804025224
+        "ts_ms": 1783930064475
       }
     ],
     "framing": "opportunity",
@@ -1458,7 +1350,7 @@
     "revenue_impact": 13981864,
     "revenue_impact_score": 53,
     "priority_rank": 20,
-    "confidence": 90,
+    "confidence": 100,
     "segment": {
       "id": 1,
       "label": "Steady loyalist"
@@ -1470,74 +1362,50 @@
       "Recently contacted <30 days",
       "Loyal client 13.0y"
     ],
-    "draft_message": "Hi Olivia, I hope you\u2019re doing well! I remember how enthusiastic you were about rebalancing your portfolio toward healthcare equities during our last conversation. Given the current market dynamics, I\u2019d love to discuss some selective opportunities that align with your interests, especially in ESG funds. Let me know if you\u2019re available for a chat!",
-    "draft_passed_critique": false,
+    "draft_message": "Hi Olivia, given how enthusiastic you were about shifting toward healthcare equities when we last spoke, I wanted to reach out because some interesting developments in the broader market feel relevant to where your portfolio is headed \u2014 particularly with emerging market currencies facing real headwinds right now. I'd love to find a time to walk you through a few ideas that could complement the direction we discussed, including some ESG-oriented options that are looking quite compelling in this environment.",
+    "draft_passed_critique": true,
     "reasoning_trace": [
       {
         "agent": "orchestrator",
         "tool": "plan",
         "finding": "Framing 'opportunity'. Consulting 4 specialists: segmentation, propensity, portfolio, market.",
-        "ts_ms": 1783804026321
+        "ts_ms": 1783930068196
       },
       {
         "agent": "segmentation",
         "tool": "get_client_segment",
         "finding": "Behavioural cluster 'Steady loyalist' with 3 look-alike clients.",
-        "ts_ms": 1783804026321
+        "ts_ms": 1783930068197
       },
       {
         "agent": "propensity",
         "tool": "compute_propensity",
         "finding": "Attrition 0%, upsell 60% \u2014 top driver: Portfolio up 17.2%. Digital engagement rising, net flows trending outflows.",
-        "ts_ms": 1783804026322
-      },
-      {
-        "agent": "market",
-        "tool": "get_market_sentiment",
-        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
-        "ts_ms": 1783804026322
+        "ts_ms": 1783930068197
       },
       {
         "agent": "portfolio",
         "tool": "recommend_rebalance",
         "finding": "Nudge: Consider trimming emerging markets and rotating toward esg funds, which screens  Eligible: Tax-Advantaged Bond Ladder.",
-        "ts_ms": 1783804026323
+        "ts_ms": 1783930068198
+      },
+      {
+        "agent": "market",
+        "tool": "get_market_sentiment",
+        "finding": "Emerging Markets looks bearish: EM currencies under pressure from a strong dollar; selective opportuni",
+        "ts_ms": 1783930068199
       },
       {
         "agent": "outreach",
         "tool": "draft_message",
-        "finding": "Drafted opportunity opener (50 words).",
-        "ts_ms": 1783804027619
+        "finding": "Drafted opportunity opener (80 words).",
+        "ts_ms": 1783930072979
       },
       {
         "agent": "outreach",
         "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to 'current market conditions', which is a metric leak..",
-        "ts_ms": 1783804028743
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (48 words).",
-        "ts_ms": 1783804029977
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a metric related to portfolio rebalancing, which violates the leaks_metric check..",
-        "ts_ms": 1783804031103
-      },
-      {
-        "agent": "outreach",
-        "tool": "draft_message",
-        "finding": "Drafted opportunity opener (54 words).",
-        "ts_ms": 1783804032447
-      },
-      {
-        "agent": "outreach",
-        "tool": "critique",
-        "finding": "Quality gate failed \u2014 The message contains a reference to 'current market dynamics,' which is considered a system term and violates the leaks metric check..",
-        "ts_ms": 1783804033734
+        "finding": "Quality gate passed.",
+        "ts_ms": 1783930076221
       }
     ],
     "framing": "opportunity",
